@@ -1,2 +1,2 @@
 # Disable line ending conversion for specific files or directories
-Library/PackageCache/com.unity.collab-oxy/** -text
+Starlight Racers/Library/PackageCache/com.unity.collab-oxy/** -text
