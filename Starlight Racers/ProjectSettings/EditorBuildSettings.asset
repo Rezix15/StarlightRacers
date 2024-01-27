@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 54f1f9e55f805c744a4995f508f38c2e
+  - enabled: 1
+    path: Assets/Scenes/StarLightRacers_BetaTest.unity
+    guid: bc2ea38967bf54248a821939b7f96797
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 19aa60a43c9261c4694c5f6882af20e2, type: 2}
