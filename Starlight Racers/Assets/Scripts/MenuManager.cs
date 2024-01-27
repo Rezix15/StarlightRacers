@@ -151,12 +151,22 @@ public class MenuManager : MonoBehaviour
     {
         
     }
+
+    public void OnSelectVehicle()
+    {
+        ToggleMenu(3);
+    }
     
     public void ToggleLeft()
     {
         if (currentId > 0)
         {
             currentId--;
+        }
+        
+        if(currentId < spaceJets.Length - 1)
+        {
+            rButton.SetActive(true);
         }
 
         if (currentId <= 0)
@@ -178,11 +188,6 @@ public class MenuManager : MonoBehaviour
         if (currentId > 0)
         {
             lButton.SetActive(true);
-        }
-        
-        if(currentId < spaceJets.Length)
-        {
-            rButton.SetActive(true);
         }
 
         if (currentId == spaceJets.Length - 1)
