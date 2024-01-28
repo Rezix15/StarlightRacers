@@ -53,7 +53,7 @@ public class FinishChecker : MonoBehaviour
         else if(other.CompareTag("Player"))
         {
             StartCoroutine(PlayerFinished());
-            player = other.gameObject.GetComponent<Spacejet>();
+            player = other.gameObject.GetComponentInParent<Spacejet>();
             Debug.Log("Player: " + player);
             playerFinishTime = player.ReturnFinishTime();
             playerFinishTimeText = FormatTimer(playerFinishTime);
