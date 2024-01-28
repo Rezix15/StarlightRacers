@@ -50,6 +50,10 @@ public class MenuManager : MonoBehaviour
 
     public GameObject lButton;
     public GameObject rButton;
+
+    public GameObject prefabSpaceJetHolder;
+
+    private GameObject[] prefabSpaceJets;
     
     private void Awake()
     {
@@ -94,6 +98,24 @@ public class MenuManager : MonoBehaviour
         laserStatImg = laserStat.GetComponentsInChildren<Image>();
 
         currentSpaceJet = spaceJets[0];
+
+        var childCount = prefabSpaceJetHolder.transform.childCount;
+
+        prefabSpaceJets = new GameObject[childCount];
+
+        for (int i = 0; i < childCount; i++)
+        {
+            prefabSpaceJets[i] = prefabSpaceJetHolder.transform.GetChild(i).gameObject;
+            
+            if (i != currentId)
+            {
+                prefabSpaceJets[i].SetActive(false);
+            }
+            else
+            {
+                prefabSpaceJets[i].SetActive(true);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -149,7 +171,12 @@ public class MenuManager : MonoBehaviour
 
     public void HoverRotate()
     {
-        
+       Debug.Log("You are hovering over object");
+    }
+
+    public void HoverRotateExit()
+    {
+        Debug.Log("You are not hovering over object");
     }
 
     public void OnSelectVehicle()
@@ -202,7 +229,20 @@ public class MenuManager : MonoBehaviour
     {
         currentSpaceJet = spaceJets[currentId];
         
+        for (int i = 0; i < prefabSpaceJets.Length; i++)
+        {
+            if (i != currentSpaceJet.referenceIndex)
+            {
+                prefabSpaceJets[i].SetActive(false);
+            }
+            else
+            {
+                prefabSpaceJets[i].SetActive(true);
+            }
+        }
+        
         spaceJetNameText.text = currentSpaceJet.name;
+        
         
         //Calculate the speedStat UI Display
         var speedVal = (currentSpaceJet.speed / 30000f) * speedStatImg.Length;

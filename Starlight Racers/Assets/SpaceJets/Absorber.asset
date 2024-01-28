@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Absorber
   m_EditorClassIdentifier: 
   name: Absorber
-  speed: 15000
+  speed: 25000
   shield: 120
-  shieldRate: 30
-  grip: 4
+  shieldRate: 20
+  grip: 6
   thrust: 200
   laserDamage: 20
+  referenceIndex: 2

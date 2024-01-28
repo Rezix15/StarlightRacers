@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Bolt
   m_EditorClassIdentifier: 
   name: Bolt Glider
-  speed: 25000
+  speed: 22000
   shield: 100
   shieldRate: 20
-  grip: 6
+  grip: 4
   thrust: 200
   laserDamage: 20
+  referenceIndex: 0

@@ -19,3 +19,4 @@ MonoBehaviour:
   grip: 3
   thrust: 200
   laserDamage: 25
+  referenceIndex: 3

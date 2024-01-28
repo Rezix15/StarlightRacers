@@ -12,4 +12,5 @@ public class SpaceJetObj : ScriptableObject
     public int grip;
     public int thrust;
     public int laserDamage;
+    public int referenceIndex; //The model to reference when showing on the menu
 }
