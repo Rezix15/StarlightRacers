@@ -1,5 +1,4 @@
 %YAML 1.1
-%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1001 &8867558286456690336
 PrefabInstance:
@@ -153,8 +152,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 17.863947, y: 30, z: 17.614683}
-  m_Center: {x: -2.699297, y: 10, z: 12.813232}
+  m_Size: {x: 16.486496, y: 30, z: 16.816092}
+  m_Center: {x: -2.010571, y: 10, z: 13.212534}
 --- !u!1 &5878183599405520435 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3070440721791402131, guid: b73785fa07a3a8b469c6537d883cd8eb, type: 3}
