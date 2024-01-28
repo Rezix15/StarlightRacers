@@ -31,7 +31,7 @@ public class CanvasManager : MonoBehaviour
         timerText.gameObject.SetActive(false);
         laserAmmoText.gameObject.SetActive(false);
 
-        playerShieldStatMax = spacejet.GetMaxShieldStat();
+        playerShieldStatMax = MenuManager.currentSpaceJet.shield;
         shieldBar.maxValue = playerShieldStatMax;
 
     }

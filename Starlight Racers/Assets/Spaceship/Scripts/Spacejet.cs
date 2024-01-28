@@ -7,15 +7,18 @@ using UnityEngine.InputSystem;
 
 public class Spacejet : MonoBehaviour
 {
-    public float thrust;
-    public float grip = 10f;
+    private float thrust;
+    private float grip;
 
     public SpaceJetStats spaceJetStat;
     
-    public Stat speed; //Speed
-    public Stat shieldMax; //Health
-    public Stat laserDamage;
-    public Stat shieldRate; //Defense Stat
+    private Stat speed = new Stat(0); //Speed
+    
+    private Stat shieldMax = new Stat(0); //Health
+    
+    private Stat laserDamage = new Stat(0); //Defense
+    
+    private Stat shieldRate = new Stat(0); //Defense Stat
 
     private float lerpedSpeed = 4.0f;
     
@@ -95,8 +98,19 @@ public class Spacejet : MonoBehaviour
     }
     // Start is called before the first frame update
 
+    //Initialize the stats of the spaceJet using the current vehicle that was chosen in the menu.
+    private void InitializeStats()
+    {
+        thrust = MenuManager.currentSpaceJet.thrust;
+        grip = MenuManager.currentSpaceJet.grip;
+        speed.baseValue = MenuManager.currentSpaceJet.speed;
+        shieldMax.baseValue = MenuManager.currentSpaceJet.shield;
+        shieldRate.baseValue = MenuManager.currentSpaceJet.shieldRate;
+        laserDamage.baseValue = MenuManager.currentSpaceJet.laserDamage;
+    }
     void Start()
     {
+        InitializeStats();
         rb = gameObject.GetComponent<Rigidbody>();
         isVulnerable = false;
         timer = 0; //set our timer to 0
@@ -173,7 +187,7 @@ public class Spacejet : MonoBehaviour
             rb.AddForce(Vector3.Lerp(Vector3.zero,(-transform.forward * speed.baseValue), Time.deltaTime * thrust));
         }
         
-        var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
+        //var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
         rb.AddTorque(transform.up * (grip * horizontalInput ), ForceMode.Acceleration);
             
         //If the user turns either left or right, the gameobject should tilt 45 degrees to the corresponding direction
@@ -319,11 +333,6 @@ public class Spacejet : MonoBehaviour
         return checkpointCount;
     }
     
-    public float GetMaxShieldStat()
-    {
-        return shieldMax.GetValue();
-    }
-
     public float GetCurrentShieldStat()
     {
         return currentShieldStat;
