@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Barracuda;
 using UnityEngine;
 
 public class FinishChecker : MonoBehaviour
@@ -53,6 +54,7 @@ public class FinishChecker : MonoBehaviour
         {
             StartCoroutine(PlayerFinished());
             player = other.gameObject.GetComponent<Spacejet>();
+            Debug.Log("Player: " + player);
             playerFinishTime = player.ReturnFinishTime();
             playerFinishTimeText = FormatTimer(playerFinishTime);
 
