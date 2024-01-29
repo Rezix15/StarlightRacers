@@ -63,6 +63,8 @@ public class TrackGen : MonoBehaviour
 
     //Unused variable
     //private int count = 0;
+
+    public int reachLimit;
     
     
     private void Awake()
@@ -171,13 +173,14 @@ public class TrackGen : MonoBehaviour
                 );
                 
                 randIndex = Random.Range(0, 3);
+                
                 //If the newPosition track has reached the 9,000 barrier on the z axis, allow the possible generation of
                 //the finish Track. If the position exceeds 15,000 force generation of finishTrack.
-                if (newPosition.z >= 8000 || Mathf.Abs(newPosition.x) >= 8000)
+                if ((newPosition.z >= (reachLimit * 0.9f) && newPosition.z < reachLimit) || (Mathf.Abs(newPosition.x) >= (reachLimit * 0.9f) && Mathf.Abs(newPosition.x) < reachLimit))
                 {
                     randIndex = Random.Range(0, 4);
                 }
-                else if(newPosition.z >= 10000 || Mathf.Abs(newPosition.x) >= 10000)
+                else if(newPosition.z >= reachLimit || Mathf.Abs(newPosition.x) >= reachLimit)
                 {
                     randIndex = 3;
                 }
