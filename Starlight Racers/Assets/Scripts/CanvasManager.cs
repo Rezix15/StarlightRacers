@@ -17,6 +17,10 @@ public class CanvasManager : MonoBehaviour
 
     private bool canStart;
 
+    public GameObject shieldBarFill;
+
+    public Image shieldBarFillImg;
+
     public Slider shieldBar;
 
     public Spacejet spacejet;
@@ -73,7 +77,34 @@ public class CanvasManager : MonoBehaviour
         playerShieldStat = spacejet.GetCurrentShieldStat();
 
         shieldBar.value = playerShieldStat;
+        
+        UpdateShieldUI();
+    }
 
+    void UpdateShieldUI()
+    {
+        var shieldPercentage = (shieldBar.value / shieldBar.maxValue);
 
+        if (shieldPercentage > 0)
+        {
+            shieldBarFill.SetActive(true);
+        }
+
+        if (shieldPercentage >= 0.5f)
+        {
+            shieldBarFillImg.color = Color.cyan;
+        }
+        else if(shieldPercentage < 0.5f && shieldPercentage >= 0.2f)
+        {
+            shieldBarFillImg.color = Color.yellow;
+        }
+        else if (shieldPercentage < 0.2f && shieldPercentage > 0)
+        {
+            shieldBarFillImg.color = Color.red;
+        }
+        else
+        {
+            shieldBarFill.SetActive(false);
+        }
     }
 }

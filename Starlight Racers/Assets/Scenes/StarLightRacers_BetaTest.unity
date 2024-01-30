@@ -2721,6 +2721,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 18357945}
   laserAmmoText: {fileID: 1935210984}
+  shieldBarFill: {fileID: 1484060874}
+  shieldBarFillImg: {fileID: 1726697157}
   shieldBar: {fileID: 1484060876}
   spacejet: {fileID: 1101817270}
 --- !u!1 &937053242
@@ -5110,7 +5112,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027345474}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.03651213, y: 0.000000004701602, z: -1.7178003e-10, w: 0.99933326}
+  m_LocalRotation: {x: 0.036512088, y: -0.000000010914213, z: 3.9876658e-10, w: 0.99933326}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
