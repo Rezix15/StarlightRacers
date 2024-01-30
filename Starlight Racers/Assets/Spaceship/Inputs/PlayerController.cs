@@ -74,12 +74,12 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Boost"",
-                    ""type"": ""Button"",
-                    ""id"": ""dc2b2a22-ddcb-49a1-9657-c208ab9dac05"",
-                    ""expectedControlType"": ""Button"",
+                    ""type"": ""Value"",
+                    ""id"": ""c88b3b3e-63c8-4915-9331-b3a9655d1546"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -283,7 +283,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a5542619-e13d-4106-8633-53cf199f0f1e"",
+                    ""id"": ""2fc1e0ea-5e66-44bb-8cf4-9bd153b138c6"",
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -294,8 +294,8 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c6611f2d-55f8-4d25-ad3b-283e8180f6aa"",
-                    ""path"": ""Space"",
+                    ""id"": ""c98196a1-12ea-4716-b4ea-c250ac06a77f"",
+                    ""path"": ""<Keyboard>/Space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
