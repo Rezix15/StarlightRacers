@@ -2725,6 +2725,7 @@ MonoBehaviour:
   shieldBarFillImg: {fileID: 1726697157}
   shieldBar: {fileID: 1484060876}
   spacejet: {fileID: 1101817270}
+  raceCountText: {fileID: 1504995312}
 --- !u!1 &937053242
 GameObject:
   m_ObjectHideFlags: 0
@@ -5112,7 +5113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027345474}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.036512088, y: -0.000000010914213, z: 3.9876658e-10, w: 0.99933326}
+  m_LocalRotation: {x: 0.03651213, y: 0.000000004701602, z: -1.7178003e-10, w: 0.99933326}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5303,7 +5304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 94169628061752398, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 94169628061752398, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_TagString

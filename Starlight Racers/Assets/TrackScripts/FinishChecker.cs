@@ -4,16 +4,18 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Barracuda;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FinishChecker : MonoBehaviour
 {
     public TextMeshProUGUI countdownText;
     public TextMeshProUGUI finishTimer;
-    
     private float playerFinishTime;
     private string playerFinishTimeText;
 
     private Spacejet player;
+
+    private RaceManager RaceManager;
     
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,7 @@ public class FinishChecker : MonoBehaviour
 
         var finishTimerObj = GameObject.FindGameObjectWithTag("FinishTimer");
         finishTimer = finishTimerObj.GetComponent<TextMeshProUGUI>();
+
     }
 
     // Update is called once per frame
@@ -60,6 +63,15 @@ public class FinishChecker : MonoBehaviour
 
             finishTimer.text = playerFinishTimeText;
             finishTimer.gameObject.SetActive(true);
+            
+            if (MenuManager.RaceCount < 3)
+            {
+                MenuManager.RaceCount++;
+                SceneManager.LoadScene("StarLightRacers_BetaTest");
+            }
+            
+            
+            
         }
     }
 
@@ -70,4 +82,6 @@ public class FinishChecker : MonoBehaviour
         yield return new WaitForSeconds(1);
         countdownText.gameObject.SetActive(false);
     }
+    
+    
 }

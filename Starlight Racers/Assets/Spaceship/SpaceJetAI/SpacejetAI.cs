@@ -82,6 +82,13 @@ public class SpacejetAI : MonoBehaviour
         spaceJetAgent = new NavMeshAgent();
         spaceJetAgent = gameObject.GetComponent<NavMeshAgent>();
 
+        if (spaceJetAgent != null)
+        {
+            
+        }
+        
+        spaceJetAgent.enabled = false;
+
         currentTrack = FindObjectOfType<TrackGen>();
         currentTrackCheckpoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
 

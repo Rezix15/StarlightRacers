@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -35,6 +36,8 @@ public class RaceManager : MonoBehaviour
 
     public GameObject absorberPrefab;
     public GameObject spaceJetBeta;
+
+    private int RaceCount;
 
     private void Awake()
     {

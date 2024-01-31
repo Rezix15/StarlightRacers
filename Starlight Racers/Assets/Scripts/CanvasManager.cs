@@ -25,18 +25,22 @@ public class CanvasManager : MonoBehaviour
 
     public Spacejet spacejet;
     
+    public TextMeshProUGUI raceCountText;
+    
     // Start is called before the first frame update
     void Start()
     {
-        timerText.text = "00 : 00";
+        //timerText.text = "00 : 00";
         spacejet = spacejet.GetComponent<Spacejet>();
         RaceManager.GameStarted += StartTimer;
-        
-        timerText.gameObject.SetActive(false);
-        laserAmmoText.gameObject.SetActive(false);
+
+        timerText.text = "";
+        laserAmmoText.text = "";
 
         playerShieldStatMax = MenuManager.currentSpaceJet.shield;
         shieldBar.maxValue = playerShieldStatMax;
+        
+        raceCountText.text = MenuManager.RaceCount.ToString() + " / 3";
 
     }
 
@@ -45,8 +49,8 @@ public class CanvasManager : MonoBehaviour
     {
         canStart = true;
         
-        timerText.gameObject.SetActive(true);
-        laserAmmoText.gameObject.SetActive(true);
+        //timerText.gameObject.SetActive(true);
+        //laserAmmoText.gameObject.SetActive(true);
     }
     // Update is called once per frame
     void Update()

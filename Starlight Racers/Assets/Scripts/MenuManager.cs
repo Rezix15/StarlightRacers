@@ -31,6 +31,8 @@ public class MenuManager : MonoBehaviour
 
     public TextMeshProUGUI spaceJetNameText;
 
+    public static int RaceCount;
+
     public GameObject speedStat;
     public GameObject shieldStat;
     public GameObject shieldRateStat;
@@ -54,6 +56,8 @@ public class MenuManager : MonoBehaviour
     public GameObject prefabSpaceJetHolder;
 
     private GameObject[] prefabSpaceJets;
+
+    private RaceManager RaceManager;
 
     private void Awake()
     {
@@ -102,6 +106,7 @@ public class MenuManager : MonoBehaviour
         var childCount = prefabSpaceJetHolder.transform.childCount;
 
         prefabSpaceJets = new GameObject[childCount];
+        
 
         for (int i = 0; i < childCount; i++)
         {
@@ -132,6 +137,8 @@ public class MenuManager : MonoBehaviour
             hasBeenPressed = true;
         }
     }
+    
+    
 
     public void HoverButton(int id)
     {
@@ -182,6 +189,7 @@ public class MenuManager : MonoBehaviour
     public void OnSelectVehicle()
     {
         //ToggleMenu(3);
+        RaceCount = 1;
         SceneManager.LoadScene("StarLightRacers_BetaTest");
     }
 
