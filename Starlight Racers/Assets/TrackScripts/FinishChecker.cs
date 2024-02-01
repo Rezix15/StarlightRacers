@@ -67,7 +67,7 @@ public class FinishChecker : MonoBehaviour
             if (MenuManager.RaceCount < 3)
             {
                 MenuManager.RaceCount++;
-                SceneManager.LoadScene("StarLightRacers_BetaTest");
+                SceneManager.LoadScene("IntermissionScene");
             }
             
             
