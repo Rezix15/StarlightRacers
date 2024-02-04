@@ -31,6 +31,5 @@ public class ComponentObj : ScriptableObject
     public Sprite icon;
     // public string textDescription;
     public float statModifierVal;
-    public Modifier statModifier;
 
 }

@@ -11,8 +11,6 @@ public class ComponentDisplay : MonoBehaviour
     public Image componentIcon;
     public TextMeshProUGUI skillDesc;
 
-    private ComponentObj currentComponent;
-
     public ComponentObj components;
     // Start is called before the first frame update
     void Start()

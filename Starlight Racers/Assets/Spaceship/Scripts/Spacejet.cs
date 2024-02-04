@@ -66,7 +66,8 @@ public class Spacejet : MonoBehaviour
     private bool shieldBoostPressed; //checks the input for the shieldBoost
     [SerializeField] private float finishTime = 0; //player finish time
     private bool hasFinished;
-    
+
+    private Modifier componentModifier;
     private void Awake()
     {
         Controller = new PlayerController();
@@ -111,6 +112,12 @@ public class Spacejet : MonoBehaviour
     void Start()
     {
         InitializeStats();
+        
+        if (IntermissionMenu.currentComponent != null)
+        {
+            UpgradeComponents();
+        }
+        
         rb = gameObject.GetComponent<Rigidbody>();
         isVulnerable = false;
         timer = 0; //set our timer to 0
@@ -130,6 +137,7 @@ public class Spacejet : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("CurrentSpeedStat: " + speed.trueValue);
         //If the current Laser Ammo is below the max, start a timer for every 10 seconds to refill ammo
         if (laserAmmo < laserAmmoMax)
         {
@@ -178,13 +186,13 @@ public class Spacejet : MonoBehaviour
         //If the jet is currently accelerating then allow user movement and update each second.
         if (isAccelerating && forwardInput > 0)
         {
-            rb.AddForce(Vector3.Lerp(Vector3.zero,(transform.forward * speed.baseValue), Time.deltaTime * thrust));
+            rb.AddForce(Vector3.Lerp(Vector3.zero,(transform.forward * speed.trueValue), Time.deltaTime * thrust));
         }
         
         //If the user is still pressing the acceleration button but also holding the stick in the negative direction, reverse:
         else if (isAccelerating && forwardInput < 0)
         {
-            rb.AddForce(Vector3.Lerp(Vector3.zero,(-transform.forward * speed.baseValue), Time.deltaTime * thrust));
+            rb.AddForce(Vector3.Lerp(Vector3.zero,(-transform.forward * speed.trueValue), Time.deltaTime * thrust));
         }
         
         //var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
@@ -216,7 +224,7 @@ public class Spacejet : MonoBehaviour
         
         if (currentShieldStat > 0 && shieldBoostPressed)
         {
-            rb.AddForce(transform.forward * (2.5f * speed.baseValue), ForceMode.Force);
+            rb.AddForce(transform.forward * (2.5f * speed.trueValue), ForceMode.Force);
             currentShieldStat-= 0.4f;
 
             if (currentShieldStat <= 0 && boostTimer <= 5f)
@@ -232,6 +240,37 @@ public class Spacejet : MonoBehaviour
         else
         {
             boostTimer = 0;
+        }
+    }
+
+    private void UpgradeComponents()
+    {
+        componentModifier = new Modifier(IntermissionMenu.currentComponent.statModifierVal);
+
+        switch (IntermissionMenu.currentComponent.targetStat)
+        {
+            case ComponentObj.StatSkillType.Speed:
+            {
+                speed.AddModifier(componentModifier);
+                break;
+            }
+
+            case ComponentObj.StatSkillType.ShieldRate:
+            {
+                shieldRate.AddModifier(componentModifier);
+                break;
+            }
+
+            case ComponentObj.StatSkillType.Shield:
+            {
+                shieldMax.AddModifier(componentModifier);
+                break;
+            }
+
+            default:
+            {
+                break;
+            }
         }
     }
     
@@ -266,7 +305,7 @@ public class Spacejet : MonoBehaviour
     {
         isBoosting = true;
         
-        rb.AddForce(transform.forward * (1.5f * speed.baseValue), ForceMode.Impulse);
+        rb.AddForce(transform.forward * (1.5f * speed.trueValue), ForceMode.Impulse);
         
         yield return new WaitForSeconds(2f);
         

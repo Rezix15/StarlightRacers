@@ -7,11 +7,15 @@ using UnityEngine.UI;
 
 public class IntermissionMenu : MonoBehaviour
 {
+    public static ComponentObj currentComponent;
+
+    public ComponentObj[] components;
     
     // Start is called before the first frame update
     void Start()
     {
         
+        currentComponent = components[0];
     }
 
     // Update is called once per frame

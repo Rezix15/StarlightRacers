@@ -13,13 +13,12 @@ public class Stat
     public float baseValue;
     private readonly List<Modifier> modifiers;
 
+    public float trueValue => CalculateFinalValue();
 
     public Stat(float value)
     {
         baseValue = value;
         modifiers = new List<Modifier>();
-        
-        
     }
 
     public float GetValue()
