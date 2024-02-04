@@ -11,13 +11,13 @@ using UnityEngine.InputSystem;
 public class Stat
 {
     public float baseValue;
-    private readonly List<float> modifiers;
+    private readonly List<Modifier> modifiers;
 
 
     public Stat(float value)
     {
-        this.baseValue = value;
-        modifiers = new List<float>();
+        baseValue = value;
+        modifiers = new List<Modifier>();
     }
 
     public float GetValue()
@@ -30,14 +30,26 @@ public class Stat
         baseValue = value;
     }
 
-    public void AddModifier(float modifierVal)
+    private float CalculateFinalValue()
     {
-        modifiers.Add(modifierVal);
+        float finalValue = baseValue;
+
+        for (int i = 0; i < modifiers.Count; i++)
+        {
+            finalValue += modifiers[i].value;
+        }
+
+        return (float)Math.Round(finalValue, 4);
     }
 
-    public void RemoveModifier(float modifierVal)
+    public void AddModifier(Modifier mod)
     {
-        modifiers.Remove(modifierVal);
+        modifiers.Add(mod);
+    }
+
+    public void RemoveModifier(Modifier mod)
+    {
+        modifiers.Remove(mod);
     }
 
 }
