@@ -7,12 +7,15 @@ using UnityEngine.InputSystem;
 
 // Inspired by https://forum.unity.com/threads/tutorial-character-stats-aka-attributes-system.504095/
 
+[System.Serializable]
 public class Modifier
 {
+
     public readonly float value;
 
     public Modifier(float modifierValue)
     {
         value = modifierValue;
+        
     }
 }

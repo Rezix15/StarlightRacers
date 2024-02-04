@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 213295783}
   - component: {fileID: 213295782}
   m_Layer: 5
-  m_Name: Rarity
+  m_Name: Type
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,8 +519,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1249,6 +1249,7 @@ GameObject:
   - component: {fileID: 1279575096}
   - component: {fileID: 1279575098}
   - component: {fileID: 1279575097}
+  - component: {fileID: 1279575099}
   m_Layer: 5
   m_Name: Upgrade1
   m_TagString: Untagged
@@ -1317,6 +1318,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1279575095}
   m_CullTransparentMesh: 1
+--- !u!114 &1279575099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279575095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 453313e4c0c84594baee00be09bd0470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentName: {fileID: 1521440434}
+  componentType: {fileID: 213295782}
+  componentIcon: {fileID: 1037371281}
+  skillDesc: {fileID: 439024574}
+  components: {fileID: 11400000, guid: bfc76416b80afe347b3e8bbbab4e0d53, type: 2}
 --- !u!1 &1282954880
 GameObject:
   m_ObjectHideFlags: 0

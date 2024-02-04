@@ -18,6 +18,8 @@ public class Stat
     {
         baseValue = value;
         modifiers = new List<Modifier>();
+        
+        
     }
 
     public float GetValue()
@@ -36,7 +38,7 @@ public class Stat
 
         for (int i = 0; i < modifiers.Count; i++)
         {
-            finalValue += modifiers[i].value;
+            finalValue *= 1 + modifiers[i].value;
         }
 
         return (float)Math.Round(finalValue, 4);
