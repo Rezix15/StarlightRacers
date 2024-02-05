@@ -11,6 +11,8 @@ public class ComponentObj : ScriptableObject
         Common,
         Uncommon,
         Rare,
+        Epic,
+        Legendary
     };
     
     //The corresponding stat the component is meant to affect

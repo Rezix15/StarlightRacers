@@ -137,7 +137,7 @@ public class Spacejet : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("CurrentSpeedStat: " + speed.trueValue);
+        //Debug.Log("CurrentSpeedStat: " + speed.trueValue);
         //If the current Laser Ammo is below the max, start a timer for every 10 seconds to refill ammo
         if (laserAmmo < laserAmmoMax)
         {

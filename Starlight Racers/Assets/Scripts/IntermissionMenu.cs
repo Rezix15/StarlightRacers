@@ -10,18 +10,46 @@ public class IntermissionMenu : MonoBehaviour
     public static ComponentObj currentComponent;
 
     public ComponentObj[] components;
+
+    public ComponentObj[] componentsCards;
+    
+    public TextMeshProUGUI[] componentNames;
+    public TextMeshProUGUI[] componentTypes;
+    public Image[] componentIcons;
+    public TextMeshProUGUI[] skillDescs;
+
+    private int randIndex;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        componentsCards = new ComponentObj[3];
+        RollComponents();
         currentComponent = components[0];
+    }
+
+    private void ComponentDisplay(int index)
+    {
+        componentNames[index].text = componentsCards[index].name;
+        componentTypes[index].text = componentsCards[index].componentRarity.ToString();
+        componentIcons[index].sprite = componentsCards[index].icon;
+        skillDescs[index].text = "Boost vehicle " + componentsCards[index].targetStat.ToString().ToLower() + " by " + (componentsCards[index].statModifierVal * 100) +"%";
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void RollComponents()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            randIndex = Random.Range(0, components.Length);
+            componentsCards[i] = components[randIndex];
+            ComponentDisplay(i);
+        }
     }
 
     public void ContinueSelected()
