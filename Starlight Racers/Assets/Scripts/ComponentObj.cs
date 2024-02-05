@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "Component", menuName = "ComponentSkill")]
-public class ComponentObj : ScriptableObject
+public class ComponentObj
 {
     public enum Rarity
     {
@@ -34,4 +33,12 @@ public class ComponentObj : ScriptableObject
     // public string textDescription;
     public float statModifierVal;
 
+    public ComponentObj(string name, Rarity componentRarity, StatSkillType targetStat, Sprite icon, float statModifierVal)
+    {
+        this.name = name;
+        this.componentRarity = componentRarity;
+        this.targetStat = targetStat;
+        this.icon = icon;
+        this.statModifierVal = statModifierVal;
+    }
 }
