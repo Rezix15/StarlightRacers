@@ -153,5 +153,6 @@ public class IntermissionMenu : MonoBehaviour
     public void ContinueSelected()
     {
         SceneManager.LoadScene("StarLightRacers_BetaTest");
+        MenuManager.componentBoosts.Add(componentsCards[0]);
     }
 }

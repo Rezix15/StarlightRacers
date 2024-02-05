@@ -32,6 +32,8 @@ public class MenuManager : MonoBehaviour
     public TextMeshProUGUI spaceJetNameText;
 
     public static int RaceCount;
+    
+    public static List<ComponentObj> componentBoosts;
 
     public GameObject speedStat;
     public GameObject shieldStat;
@@ -106,6 +108,9 @@ public class MenuManager : MonoBehaviour
         var childCount = prefabSpaceJetHolder.transform.childCount;
 
         prefabSpaceJets = new GameObject[childCount];
+
+        //The lists that stores the amount of component boosts that the player has
+        componentBoosts = new List<ComponentObj>();
         
 
         for (int i = 0; i < childCount; i++)

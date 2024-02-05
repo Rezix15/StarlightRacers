@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class Spacejet : MonoBehaviour
 {
-    private float thrust;
+    private Stat thrust;
     private float grip;
     // private float spaceJetSpeed;
     // private float spaceJetShieldRate;
@@ -117,7 +117,7 @@ public class Spacejet : MonoBehaviour
     //Initialize the stats of the spaceJet using the current vehicle that was chosen in the menu.
     private void InitializeStats()
     {
-        thrust = MenuManager.currentSpaceJet.thrust;
+        thrust = new Stat(MenuManager.currentSpaceJet.thrust);
         grip = MenuManager.currentSpaceJet.grip;
         speed = new Stat(MenuManager.currentSpaceJet.speed);
         shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
@@ -127,7 +127,6 @@ public class Spacejet : MonoBehaviour
     
     void Start()
     {
-        
         rb = gameObject.GetComponent<Rigidbody>();
         isVulnerable = false;
         timer = 0; //set our timer to 0
@@ -195,13 +194,13 @@ public class Spacejet : MonoBehaviour
         //If the jet is currently accelerating then allow user movement and update each second.
         if (isAccelerating && forwardInput > 0)
         {
-            rb.AddForce(Vector3.Lerp(Vector3.zero,(transform.forward * speed.trueValue), Time.deltaTime * thrust));
+            rb.AddForce(Vector3.Lerp(Vector3.zero,(transform.forward * speed.trueValue), Time.deltaTime * thrust.trueValue));
         }
         
         //If the user is still pressing the acceleration button but also holding the stick in the negative direction, reverse:
         else if (isAccelerating && forwardInput < 0)
         {
-            rb.AddForce(Vector3.Lerp(Vector3.zero,(-transform.forward * speed.trueValue), Time.deltaTime * thrust));
+            rb.AddForce(Vector3.Lerp(Vector3.zero,(-transform.forward * speed.trueValue), Time.deltaTime * thrust.trueValue));
         }
         
         //var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
@@ -256,31 +255,60 @@ public class Spacejet : MonoBehaviour
 
     private void UpgradeComponents()
     {
-        componentModifier = new Modifier(IntermissionMenu.currentComponent.statModifierVal);
-
-        switch (IntermissionMenu.currentComponent.targetStat)
+        if (MenuManager.componentBoosts != null)
         {
-            case ComponentObj.StatSkillType.Speed:
+            foreach (var componentBoost in MenuManager.componentBoosts)
             {
-                speed.AddModifier(componentModifier);
-                break;
-            }
+                componentModifier = new Modifier(componentBoost.statModifierVal);
+                
+                Debug.Log("Components Count: " + MenuManager.componentBoosts.Count);
+                Debug.Log("Component Name: " + componentBoost.name);
+                Debug.Log("Component TargetedStat: " + componentBoost.targetStat);
+                Debug.Log("Components ModifierVal: " + componentBoost.statModifierVal);
+                
+                switch (componentBoost.targetStat)
+                {
+                    case ComponentObj.StatSkillType.Speed:
+                    {
+                        speed.AddModifier(componentModifier);
+                        break;
+                    }
 
-            case ComponentObj.StatSkillType.ShieldRate:
-            {
-                shieldRate.AddModifier(componentModifier);
-                break;
-            }
+                    case ComponentObj.StatSkillType.ShieldRate:
+                    {
+                        shieldRate.AddModifier(componentModifier);
+                        break;
+                    }
+            
+                    case ComponentObj.StatSkillType.Shield:
+                    {
+                        shieldMax.AddModifier(componentModifier);
+                        break;
+                    }
 
-            case ComponentObj.StatSkillType.Shield:
-            {
-                shieldMax.AddModifier(componentModifier);
-                break;
-            }
+                    case ComponentObj.StatSkillType.Grip:
+                    {
+                        break;
+                    }
 
-            default:
-            {
-                break;
+                    case ComponentObj.StatSkillType.Thrust:
+                    {
+                        thrust.AddModifier(componentModifier);
+                        break;
+                    }
+
+                    case ComponentObj.StatSkillType.LaserDamage:
+                    {
+                        laserDamage.AddModifier(componentModifier);
+                        break;
+                    }
+            
+
+                    default:
+                    {
+                        break;
+                    }
+                }
             }
         }
     }
