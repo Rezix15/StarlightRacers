@@ -35,11 +35,15 @@ public class Stat
     {
         float finalValue = baseValue;
 
-        for (int i = 0; i < modifiers.Count; i++)
+        if (modifiers != null)
         {
-            finalValue *= 1 + modifiers[i].value;
-        }
+            for (int i = 0; i < modifiers.Count; i++)
+            {
+                finalValue *= 1 + modifiers[i].value;
+            }
 
+        }
+        
         return (float)Math.Round(finalValue, 4);
     }
 

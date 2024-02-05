@@ -9,16 +9,24 @@ public class Spacejet : MonoBehaviour
 {
     private float thrust;
     private float grip;
+    // private float spaceJetSpeed;
+    // private float spaceJetShieldRate;
+    // private float spaceJetShieldMax;
+    // private float spaceJetLaserDmg;
 
     public SpaceJetStats spaceJetStat;
     
-    private Stat speed = new Stat(0); //Speed
+    // = new Stat(0)
+
+    [SerializeField] private Stat speed;
     
-    private Stat shieldMax = new Stat(0); //Health
+    public Stat shieldMax; //Health
     
-    private Stat laserDamage = new Stat(0); //Defense
+    [SerializeField]
+    private Stat laserDamage; //Defense
     
-    private Stat shieldRate = new Stat(0); //Defense Stat
+    [SerializeField]
+    private Stat shieldRate; //Defense Stat
 
     private float lerpedSpeed = 4.0f;
     
@@ -74,6 +82,13 @@ public class Spacejet : MonoBehaviour
         
         Debug.Log("Controller: " + Controller);
         
+        InitializeStats();
+        
+        if (IntermissionMenu.currentComponent != null)
+        {
+            UpgradeComponents();
+        }
+        
         Controller.Player.Accelerate.performed += _ => isAccelerating = true;
         Controller.Player.Accelerate.canceled += _ => isAccelerating = false;
 
@@ -104,19 +119,14 @@ public class Spacejet : MonoBehaviour
     {
         thrust = MenuManager.currentSpaceJet.thrust;
         grip = MenuManager.currentSpaceJet.grip;
-        speed.baseValue = MenuManager.currentSpaceJet.speed;
-        shieldMax.baseValue = MenuManager.currentSpaceJet.shield;
-        shieldRate.baseValue = MenuManager.currentSpaceJet.shieldRate;
-        laserDamage.baseValue = MenuManager.currentSpaceJet.laserDamage;
+        speed = new Stat(MenuManager.currentSpaceJet.speed);
+        shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
+        shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
+        laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
     }
+    
     void Start()
     {
-        InitializeStats();
-        
-        if (IntermissionMenu.currentComponent != null)
-        {
-            UpgradeComponents();
-        }
         
         rb = gameObject.GetComponent<Rigidbody>();
         isVulnerable = false;
@@ -131,13 +141,12 @@ public class Spacejet : MonoBehaviour
     {
         canMove = true;
         laserAmmo = laserAmmoMax; //set laserAmmo to the max value
-        currentShieldStat = shieldMax.GetValue(); //set the HP value to the max value
+        currentShieldStat = shieldMax.trueValue; //set the HP value to the max value
         takeDamage = false;
     }
 
     void Update()
     {
-        //Debug.Log("CurrentSpeedStat: " + speed.trueValue);
         //If the current Laser Ammo is below the max, start a timer for every 10 seconds to refill ammo
         if (laserAmmo < laserAmmoMax)
         {
@@ -225,7 +234,9 @@ public class Spacejet : MonoBehaviour
         if (currentShieldStat > 0 && shieldBoostPressed)
         {
             rb.AddForce(transform.forward * (2.5f * speed.trueValue), ForceMode.Force);
-            currentShieldStat-= 0.4f;
+            //currentShieldStat-= (1 - (0.4f * shieldRate.trueValue));
+
+            currentShieldStat -= 0.4f * (1 - (shieldRate.trueValue / 100));
 
             if (currentShieldStat <= 0 && boostTimer <= 5f)
             {
@@ -330,7 +341,7 @@ public class Spacejet : MonoBehaviour
         //If user makes contact with a laser, it should take a certain amount of damage
         if (other.gameObject.CompareTag("Laser") && takeDamage == false)
         {
-            currentShieldStat -= 5;
+            currentShieldStat -= 5 * (1 - (shieldRate.trueValue / 100));
             takeDamage = true;
             StartCoroutine(Damaged());
         }

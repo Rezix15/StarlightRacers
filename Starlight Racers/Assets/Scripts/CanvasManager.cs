@@ -36,11 +36,13 @@ public class CanvasManager : MonoBehaviour
 
         timerText.text = "";
         laserAmmoText.text = "";
-
-        playerShieldStatMax = MenuManager.currentSpaceJet.shield;
+        
+        playerShieldStatMax = spacejet.shieldMax.trueValue;
         shieldBar.maxValue = playerShieldStatMax;
         
         raceCountText.text = MenuManager.RaceCount.ToString() + " / 3";
+        
+        Debug.Log("ShieldMaxVal is: " + playerShieldStatMax);
 
     }
 
