@@ -65,7 +65,13 @@ public class TrackGen : MonoBehaviour
     //private int count = 0;
 
     public int reachLimit;
-    
+
+    public int junctionTrackCountLimit;
+    int junctionTrackCount = 0;
+
+    private int trackCount = 0;
+
+    private bool stopGeneration = false;
     
     private void Awake()
     {
@@ -150,281 +156,390 @@ public class TrackGen : MonoBehaviour
         
         GenerateTrack(TrackType.Checkpoint, prevPosition, Quaternion.identity);
         
-        switch (trackType)
+        var shouldFinish = false;
+
+        trackCount++;
+
+
+        if (stopGeneration == false)
         {
-            case TrackType.StraightForward:
+            switch (trackType)
             {
-                upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, finishTrackObj};
-                
-                var curvedPositionOffsetX = scale * 0.34f;
-                var curvedPositionOffsetZ = scale * 1.2f;
-                initialPosition = new Vector3(0, 0, scaleFactor);
-                
-                newPosition = new Vector3(
-                    prevPosition.x + initialPosition.x, 
-                    prevPosition.y + initialPosition.y, 
-                    prevPosition.z + initialPosition.z
-                );
+                case TrackType.StraightForward:
+                {
+                    upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, junctionTrackObj, finishTrackObj};
+                    
+                    //upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, finishTrackObj};
+                    
+                    var curvedPositionOffsetX = scale * 0.34f;
+                    var curvedPositionOffsetZ = scale * 1.2f;
+                    initialPosition = new Vector3(0, 0, scaleFactor);
+                    
+                    newPosition = new Vector3(
+                        prevPosition.x + initialPosition.x, 
+                        prevPosition.y + initialPosition.y, 
+                        prevPosition.z + initialPosition.z
+                    );
 
-                var boosterPosition = new Vector3(
-                    newPosition.x + boosterPos.x,
-                    newPosition.y + boosterPos.y,
-                    newPosition.z + boosterPos.z
-                );
-                
-                randIndex = Random.Range(0, 3);
-                
-                //If the newPosition track has reached the 9,000 barrier on the z axis, allow the possible generation of
-                //the finish Track. If the position exceeds 15,000 force generation of finishTrack.
-                if ((newPosition.z >= (reachLimit * 0.9f) && newPosition.z < reachLimit) || (Mathf.Abs(newPosition.x) >= (reachLimit * 0.9f) && Mathf.Abs(newPosition.x) < reachLimit))
-                {
-                    randIndex = Random.Range(0, 4);
-                }
-                else if(newPosition.z >= reachLimit || Mathf.Abs(newPosition.x) >= reachLimit)
-                {
-                    randIndex = 3;
-                }
-                
-                switch (randIndex)
-                {
-                    case 0:
+                    var boosterPosition = new Vector3(
+                        newPosition.x + boosterPos.x,
+                        newPosition.y + boosterPos.y,
+                        newPosition.z + boosterPos.z
+                    );
+                    
+
+
+                    if (junctionTrackCount >= junctionTrackCountLimit)
                     {
-                        Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
-                        GenerateNeighbours(TrackType.StraightForward, newPosition);
-
-                        if (boosterRandomness == 1 || boosterRandomness == 2)
-                        {
-                            GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
-                        }
-                        break;
+                        randIndex = Random.Range(0, 3);
                     }
-
-                    case 1:
+                    else
                     {
-                        newPosition = new Vector3(
-                            (prevPosition.x + initialPosition.x) - curvedPositionOffsetX, 
-                            prevPosition.y + initialPosition.y, 
-                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
-                        );
-                        
-                        Instantiate(upNeighbours[1], newPosition, Quaternion.identity, transform);
-                        GenerateNeighbours(TrackType.UpCurvedLeft, newPosition);
-                        break;
-                    }
-
-                    case 2:
-                    {
-                        newPosition = new Vector3(
-                            (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
-                            prevPosition.y + initialPosition.y, 
-                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
-                        );
-                        
-                        Instantiate(upNeighbours[2], newPosition, Quaternion.identity, transform);
-                        GenerateNeighbours(TrackType.UpCurvedRight, newPosition);
-                        break;
+                        randIndex = Random.Range(0, 4);
                     }
                     
-                    //Finish Track generation
-                    case 3:
+                    //If the newPosition track has reached the 9,000 barrier on the z axis, allow the possible generation of
+                    //the finish Track. If the position exceeds 15,000 force generation of finishTrack.
+                    if ((newPosition.z >= (reachLimit * 0.9f) && newPosition.z < reachLimit) || (Mathf.Abs(newPosition.x) >= (reachLimit * 0.9f) && Mathf.Abs(newPosition.x) < reachLimit))
                     {
-                        Instantiate(upNeighbours[3], newPosition, Quaternion.identity, transform);
-                        finishPos = upNeighbours[3].transform.position;
-                        GenerateNavMesh();
-                        break;
+                        randIndex = Random.Range(0, 4);
+                        shouldFinish = true;
                     }
-                }
-                
-                break;
-            }
-            
-            case TrackType.StraightRight:
-            {
-                rightNeighbours = new GameObject[] {straightRightTrackObj, downCurvedRightTrackObj};
-                
-                randIndex = Random.Range(0, 2);
-                
-                initialPosition = new Vector3(scaleFactor, 0, 0);
-                
-                newPosition = new Vector3(
-                    prevPosition.x + initialPosition.x, 
-                    prevPosition.y + initialPosition.y, 
-                    prevPosition.z + initialPosition.z
-                );
-                
-                var boosterPosition = new Vector3(
-                    newPosition.x + boosterPos.x,
-                    newPosition.y + boosterPos.y,
-                    newPosition.z + boosterPos.z
-                );
-                
-                var curvedPositionOffsetX = scale * 1.2f;
-                var curvedPositionOffsetZ = scale * 0.34f;
-                
-                
-                switch (randIndex)
-                {
-                    case 0:
+                    else if(newPosition.z >= reachLimit || Mathf.Abs(newPosition.x) >= reachLimit)
                     {
-                        Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
-                        GenerateNeighbours(TrackType.StraightRight, newPosition);
-                        
-                        if (boosterRandomness == 1 || boosterRandomness == 2)
-                        {
-                            GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
-                        }
-                        
-                        break;
-                    }
-
-                    case 1:
-                    {
-                        newPosition = new Vector3(
-                            (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
-                            prevPosition.y + initialPosition.y, 
-                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
-                        );
-                        
-                        Instantiate(rightNeighbours[1], newPosition, Quaternion.identity, transform);
-                        GenerateNeighbours(TrackType.DownCurvedRight, newPosition);
-                        break;
-                    }
-                }
-                break;
-            }
-
-            case TrackType.StraightLeft:
-            {
-                leftNeighbours = new GameObject[] { straightLeftTrackObj, downCurvedLeftTrackObj };
-                
-                randIndex = Random.Range(0, 2);
-                
-                initialPosition = new Vector3(-scaleFactor, 0, 0);
-                
-                var curvedPositionOffsetX = scale * 1.2f;
-                var curvedPositionOffsetZ = scale * 0.34f;
-                
-                newPosition = new Vector3(
-                    prevPosition.x + initialPosition.x, 
-                    prevPosition.y + initialPosition.y, 
-                    prevPosition.z + initialPosition.z
-                );
-                
-                var boosterPosition = new Vector3(
-                    newPosition.x + boosterPos.x,
-                    newPosition.y + boosterPos.y,
-                    newPosition.z + boosterPos.z
-                );
-                
-                switch (randIndex)
-                {
-                    case 0:
-                    {
-                        Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
-                        GenerateNeighbours(TrackType.StraightLeft, newPosition);
-                        
-                        if (boosterRandomness == 1 || boosterRandomness == 2)
-                        {
-                            GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
-                        }
-                        
-                        break;
-                    }
-
-                    case 1:
-                    {
-                        newPosition = new Vector3(
-                            (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
-                            prevPosition.y + initialPosition.y, 
-                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
-                        );
-                        
-                        Instantiate(leftNeighbours[1], newPosition, Quaternion.identity, transform);
-                        GenerateNeighbours(TrackType.DownCurvedLeft, newPosition);
-                        break;
+                        randIndex = 3;
+                        shouldFinish = true;
                     }
                     
-                    default:
-                        break;
+                    switch (randIndex)
+                    {
+                        case 0:
+                        {
+                            Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.StraightForward, newPosition);
+
+                            if (boosterRandomness == 1 || boosterRandomness == 2)
+                            {
+                                GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
+                            }
+                            break;
+                        }
+
+                        case 1:
+                        {
+                            newPosition = new Vector3(
+                                (prevPosition.x + initialPosition.x) - curvedPositionOffsetX, 
+                                prevPosition.y + initialPosition.y, 
+                                (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                            );
+                            
+                            Instantiate(upNeighbours[1], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.UpCurvedLeft, newPosition);
+                            break;
+                        }
+
+                        case 2:
+                        {
+                            newPosition = new Vector3(
+                                (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
+                                prevPosition.y + initialPosition.y, 
+                                (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                            );
+                            
+                            Instantiate(upNeighbours[2], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.UpCurvedRight, newPosition);
+                            break;
+                        }
+                        
+                        //Finish Track/JunctionTrack generation
+                        case 3:
+                        {
+                            if (junctionTrackCount < junctionTrackCountLimit && (trackCount % 4 == 0 || trackCount % 4 == 1) && shouldFinish == false)
+                            {
+                                newPosition = new Vector3(
+                                    (prevPosition.x + initialPosition.x),
+                                    prevPosition.y + initialPosition.y, 
+                                    (prevPosition.z + 2 * initialPosition.z)
+                                );
+                            
+                                Instantiate(upNeighbours[3], newPosition, Quaternion.identity, transform);
+                                GenerateNeighbours(TrackType.JunctionTrack, newPosition);
+                                junctionTrackCount++;
+                            }
+                            else
+                            {
+                                //Finish Track
+                                Instantiate(upNeighbours[4], newPosition, Quaternion.identity, transform);
+                                finishPos = upNeighbours[4].transform.position;
+                                stopGeneration = true;
+                                GenerateNavMesh();
+                            }
+                            
+                            
+                            break;
+                            
+                        }
+                        
+                    }
+                    
+                    break;
                 }
                 
-                break;
-            }
+                case TrackType.StraightRight:
+                {
+                    rightNeighbours = new GameObject[] {straightRightTrackObj, downCurvedRightTrackObj};
+                    
+                    randIndex = Random.Range(0, 2);
+                    
+                    if (stopGeneration)
+                    {
+                        randIndex = 1000;
+                    }
 
-            case TrackType.UpCurvedLeft:
-            {
-                leftNeighbours = new GameObject[] { straightLeftTrackObj };
-                //downNeighbours = new GameObject[] { straightForwardTrackObj };
+                    
+                    initialPosition = new Vector3(scaleFactor, 0, 0);
+                    
+                    newPosition = new Vector3(
+                        prevPosition.x + initialPosition.x, 
+                        prevPosition.y + initialPosition.y, 
+                        prevPosition.z + initialPosition.z
+                    );
+                    
+                    var boosterPosition = new Vector3(
+                        newPosition.x + boosterPos.x,
+                        newPosition.y + boosterPos.y,
+                        newPosition.z + boosterPos.z
+                    );
+                    
+                    var curvedPositionOffsetX = scale * 1.2f;
+                    var curvedPositionOffsetZ = scale * 0.34f;
+                    
+                    
+                    switch (randIndex)
+                    {
+                        case 0:
+                        {
+                            Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.StraightRight, newPosition);
+                            
+                            if (boosterRandomness == 1 || boosterRandomness == 2)
+                            {
+                                GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
+                            }
+                            
+                            break;
+                        }
+
+                        case 1:
+                        {
+                            newPosition = new Vector3(
+                                (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
+                                prevPosition.y + initialPosition.y, 
+                                (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                            );
+                            
+                            Instantiate(rightNeighbours[1], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.DownCurvedRight, newPosition);
+                            break;
+                        }
+                    }
+                    break;
+                }
+
+                case TrackType.StraightLeft:
+                {
+                    leftNeighbours = new GameObject[] { straightLeftTrackObj, downCurvedLeftTrackObj };
+                    
+                    randIndex = Random.Range(0, 2);
+                    
+                    initialPosition = new Vector3(-scaleFactor, 0, 0);
+                    
+                    var curvedPositionOffsetX = scale * 1.2f;
+                    var curvedPositionOffsetZ = scale * 0.34f;
+                    
+                    newPosition = new Vector3(
+                        prevPosition.x + initialPosition.x, 
+                        prevPosition.y + initialPosition.y, 
+                        prevPosition.z + initialPosition.z
+                    );
+                    
+                    var boosterPosition = new Vector3(
+                        newPosition.x + boosterPos.x,
+                        newPosition.y + boosterPos.y,
+                        newPosition.z + boosterPos.z
+                    );
+                    
+                    switch (randIndex)
+                    {
+                        case 0:
+                        {
+                            Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.StraightLeft, newPosition);
+                            
+                            if (boosterRandomness == 1 || boosterRandomness == 2)
+                            {
+                                GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
+                            }
+                            
+                            break;
+                        }
+
+                        case 1:
+                        {
+                            newPosition = new Vector3(
+                                (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
+                                prevPosition.y + initialPosition.y, 
+                                (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                            );
+                            
+                            Instantiate(leftNeighbours[1], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.DownCurvedLeft, newPosition);
+                            break;
+                        }
+                        
+                        default:
+                            break;
+                    }
+                    
+                    break;
+                }
+
+                case TrackType.UpCurvedLeft:
+                {
+                    leftNeighbours = new GameObject[] { straightLeftTrackObj };
+                    //downNeighbours = new GameObject[] { straightForwardTrackObj };
+                    
+                    initialPosition = new Vector3(-(scale * 26.58f), 0, (scale * 16f));
+                    
+                    newPosition = new Vector3(
+                        prevPosition.x + initialPosition.x, 
+                        prevPosition.y + initialPosition.y, 
+                        prevPosition.z + initialPosition.z
+                    );
+                    
+                   
+                    Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
+                    GenerateNeighbours(TrackType.StraightLeft, newPosition);
+                    break;
+                }
                 
-                initialPosition = new Vector3(-(scale * 26.58f), 0, (scale * 16f));
+                case TrackType.UpCurvedRight:
+                {
+                    rightNeighbours = new GameObject[] { straightRightTrackObj };
+                    
+                    initialPosition = new Vector3((scale * 26.58f), 0, (scale * 16f));
+                    
+                    newPosition = new Vector3(
+                        prevPosition.x + initialPosition.x, 
+                        prevPosition.y + initialPosition.y, 
+                        prevPosition.z + initialPosition.z
+                    );
+                    
+                   
+                    Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
+                    GenerateNeighbours(TrackType.StraightRight, newPosition);
+                    
+                    break;
+                }
                 
-                newPosition = new Vector3(
-                    prevPosition.x + initialPosition.x, 
-                    prevPosition.y + initialPosition.y, 
-                    prevPosition.z + initialPosition.z
-                );
-                
+                case TrackType.DownCurvedLeft:
+                {
+                    upNeighbours = new GameObject[] { straightForwardTrackObj};
+                    
+                    initialPosition = new Vector3(-(scale * 16f), 0, (scale * 26.58f));
+                    
+                    
+                    newPosition = new Vector3(
+                        prevPosition.x + initialPosition.x, 
+                        prevPosition.y + initialPosition.y, 
+                        prevPosition.z + initialPosition.z
+                    );
+                    
                
-                Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
-                GenerateNeighbours(TrackType.StraightLeft, newPosition);
-                break;
-            }
-            
-            case TrackType.UpCurvedRight:
-            {
-                rightNeighbours = new GameObject[] { straightRightTrackObj };
+                    Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                    GenerateNeighbours(TrackType.StraightForward, newPosition);
+                    break;
+                }
                 
-                initialPosition = new Vector3((scale * 26.58f), 0, (scale * 16f));
-                
-                newPosition = new Vector3(
-                    prevPosition.x + initialPosition.x, 
-                    prevPosition.y + initialPosition.y, 
-                    prevPosition.z + initialPosition.z
-                );
-                
-               
-                Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
-                GenerateNeighbours(TrackType.StraightRight, newPosition);
-                
-                break;
-            }
-            
-            case TrackType.DownCurvedLeft:
-            {
-                upNeighbours = new GameObject[] { straightForwardTrackObj};
-                
-                initialPosition = new Vector3(-(scale * 16f), 0, (scale * 26.58f));
-                
-                
-                newPosition = new Vector3(
-                    prevPosition.x + initialPosition.x, 
-                    prevPosition.y + initialPosition.y, 
-                    prevPosition.z + initialPosition.z
-                );
-                
-           
-                Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
-                GenerateNeighbours(TrackType.StraightForward, newPosition);
-                break;
-            }
-            
-            case TrackType.DownCurvedRight:
-            {
-                upNeighbours = new GameObject[] { straightForwardTrackObj };
-                
-                initialPosition = new Vector3((scale * 16f), 0, (scale * 26.58f));
-                
-                
-                newPosition = new Vector3(
-                    prevPosition.x + initialPosition.x, 
-                    prevPosition.y + initialPosition.y, 
-                    prevPosition.z + initialPosition.z
-                );
-                
-             
-                Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
-                GenerateNeighbours(TrackType.StraightForward, newPosition);
-                break;
+                case TrackType.DownCurvedRight:
+                {
+                    upNeighbours = new GameObject[] { straightForwardTrackObj };
+                    
+                    initialPosition = new Vector3((scale * 16f), 0, (scale * 26.58f));
+                    
+                    
+                    newPosition = new Vector3(
+                        prevPosition.x + initialPosition.x, 
+                        prevPosition.y + initialPosition.y, 
+                        prevPosition.z + initialPosition.z
+                    );
+                    
+                 
+                    Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                    GenerateNeighbours(TrackType.StraightForward, newPosition);
+                    break;
+                    
+                }
+
+                case TrackType.JunctionTrack:
+                {
+                    upNeighbours = new GameObject[] { straightForwardTrackObj };
+                    leftNeighbours = new GameObject[] { straightLeftTrackObj };
+                    rightNeighbours = new GameObject[] { straightRightTrackObj };
+                    initialPosition = new Vector3(0, 0, (scaleFactor * 2));
+
+                    randIndex = Random.Range(0, 3);
+                    
+                    newPosition = new Vector3(
+                        prevPosition.x + initialPosition.x, 
+                        prevPosition.y + initialPosition.y, 
+                        prevPosition.z + initialPosition.z
+                    );
+
+                    switch (randIndex)
+                    {
+                        case 0:
+                        {
+                            Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.StraightForward, newPosition);
+                            break;
+                        }
+
+                        case 1:
+                        {
+                            initialPosition = new Vector3((-scaleFactor * 2), 0, 0);
+                    
+                            newPosition = new Vector3(
+                                prevPosition.x + initialPosition.x, 
+                                prevPosition.y + initialPosition.y, 
+                                prevPosition.z + initialPosition.z
+                            );
+                            
+                            Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.StraightLeft, newPosition);
+
+                            break;
+                        }
+
+                        case 2:
+                        {
+                            initialPosition = new Vector3((scaleFactor * 2), 0, 0);
+                    
+                            newPosition = new Vector3(
+                                prevPosition.x + initialPosition.x, 
+                                prevPosition.y + initialPosition.y, 
+                                prevPosition.z + initialPosition.z
+                            );
+
+                            Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.StraightRight, newPosition);
+                            break;
+                        }
+                    }
+                    
+                    break;
+                    
+                }
                 
             }
         }

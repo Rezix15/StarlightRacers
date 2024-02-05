@@ -3231,7 +3231,8 @@ MonoBehaviour:
   checkpointObj: {fileID: 679806092176451267, guid: 19a01f91abf2dd04fac6b3d137b51a33, type: 3}
   boosterObj: {fileID: 8363658589030094893, guid: 3c6fe119a25a4d14da5e4ef02de25281, type: 3}
   scale: 45
-  reachLimit: 10000
+  reachLimit: 30000
+  junctionTrackCountLimit: 1
 --- !u!4 &1225837805
 Transform:
   m_ObjectHideFlags: 0

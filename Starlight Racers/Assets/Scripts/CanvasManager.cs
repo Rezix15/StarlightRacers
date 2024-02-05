@@ -43,9 +43,6 @@ public class CanvasManager : MonoBehaviour
         shieldBar.maxValue = playerShieldStatMax;
         
         raceCountText.text = MenuManager.RaceCount.ToString() + " / 3";
-        
-        Debug.Log("ShieldMaxVal is: " + playerShieldStatMax);
-
     }
 
 
