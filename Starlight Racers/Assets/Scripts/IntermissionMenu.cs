@@ -25,7 +25,6 @@ public class IntermissionMenu : MonoBehaviour
     {
         componentsCards = new ComponentObj[3];
         RollComponents();
-        currentComponent = components[0];
     }
 
     private void ComponentDisplay(int index)
@@ -50,6 +49,8 @@ public class IntermissionMenu : MonoBehaviour
             componentsCards[i] = components[randIndex];
             ComponentDisplay(i);
         }
+        
+        currentComponent = componentsCards[0];
     }
 
     public void ContinueSelected()
