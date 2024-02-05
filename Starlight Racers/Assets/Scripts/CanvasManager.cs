@@ -26,6 +26,8 @@ public class CanvasManager : MonoBehaviour
     public Spacejet spacejet;
     
     public TextMeshProUGUI raceCountText;
+
+    public TextMeshProUGUI currentShieldText;
     
     // Start is called before the first frame update
     void Start()
@@ -83,6 +85,10 @@ public class CanvasManager : MonoBehaviour
         playerShieldStat = spacejet.GetCurrentShieldStat();
 
         shieldBar.value = playerShieldStat;
+
+        var shieldAsInt = (int)playerShieldStat;
+
+        currentShieldText.text = shieldAsInt.ToString();
         
         UpdateShieldUI();
     }
