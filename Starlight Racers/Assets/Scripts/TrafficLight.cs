@@ -11,6 +11,7 @@ public class TrafficLight : MonoBehaviour
     public Material offState;
 
     private MeshRenderer MeshRenderer;
+    
 
     private Material[] Materials;
 
@@ -18,33 +19,33 @@ public class TrafficLight : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MeshRenderer = gameObject.GetComponent<MeshRenderer>();
+        MeshRenderer = GetComponent<MeshRenderer>();
         Materials = new Material[MeshRenderer.materials.Length];
 
+        Debug.Log("Mat Count: " + Materials.Length);
         stateIndex = 0;
 
-        for (int i = 0; i < Materials.Length; i++)
-        {
-            MeshRenderer.material = MeshRenderer.materials[2];
-        }
+        Materials = MeshRenderer.materials;
+        MeshRenderer.materials = Materials;
 
-        Materials[0] = offState;
-        Materials[1] = stopState;
-        Materials[2] = waitState;
-        Materials[3] = goState;
+        StartCoroutine(TransitionState());
     }
 
     // Update is called once per frame
     void Update()
     {
-        StartCoroutine(TransitionState());
-        stateIndex++;
+       
     }
 
     IEnumerator TransitionState()
     {
-        ToggleState(stateIndex);
-        yield return new WaitForSeconds(20f);
+        while (true)
+        {
+            ToggleState(stateIndex);
+            yield return new WaitForSeconds(10f);
+            stateIndex++;
+            stateIndex %= MeshRenderer.materials.Length;
+        }
     }
 
     private void ToggleState(int state)
@@ -54,25 +55,28 @@ public class TrafficLight : MonoBehaviour
             //If state is green
             case 0:
             {
-                MeshRenderer.materials[0] = goState;
-                MeshRenderer.materials[2] = offState;
-                MeshRenderer.materials[3] = offState;
+                Materials[0] = goState;
+                Materials[2] = offState;
+                Materials[3] = offState;
+                MeshRenderer.materials = Materials;
                 break;
             }
             
             case 1:
             {
-                MeshRenderer.materials[0] = offState;
-                MeshRenderer.materials[2] = waitState;
-                MeshRenderer.materials[3] = offState;
+                Materials[0] = offState;
+                Materials[2] = waitState;
+                Materials[3] = offState;
+                MeshRenderer.materials = Materials;
                 break;
             }
             
             case 2:
             {
-                MeshRenderer.materials[0] = offState;
-                MeshRenderer.materials[2] = offState;
-                MeshRenderer.materials[3] = stopState;
+                Materials[0] = offState;
+                Materials[2] = offState;
+                Materials[3] = stopState;
+                MeshRenderer.materials = Materials;
                 break;
             }
 
