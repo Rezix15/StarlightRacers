@@ -3230,7 +3230,7 @@ MonoBehaviour:
   junctionTrackObj: {fileID: 7779213265408202954, guid: ca1f86f34f96e2a4b829ab7098c0bc20, type: 3}
   checkpointObj: {fileID: 679806092176451267, guid: 19a01f91abf2dd04fac6b3d137b51a33, type: 3}
   boosterObj: {fileID: 8363658589030094893, guid: 3c6fe119a25a4d14da5e4ef02de25281, type: 3}
-  scale: 45
+  scale: 55
   reachLimit: 30000
   junctionTrackCountLimit: 1
 --- !u!4 &1225837805
@@ -3279,6 +3279,63 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: a5f9d3c27c67b454c83f7a4ddf5cd96c, type: 2}
   m_BuildHeightMesh: 0
+--- !u!1001 &1228666644
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 577.0871
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 324.86322
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d04f76dc210af64428f36c484bd76291, type: 3}
+      propertyPath: m_Name
+      value: TrafficLight
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d04f76dc210af64428f36c484bd76291, type: 3}
 --- !u!1 &1310344857
 GameObject:
   m_ObjectHideFlags: 0
@@ -5550,3 +5607,4 @@ SceneRoots:
   - {fileID: 39811823}
   - {fileID: 534290367}
   - {fileID: 229109166}
+  - {fileID: 1228666644}

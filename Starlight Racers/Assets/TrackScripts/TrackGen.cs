@@ -155,8 +155,6 @@ public class TrackGen : MonoBehaviour
         Vector3 newPosition;
         
         GenerateTrack(TrackType.Checkpoint, prevPosition, Quaternion.identity);
-        
-        var shouldFinish = false;
 
         trackCount++;
 
@@ -189,26 +187,24 @@ public class TrackGen : MonoBehaviour
                     
 
 
-                    if (junctionTrackCount >= junctionTrackCountLimit)
-                    {
+                    // if (junctionTrackCount >= junctionTrackCountLimit)
+                    // {
+                    //     randIndex = Random.Range(0, 3);
+                    // }
+                    // else
+                    // {
                         randIndex = Random.Range(0, 3);
-                    }
-                    else
-                    {
-                        randIndex = Random.Range(0, 4);
-                    }
+                    //}
                     
                     //If the newPosition track has reached the 9,000 barrier on the z axis, allow the possible generation of
                     //the finish Track. If the position exceeds 15,000 force generation of finishTrack.
                     if ((newPosition.z >= (reachLimit * 0.9f) && newPosition.z < reachLimit) || (Mathf.Abs(newPosition.x) >= (reachLimit * 0.9f) && Mathf.Abs(newPosition.x) < reachLimit))
                     {
                         randIndex = Random.Range(0, 4);
-                        shouldFinish = true;
                     }
                     else if(newPosition.z >= reachLimit || Mathf.Abs(newPosition.x) >= reachLimit)
                     {
                         randIndex = 3;
-                        shouldFinish = true;
                     }
                     
                     switch (randIndex)
@@ -254,26 +250,26 @@ public class TrackGen : MonoBehaviour
                         //Finish Track/JunctionTrack generation
                         case 3:
                         {
-                            if (junctionTrackCount < junctionTrackCountLimit && (trackCount % 4 == 0 || trackCount % 4 == 1) && shouldFinish == false)
-                            {
-                                newPosition = new Vector3(
-                                    (prevPosition.x + initialPosition.x),
-                                    prevPosition.y + initialPosition.y, 
-                                    (prevPosition.z + 2 * initialPosition.z)
-                                );
-                            
-                                Instantiate(upNeighbours[3], newPosition, Quaternion.identity, transform);
-                                GenerateNeighbours(TrackType.JunctionTrack, newPosition);
-                                junctionTrackCount++;
-                            }
-                            else
-                            {
+                            // if (junctionTrackCount < junctionTrackCountLimit && (trackCount % 4 == 0 || trackCount % 4 == 1) && shouldFinish == false)
+                            // {
+                            //     newPosition = new Vector3(
+                            //         (prevPosition.x + initialPosition.x),
+                            //         prevPosition.y + initialPosition.y, 
+                            //         (prevPosition.z + 2 * initialPosition.z)
+                            //     );
+                            //
+                            //     Instantiate(upNeighbours[3], newPosition, Quaternion.identity, transform);
+                            //     GenerateNeighbours(TrackType.JunctionTrack, newPosition);
+                            //     junctionTrackCount++;
+                            // }
+                            // else
+                            // {
                                 //Finish Track
                                 Instantiate(upNeighbours[4], newPosition, Quaternion.identity, transform);
                                 finishPos = upNeighbours[4].transform.position;
                                 stopGeneration = true;
                                 GenerateNavMesh();
-                            }
+                            //}
                             
                             
                             break;
@@ -290,12 +286,6 @@ public class TrackGen : MonoBehaviour
                     rightNeighbours = new GameObject[] {straightRightTrackObj, downCurvedRightTrackObj};
                     
                     randIndex = Random.Range(0, 2);
-                    
-                    if (stopGeneration)
-                    {
-                        randIndex = 1000;
-                    }
-
                     
                     initialPosition = new Vector3(scaleFactor, 0, 0);
                     

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -60,6 +61,12 @@ public class MenuManager : MonoBehaviour
     private GameObject[] prefabSpaceJets;
 
     private RaceManager RaceManager;
+
+    public Image[] indicators;
+
+    public Button[] menuOptions;
+
+    private int menuIndex;
 
     private void Awake()
     {
@@ -132,14 +139,27 @@ public class MenuManager : MonoBehaviour
     void Update()
     {
         WaitForKeyPress();
+        ToggleThroughMenu();
     }
+    
 
     private void WaitForKeyPress()
     {
-        if (isActionPressed && !hasBeenPressed || Input.anyKey && !hasBeenPressed)
+        if (isActionPressed && !hasBeenPressed)
         {
             ToggleMenu(1);
             hasBeenPressed = true;
+        }
+    }
+
+    private void ToggleThroughMenu()
+    {
+        GameObject selectedOpt = EventSystem.current.currentSelectedGameObject;
+        
+
+        for (int i = 0; i < menuOptions.Length; i++)
+        {
+            indicators[i].gameObject.SetActive(menuOptions[i].gameObject == selectedOpt);
         }
     }
     
@@ -147,6 +167,7 @@ public class MenuManager : MonoBehaviour
 
     public void HoverButton(int id)
     {
+        Debug.Log("id: " + id);
         switch (id)
         {
             case 1:
