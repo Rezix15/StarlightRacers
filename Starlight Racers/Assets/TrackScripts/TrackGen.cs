@@ -28,6 +28,7 @@ public class TrackGen : MonoBehaviour
 
     #region objectdeclaration
 
+    //Tracks
     public GameObject startTrackObj;
     public GameObject finishTrackObj;
     public GameObject straightForwardTrackObj;
@@ -40,8 +41,12 @@ public class TrackGen : MonoBehaviour
     public GameObject junctionTrackObj;
     public GameObject checkpointObj;
 
+    //Unique Obj
     public GameObject boosterObj;
     private Vector3 boosterPos;
+    
+    public GameObject trafficLightObj;
+    private Vector3 trafficPos;
 
     #endregion
    
@@ -87,6 +92,7 @@ public class TrackGen : MonoBehaviour
         downCurvedRightTrackObj.transform.localScale = new Vector3(scale, scale, scale);
         junctionTrackObj.transform.localScale = new Vector3(scale, scale, scale);
         boosterObj.transform.localScale = new Vector3(scale, scale, scale);
+        trafficLightObj.transform.localScale = new Vector3(scale * scale, scale * scale, scale * scale);
         meshSurface = GetComponent<NavMeshSurface>();
     }
 
@@ -104,6 +110,8 @@ public class TrackGen : MonoBehaviour
         //Set a scaleFactor
         scaleFactor = scale * 10;
         boosterPos = new Vector3(0, -0.6f * scale, 0);
+        trafficPos = new Vector3(scale * 3, 0, scale * 1.5f);
+        
 
         //GenerateInitialPosition
         initialPos = new Vector3(0, 0, scaleFactor);
@@ -148,7 +156,7 @@ public class TrackGen : MonoBehaviour
 
         int randIndex;
 
-        int boosterRandomness = Random.Range(0, 5); //probability that a booster is spawned at that region
+        int boosterRandomness = Random.Range(0, 4); //probability that a booster is spawned at that region
 
         Vector3 initialPosition;
 
@@ -185,6 +193,18 @@ public class TrackGen : MonoBehaviour
                         newPosition.z + boosterPos.z
                     );
                     
+                    var trafficLightPosLeft = new Vector3(
+                        newPosition.x - trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + trafficPos.z
+                    );
+
+                    var trafficLightPosRight = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + trafficPos.z
+                    );
+                    
 
 
                     // if (junctionTrackCount >= junctionTrackCountLimit)
@@ -214,10 +234,18 @@ public class TrackGen : MonoBehaviour
                             Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
                             GenerateNeighbours(TrackType.StraightForward, newPosition);
 
-                            if (boosterRandomness == 1 || boosterRandomness == 2)
+                            //Booster Track Generation
+                            if (boosterRandomness == 1 && trackCount % 4 == 1)
                             {
                                 GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
                             }
+                            
+                            if (trackCount > 0 && trackCount % 3 == 0)
+                            {
+                                Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
+                                Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
+                            }
+                            
                             break;
                         }
 
