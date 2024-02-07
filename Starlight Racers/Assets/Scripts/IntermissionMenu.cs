@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Button = UnityEngine.UIElements.Button;
 
 public class IntermissionMenu : MonoBehaviour
 {
@@ -27,12 +29,18 @@ public class IntermissionMenu : MonoBehaviour
     private int randIndex;
 
     private int selector = 0;
+
+    public GameObject continueBtn;
+
+    private TextMeshProUGUI continueText;
+    
     
     // Start is called before the first frame update
     void Start()
     {
         componentsCards = new ComponentObj[3];
         RollComponents();
+        DisplayContinueText();
     }
 
     private void ComponentDisplay(int index)
@@ -41,6 +49,28 @@ public class IntermissionMenu : MonoBehaviour
         componentTypes[index].text = componentsCards[index].componentRarity.ToString();
         componentIcons[index].sprite = componentsCards[index].icon;
         skillDescs[index].text = "Boost vehicle " + componentsCards[index].targetStat.ToString().ToLower() + " by " + (componentsCards[index].statModifierVal * 100) +"%";
+    }
+
+    void DisplayContinueText()
+    {
+        continueText = continueBtn.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (MenuManager.RaceCount > 0)
+        {
+            continueText.text = "Start Race";
+        }
+        else if(MenuManager.RaceCount < 3)
+        {
+            continueText.text = "Next Race";
+        }
+        else if(MenuManager.RaceCount == 3)
+        {
+            continueText.text = "Final Race";
+        }
+        else
+        {
+            continueText.text = "??? Race";
+        }
     }
 
     // Update is called once per frame
@@ -154,6 +184,12 @@ public class IntermissionMenu : MonoBehaviour
     public void SelectCard(int id)
     {
         selector = id;
+    }
+
+    public void ClickCard()
+    {
+        Debug.Log("Selected id: " + selector);
+        EventSystem.current.SetSelectedGameObject(continueBtn);
     }
     
 

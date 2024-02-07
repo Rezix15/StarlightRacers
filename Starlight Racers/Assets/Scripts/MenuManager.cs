@@ -216,7 +216,7 @@ public class MenuManager : MonoBehaviour
     {
         //ToggleMenu(3);
         RaceCount = 1;
-        SceneManager.LoadScene("StarLightRacers_BetaTest");
+        SceneManager.LoadScene("IntermissionScene");
     }
 
     public void ToggleLeft()
