@@ -68,6 +68,8 @@ public class MenuManager : MonoBehaviour
 
     private int menuIndex;
 
+    public static float totalFinishTime;
+
     private void Awake()
     {
         Controller = new PlayerController();

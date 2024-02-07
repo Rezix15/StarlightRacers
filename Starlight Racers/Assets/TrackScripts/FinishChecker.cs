@@ -16,6 +16,8 @@ public class FinishChecker : MonoBehaviour
     private Spacejet player;
 
     private RaceManager RaceManager;
+
+    private bool hasFinished;
     
     // Start is called before the first frame update
     void Start()
@@ -27,6 +29,7 @@ public class FinishChecker : MonoBehaviour
         var finishTimerObj = GameObject.FindGameObjectWithTag("FinishTimer");
         finishTimer = finishTimerObj.GetComponent<TextMeshProUGUI>();
 
+        hasFinished = false;
     }
 
     // Update is called once per frame
@@ -53,7 +56,7 @@ public class FinishChecker : MonoBehaviour
         {
             Debug.Log(other.name + " has reached the goal");
         }
-        else if(other.CompareTag("Player"))
+        else if(other.CompareTag("Player") && hasFinished == false)
         {
             StartCoroutine(PlayerFinished());
             player = other.gameObject.GetComponentInParent<Spacejet>();
@@ -67,11 +70,20 @@ public class FinishChecker : MonoBehaviour
             if (MenuManager.RaceCount < 3)
             {
                 MenuManager.RaceCount++;
+                MenuManager.totalFinishTime += playerFinishTime;
                 SceneManager.LoadScene("IntermissionScene");
             }
+            else
+            {
+                playerFinishTimeText = FormatTimer(MenuManager.totalFinishTime);
+                finishTimer.text = "Finish Time: " + playerFinishTimeText;
+            }
             
+            StartCoroutine(FinishTimeCountdown());
             
-            
+
+
+
         }
     }
 
@@ -81,6 +93,13 @@ public class FinishChecker : MonoBehaviour
         countdownText.text = "FINISH!";
         yield return new WaitForSeconds(1);
         countdownText.gameObject.SetActive(false);
+    }
+
+    IEnumerator FinishTimeCountdown()
+    {
+        yield return new WaitForSeconds(4);
+        finishTimer.text = "";
+        hasFinished = true;
     }
     
     

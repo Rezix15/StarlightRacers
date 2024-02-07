@@ -10,6 +10,7 @@ public class RacePosTracker : MonoBehaviour
     private Spacejet SpaceJetPlayer;
     private GameObject currentRacerCheckpoint;
     
+    
     private SpacejetAI[] SpaceJetAis;
     
     private float racerCheckpos;
@@ -23,6 +24,8 @@ public class RacePosTracker : MonoBehaviour
     private Vector3 finishPos;
 
     private int racerCheckpointCount;
+    private TextMeshProUGUI racerText;
+    
     
     // Start is called before the first frame update
 
@@ -30,8 +33,8 @@ public class RacePosTracker : MonoBehaviour
     {
         trackGen = trackGen.GetComponent<TrackGen>();
 
-        SpaceJetPlayer = GameObject.FindObjectOfType<Spacejet>();
-        SpaceJetAis = GameObject.FindObjectsOfType<SpacejetAI>();
+        SpaceJetPlayer = FindObjectOfType<Spacejet>();
+        SpaceJetAis = FindObjectsOfType<SpacejetAI>();
         
         racers = new List<GameObject> { SpaceJetPlayer.gameObject };
         
@@ -43,6 +46,12 @@ public class RacePosTracker : MonoBehaviour
         foreach (var spaceJetAi in SpaceJetAis)
         {
             racers.Add(spaceJetAi.gameObject);
+        }
+
+        foreach (var racer in racers)
+        {
+            Debug.Log("Racers: " + racer.name);
+            racerText = racer.GetComponentInChildren<TextMeshProUGUI>();
         }
     }
 
@@ -65,34 +74,34 @@ public class RacePosTracker : MonoBehaviour
         
         foreach (var racer in racers )
         {
-            TextMeshProUGUI racerText = racer.GetComponentInChildren<TextMeshProUGUI>();
+            //index++;
             
-            if (racerText != null)
-            {
-                racerTextPosition[index] = racerText;
-                racerTextPosition[index].text = racePosTexts[index];
-            }
-            else
-            {
-                Debug.LogWarning("TextMeshProUGUI not found for racer: " + racer.name);
-            }
+            racerTextPosition[index] = racerText;
+            racerTextPosition[index].text = racePosTexts[index];
+            
+            
             
             //check if racer is a player:
-            Spacejet player = racer.GetComponent<Spacejet>();
-            SpacejetAI enemy = racer.GetComponent<SpacejetAI>();
-        
-            if (player != null)
+            if (racer.TryGetComponent<Spacejet>(out Spacejet player))
             {
                 racerCheckpointCount = player.ReturnCurrentCheckpointCount();
                 currentRacerCheckpoint = player.ReturnCurrentCheckpoint();
             }
-         
-            if (enemy != null)
+            else
             {
-               
+                racer.TryGetComponent<SpacejetAI>(out SpacejetAI enemy);
             }
             
-            if(racer)
+            if(player)
+            // if (racer)
+            // {
+            //     racerCheckpointCount = player.ReturnCurrentCheckpointCount();
+            //     currentRacerCheckpoint = player.ReturnCurrentCheckpoint();
+            // }
+            //
+            // var enemyRacer
+            
+            // if(racer)
             
             //if the player and other racers are not empty
             index++;
