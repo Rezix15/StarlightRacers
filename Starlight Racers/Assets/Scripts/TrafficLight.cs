@@ -21,10 +21,10 @@ public class TrafficLight : MonoBehaviour
     {
         MeshRenderer = GetComponent<MeshRenderer>();
         Materials = new Material[MeshRenderer.materials.Length];
-
-        Debug.Log("Mat Count: " + Materials.Length);
+        
         stateIndex = 0;
 
+        //Store materials into list..
         Materials = MeshRenderer.materials;
         MeshRenderer.materials = Materials;
 
@@ -48,6 +48,8 @@ public class TrafficLight : MonoBehaviour
         }
     }
 
+    //Toggle the state of the materials for the traffic Light. This means turning one of the lights into a specific 
+    //color and turning the rest off. Done through changing materials and updating the renderer.
     private void ToggleState(int state)
     {
         switch (state)

@@ -74,8 +74,6 @@ public class MenuManager : MonoBehaviour
     {
         Controller = new PlayerController();
 
-        Debug.Log("Controller: " + Controller);
-
         Controller.Player.Accelerate.performed += _ => isActionPressed = true;
         Controller.Player.Accelerate.canceled += _ => isActionPressed = false;
     }
@@ -169,7 +167,6 @@ public class MenuManager : MonoBehaviour
 
     public void HoverButton(int id)
     {
-        Debug.Log("id: " + id);
         switch (id)
         {
             case 1:

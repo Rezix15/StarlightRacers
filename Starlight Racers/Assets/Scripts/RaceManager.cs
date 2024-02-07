@@ -39,6 +39,8 @@ public class RaceManager : MonoBehaviour
 
     private int RaceCount;
 
+    public static List<GameObject> checkpoints;
+
     private void Awake()
     {
         instance = this;
@@ -98,7 +100,6 @@ public class RaceManager : MonoBehaviour
     {
         Debug.Log("Current Vehicle: " + MenuManager.currentSpaceJet.name);
         gameStart = false;
-        
         
         switch (MenuManager.currentSpaceJet.name)
         {

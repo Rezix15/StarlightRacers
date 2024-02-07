@@ -220,8 +220,12 @@ public class SpacejetAI : MonoBehaviour
         
         if (other.gameObject.CompareTag("Checkpoint"))
         {
-            checkpointCount++;
             currentCheckpoint = other.gameObject;
+            
+            if (currentCheckpoint == TrackGen.checkpoints[checkpointCount])
+            {
+                checkpointCount++;
+            }
         }
         
         //If user makes contact with a laser, it should take a certain amount of damage

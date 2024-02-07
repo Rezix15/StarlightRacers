@@ -75,13 +75,12 @@ public class Spacejet : MonoBehaviour
     [SerializeField] private float finishTime = 0; //player finish time
     private bool hasFinished;
 
+    private float distToNextCheckpoint;
+
     private Modifier componentModifier;
     private void Awake()
     {
         Controller = new PlayerController();
-        
-        Debug.Log("Controller: " + Controller);
-        
         InitializeStats();
         
         if (IntermissionMenu.currentComponent != null)
@@ -363,7 +362,13 @@ public class Spacejet : MonoBehaviour
         if (other.gameObject.CompareTag("Checkpoint"))
         {
             currentCheckpoint = other.gameObject;
-            checkpointCount++;
+            
+            //If the order of the checkpoint is correct..
+            if (currentCheckpoint == TrackGen.checkpoints[checkpointCount])
+            {
+                checkpointCount++;
+            }
+            
         }
 
         //If user makes contact with a laser, it should take a certain amount of damage
@@ -410,6 +415,8 @@ public class Spacejet : MonoBehaviour
     {
         return checkpointCount;
     }
+    
+    
     
     public float GetCurrentShieldStat()
     {

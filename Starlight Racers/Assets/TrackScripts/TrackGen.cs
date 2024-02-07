@@ -77,6 +77,8 @@ public class TrackGen : MonoBehaviour
     private int trackCount = 0;
 
     private bool stopGeneration = false;
+
+    public static List<GameObject> checkpoints;
     
     private void Awake()
     {
@@ -304,6 +306,9 @@ public class TrackGen : MonoBehaviour
                             GenerateNavMesh();
                             //}
                             
+                            //Generate checkpoints list to be used for race positioning
+                            checkpoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
+                            checkpoints.Add(GameObject.FindGameObjectWithTag("Finish"));
                             Debug.Log("TrackCount: " + trackCount);
                             
                             break;

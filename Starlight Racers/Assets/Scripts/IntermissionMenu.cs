@@ -188,7 +188,6 @@ public class IntermissionMenu : MonoBehaviour
 
     public void ClickCard()
     {
-        Debug.Log("Selected id: " + selector);
         EventSystem.current.SetSelectedGameObject(continueBtn);
     }
     
