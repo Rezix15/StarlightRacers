@@ -92,7 +92,7 @@ public class TrackGen : MonoBehaviour
         downCurvedRightTrackObj.transform.localScale = new Vector3(scale, scale, scale);
         junctionTrackObj.transform.localScale = new Vector3(scale, scale, scale);
         boosterObj.transform.localScale = new Vector3(scale, scale, scale);
-        trafficLightObj.transform.localScale = new Vector3(scale * scale, scale * scale, scale * scale);
+        trafficLightObj.transform.localScale = new Vector3(scale * 66.66f, scale * 66.66f, scale * 66.66f);
         meshSurface = GetComponent<NavMeshSurface>();
     }
 
@@ -110,7 +110,7 @@ public class TrackGen : MonoBehaviour
         //Set a scaleFactor
         scaleFactor = scale * 10;
         boosterPos = new Vector3(0, -0.6f * scale, 0);
-        trafficPos = new Vector3(scale * 3, 0, scale * 1.5f);
+        trafficPos = new Vector3(scale * 3, 0.75f * scale, scale * 1.5f);
         
 
         //GenerateInitialPosition
@@ -156,19 +156,18 @@ public class TrackGen : MonoBehaviour
 
         int randIndex;
 
-        int boosterRandomness = Random.Range(0, 4); //probability that a booster is spawned at that region
+        int boosterRandomness = Random.Range(0, 3); //probability that a booster is spawned at that region
 
         Vector3 initialPosition;
 
         Vector3 newPosition;
         
         GenerateTrack(TrackType.Checkpoint, prevPosition, Quaternion.identity);
-
-        trackCount++;
-
-
+        
         if (stopGeneration == false)
         {
+            trackCount++;
+            
             switch (trackType)
             {
                 case TrackType.StraightForward:
@@ -231,20 +230,24 @@ public class TrackGen : MonoBehaviour
                     {
                         case 0:
                         {
+                            //Generate Up Neighbours
                             Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.StraightForward, newPosition);
-
+                            
                             //Booster Track Generation
-                            if (boosterRandomness == 1 && trackCount % 4 == 1)
+                            if ((trackCount > 0 && trackCount % 3 == 0) || (trackCount > 0 && boosterRandomness == 1) )
                             {
                                 GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
                             }
                             
-                            if (trackCount > 0 && trackCount % 3 == 0)
+                            //Traffic Light Generation
+                            if (trackCount % 2 == 0) 
                             {
                                 Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
                                 Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
                             }
+                           
+                            GenerateNeighbours(TrackType.StraightForward, newPosition);
+                            
                             
                             break;
                         }
@@ -292,13 +295,16 @@ public class TrackGen : MonoBehaviour
                             // }
                             // else
                             // {
-                                //Finish Track
-                                Instantiate(upNeighbours[4], newPosition, Quaternion.identity, transform);
-                                finishPos = upNeighbours[4].transform.position;
-                                stopGeneration = true;
-                                GenerateNavMesh();
+                            
+                            
+                            //Finish Track
+                            Instantiate(upNeighbours[4], newPosition, Quaternion.identity, transform);
+                            finishPos = upNeighbours[4].transform.position;
+                            stopGeneration = true;
+                            GenerateNavMesh();
                             //}
                             
+                            Debug.Log("TrackCount: " + trackCount);
                             
                             break;
                             
@@ -329,6 +335,18 @@ public class TrackGen : MonoBehaviour
                         newPosition.z + boosterPos.z
                     );
                     
+                    var trafficLightPosLeft = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z - 2 * trafficPos.z
+                    );
+
+                    var trafficLightPosRight = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + 2 * trafficPos.z
+                    );
+                    
                     var curvedPositionOffsetX = scale * 1.2f;
                     var curvedPositionOffsetZ = scale * 0.34f;
                     
@@ -337,13 +355,24 @@ public class TrackGen : MonoBehaviour
                     {
                         case 0:
                         {
+                            //Generate the right Neighbour
                             Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.StraightRight, newPosition);
                             
-                            if (boosterRandomness == 1 || boosterRandomness == 2)
+                            //Booster Track Generation
+                            if ((trackCount > 0 && trackCount % 3 == 0) || (trackCount > 0 && boosterRandomness == 1) )
                             {
                                 GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
                             }
+                            
+                            //Traffic Light Generation
+                            if ((trackCount > 0 && trackCount % 2 == 0))
+                            {
+                                Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,0,0), transform);
+                                Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,0,0), transform);
+                            }
+                            
+                            GenerateNeighbours(TrackType.StraightRight, newPosition);
+                            
                             
                             break;
                         }
@@ -387,17 +416,38 @@ public class TrackGen : MonoBehaviour
                         newPosition.z + boosterPos.z
                     );
                     
+                    var trafficLightPosLeft = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z - 2 * trafficPos.z
+                    );
+
+                    var trafficLightPosRight = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + 2 * trafficPos.z
+                    );
+                    
                     switch (randIndex)
                     {
                         case 0:
                         {
+                            //Generate the left neighbour
                             Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.StraightLeft, newPosition);
                             
-                            if (boosterRandomness == 1 || boosterRandomness == 2)
+                            if ((trackCount > 0 && trackCount % 3 == 0) || (trackCount > 0 && boosterRandomness == 1) )
                             {
                                 GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
                             }
+                            
+                            //Traffic Light Generation
+                            if ((trackCount > 0 && trackCount % 2 == 0) )
+                            {
+                                Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,180,0), transform);
+                                Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,180,0), transform);
+                            }
+                            
+                            GenerateNeighbours(TrackType.StraightLeft, newPosition);
                             
                             break;
                         }

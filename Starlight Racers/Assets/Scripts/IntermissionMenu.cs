@@ -25,6 +25,8 @@ public class IntermissionMenu : MonoBehaviour
     public Sprite defaultIcon;
 
     private int randIndex;
+
+    private int selector = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -148,11 +150,16 @@ public class IntermissionMenu : MonoBehaviour
 
         return componentCard;
     }
+
+    public void SelectCard(int id)
+    {
+        selector = id;
+    }
     
 
     public void ContinueSelected()
     {
         SceneManager.LoadScene("StarLightRacers_BetaTest");
-        MenuManager.componentBoosts.Add(componentsCards[0]);
+        MenuManager.componentBoosts.Add(componentsCards[selector]);
     }
 }
