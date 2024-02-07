@@ -234,13 +234,13 @@ public class TrackGen : MonoBehaviour
                             Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
                             
                             //Booster Track Generation
-                            if ((trackCount > 0 && trackCount % 3 == 0) || (trackCount > 0 && boosterRandomness == 1) )
+                            if ((trackCount > 0 && trackCount % 4 == 0 && boosterRandomness == 1) )
                             {
                                 GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
                             }
                             
                             //Traffic Light Generation
-                            if (trackCount % 2 == 0) 
+                            if (trackCount % 5 == 0) 
                             {
                                 Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
                                 Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
@@ -359,13 +359,13 @@ public class TrackGen : MonoBehaviour
                             Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
                             
                             //Booster Track Generation
-                            if ((trackCount > 0 && trackCount % 3 == 0) || (trackCount > 0 && boosterRandomness == 1) )
+                            if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
                             {
                                 GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
                             }
                             
                             //Traffic Light Generation
-                            if ((trackCount > 0 && trackCount % 2 == 0))
+                            if ((trackCount > 0 && trackCount % 5 == 0))
                             {
                                 Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,0,0), transform);
                                 Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,0,0), transform);
@@ -435,13 +435,14 @@ public class TrackGen : MonoBehaviour
                             //Generate the left neighbour
                             Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
                             
-                            if ((trackCount > 0 && trackCount % 3 == 0) || (trackCount > 0 && boosterRandomness == 1) )
+                            //Booster Track Generation
+                            if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
                             {
                                 GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
                             }
                             
                             //Traffic Light Generation
-                            if ((trackCount > 0 && trackCount % 2 == 0) )
+                            if ((trackCount > 0 && trackCount % 5 == 0) )
                             {
                                 Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,180,0), transform);
                                 Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,180,0), transform);
@@ -485,7 +486,38 @@ public class TrackGen : MonoBehaviour
                         prevPosition.z + initialPosition.z
                     );
                     
+                    var boosterPosition = new Vector3(
+                        newPosition.x + boosterPos.x,
+                        newPosition.y + boosterPos.y,
+                        newPosition.z + boosterPos.z
+                    );
                    
+                    var trafficLightPosLeft = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z - 2 * trafficPos.z
+                    );
+
+                    var trafficLightPosRight = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + 2 * trafficPos.z
+                    );
+                    
+                    //Booster Track Generation
+                    if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
+                    {
+                        GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
+                    }
+                        
+                    //Traffic Light Generation
+                    if (trackCount % 5 == 0) 
+                    {
+                        Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,180,0), transform);
+                        Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,180,0), transform);
+                    }
+                    
+                    
                     Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
                     GenerateNeighbours(TrackType.StraightLeft, newPosition);
                     break;
@@ -496,17 +528,46 @@ public class TrackGen : MonoBehaviour
                     rightNeighbours = new GameObject[] { straightRightTrackObj };
                     
                     initialPosition = new Vector3((scale * 26.58f), 0, (scale * 16f));
-                    
+
                     newPosition = new Vector3(
                         prevPosition.x + initialPosition.x, 
                         prevPosition.y + initialPosition.y, 
                         prevPosition.z + initialPosition.z
                     );
                     
-                   
+                    var boosterPosition = new Vector3(
+                        newPosition.x + boosterPos.x,
+                        newPosition.y + boosterPos.y,
+                        newPosition.z + boosterPos.z
+                    );
+                    
+                    var trafficLightPosLeft = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z - 2 * trafficPos.z
+                    );
+
+                    var trafficLightPosRight = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + 2 * trafficPos.z
+                    );
+                    
+                    //Booster Track Generation
+                    if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
+                    {
+                        GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
+                    }
+                        
+                    //Traffic Light Generation
+                    if ((trackCount > 0 && trackCount % 5 == 0))
+                    {
+                        Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,0,0), transform);
+                        Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,0,0), transform);
+                    }
+                    
                     Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
                     GenerateNeighbours(TrackType.StraightRight, newPosition);
-                    
                     break;
                 }
                 
@@ -522,6 +583,38 @@ public class TrackGen : MonoBehaviour
                         prevPosition.y + initialPosition.y, 
                         prevPosition.z + initialPosition.z
                     );
+                    
+                    var boosterPosition = new Vector3(
+                        newPosition.x + boosterPos.x,
+                        newPosition.y + boosterPos.y,
+                        newPosition.z + boosterPos.z
+                    );
+                    
+                    var trafficLightPosLeft = new Vector3(
+                        newPosition.x - trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + trafficPos.z
+                    );
+
+                    var trafficLightPosRight = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + trafficPos.z
+                    );
+                    
+                    //Booster Track Generation
+                    if ((trackCount > 0 && trackCount % 4 == 0 && boosterRandomness == 1) )
+                    {
+                        GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
+                    }
+                    
+                    
+                    //Traffic Light Generation
+                    if (trackCount % 5 == 0) 
+                    {
+                        Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
+                        Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
+                    }
                     
                
                     Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
@@ -541,6 +634,38 @@ public class TrackGen : MonoBehaviour
                         prevPosition.y + initialPosition.y, 
                         prevPosition.z + initialPosition.z
                     );
+                    
+                    var boosterPosition = new Vector3(
+                        newPosition.x + boosterPos.x,
+                        newPosition.y + boosterPos.y,
+                        newPosition.z + boosterPos.z
+                    );
+                    
+                    var trafficLightPosLeft = new Vector3(
+                        newPosition.x - trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + trafficPos.z
+                    );
+
+                    var trafficLightPosRight = new Vector3(
+                        newPosition.x + trafficPos.x,
+                        newPosition.y + trafficPos.y,
+                        newPosition.z + trafficPos.z
+                    );
+                    
+                    //Booster Track Generation
+                    if ((trackCount > 0 && trackCount % 4 == 0 && boosterRandomness == 1) )
+                    {
+                        GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
+                    }
+                    
+                        
+                    //Traffic Light Generation
+                    if ((trackCount > 0 && trackCount % 5 == 0))
+                    {
+                        Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
+                        Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
+                    }
                     
                  
                     Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
