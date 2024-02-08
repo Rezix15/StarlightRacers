@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
@@ -70,6 +71,13 @@ public class MenuManager : MonoBehaviour
 
     public static float totalFinishTime;
 
+    public GameObject startButton;
+
+    private TextMeshProUGUI startButtonText; //Text that is used to ask for user Input
+
+    private bool isKeyboard; //Bool to check whether input is keyboard
+    private bool isGamepad; //Bool to check whether input is gamepad
+
     private void Awake()
     {
         Controller = new PlayerController();
@@ -94,6 +102,7 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
         ToggleMenu(0);
 
         // speedStatImg = new Image[10];
@@ -138,10 +147,21 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        WaitForKeyPress();
+        UpdateUserInputDisplay();
         ToggleThroughMenu();
         
     }
+
+    public void StartGame()
+    {
+        ToggleMenu(1);
+        
+        if (isGamepad)
+        {
+            EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
+        }
+    }
+    
     
 
     private void WaitForKeyPress()
@@ -157,12 +177,23 @@ public class MenuManager : MonoBehaviour
     private void ToggleThroughMenu()
     {
         GameObject selectedOpt = EventSystem.current.currentSelectedGameObject;
-        
 
-        for (int i = 0; i < menuOptions.Length; i++)
+
+        if (isGamepad)
         {
-            indicators[i].gameObject.SetActive(menuOptions[i].gameObject == selectedOpt);
+            for (int i = 0; i < menuOptions.Length; i++)
+            {
+                indicators[i].gameObject.SetActive(menuOptions[i].gameObject == selectedOpt);
+            }
         }
+        else
+        {
+            for (int i = 0; i < menuOptions.Length; i++)
+            {
+                indicators[i].gameObject.SetActive(false);
+            }
+        }
+        
     }
     
     
@@ -200,6 +231,29 @@ public class MenuManager : MonoBehaviour
                 descriptiveText1.text = "";
                 break;
             }
+        }
+    }
+
+    //Simple Function that is used to update the user display depending on the device being used
+    private void UpdateUserInputDisplay()
+    {
+        //Determine the device that is being used.
+        if (Gamepad.current != null)
+        {
+            isGamepad = true;
+            isKeyboard = false;
+            startButtonText.text = "Press A to start";
+            
+            if (menus[0].gameObject.activeInHierarchy)
+            {
+                startButton = EventSystem.current.currentSelectedGameObject;
+            }
+        }
+        else if(Keyboard.current != null)
+        {
+            isKeyboard = true;
+            isGamepad = false;
+            startButtonText.text = "Click to start";
         }
     }
 
@@ -345,17 +399,23 @@ public class MenuManager : MonoBehaviour
         //SceneManager.LoadScene("StarLightRacers_BetaTest");
         ToggleMenu(2);
         rButton.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(rButton);
+        
+        //If device is a gamepad
+        if (isGamepad)
+        {
+            EventSystem.current.SetSelectedGameObject(rButton);
+        }
+        
         DisplayStats();
     }
 
     private void ButtonInactivity()
     {
-        if (lButton.activeInHierarchy == false && rButton.activeInHierarchy)
+        if (lButton.activeInHierarchy == false && rButton.activeInHierarchy && isGamepad)
         {
             EventSystem.current.SetSelectedGameObject(rButton);
         }
-        else if (rButton.activeInHierarchy == false && lButton.activeInHierarchy)
+        else if (rButton.activeInHierarchy == false && lButton.activeInHierarchy && isGamepad)
         {
             EventSystem.current.SetSelectedGameObject(lButton);
         }
