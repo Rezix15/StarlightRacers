@@ -35,7 +35,7 @@ public class MenuManager : MonoBehaviour
     public static int RaceCount;
     
     public static List<ComponentObj> componentBoosts;
-
+    
     public GameObject speedStat;
     public GameObject shieldStat;
     public GameObject shieldRateStat;
@@ -140,6 +140,7 @@ public class MenuManager : MonoBehaviour
     {
         WaitForKeyPress();
         ToggleThroughMenu();
+        
     }
     
 
@@ -149,6 +150,7 @@ public class MenuManager : MonoBehaviour
         {
             ToggleMenu(1);
             hasBeenPressed = true;
+            EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
         }
     }
 
@@ -235,6 +237,8 @@ public class MenuManager : MonoBehaviour
             lButton.SetActive(false);
             rButton.SetActive(true);
         }
+        
+        ButtonInactivity();
 
         DisplayStats();
     }
@@ -255,6 +259,9 @@ public class MenuManager : MonoBehaviour
         {
             rButton.SetActive(false);
         }
+        
+        ButtonInactivity();
+        
 
         DisplayStats();
     }
@@ -323,6 +330,7 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    //Function to toggle between menus
     void ToggleMenu(int position)
     {
         for (int i = 0; i < menus.Count; i++)
@@ -331,11 +339,26 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    //When the play button is pressed.
     public void OnPlayClicked()
     {
         //SceneManager.LoadScene("StarLightRacers_BetaTest");
         ToggleMenu(2);
         rButton.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(rButton);
         DisplayStats();
+    }
+
+    private void ButtonInactivity()
+    {
+        if (lButton.activeInHierarchy == false && rButton.activeInHierarchy)
+        {
+            EventSystem.current.SetSelectedGameObject(rButton);
+        }
+        else if (rButton.activeInHierarchy == false && lButton.activeInHierarchy)
+        {
+            EventSystem.current.SetSelectedGameObject(lButton);
+        }
+        
     }
 }

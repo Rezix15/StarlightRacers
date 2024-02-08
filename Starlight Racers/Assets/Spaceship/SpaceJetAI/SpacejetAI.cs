@@ -79,15 +79,15 @@ public class SpacejetAI : MonoBehaviour
         currentCheckpoint = new GameObject();
         currentShieldStat = shieldStatMax; //set the HP value to the max value
         RaceManager.GameStarted += OnGameStarted;
-        spaceJetAgent = new NavMeshAgent();
-        spaceJetAgent = gameObject.GetComponent<NavMeshAgent>();
+        // spaceJetAgent = new NavMeshAgent();
+        // spaceJetAgent = gameObject.GetComponent<NavMeshAgent>();
 
-        if (spaceJetAgent != null)
-        {
-            
-        }
-        
-        spaceJetAgent.enabled = false;
+        // if (spaceJetAgent != null)
+        // {
+        //     
+        // }
+        //
+        // //spaceJetAgent.enabled = false;
 
         currentTrack = FindObjectOfType<TrackGen>();
         currentTrackCheckpoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
@@ -105,8 +105,8 @@ public class SpacejetAI : MonoBehaviour
         isAccelerating = true;
         takeDamage = false;
         hasFinished = false;
-        spaceJetAgent.enabled = true;
-        spaceJetAgent.updateUpAxis = false;
+        //spaceJetAgent.enabled = true;
+        //spaceJetAgent.updateUpAxis = false;
     }
 
     void FixedUpdate()
@@ -144,35 +144,35 @@ public class SpacejetAI : MonoBehaviour
         {
             finishTime += Time.deltaTime;
             
-            Ypos = transform.position.y;
-            
-            if (index < currentTrackCheckpoints.Count)
-            {
-                var position = currentTrackCheckpoints[index].transform.position;
-                
-                var destination = new Vector3(position.x, Ypos, position.z);
-                Debug.Log("Destination Path: " + destination);
-                spaceJetAgent.SetDestination(destination);
-                
-                ammoRefillTimer += Time.deltaTime;
-                
-                AmmoRefill(ammoRefillTimer);
-            
-                if (ammoRefillTimer >= 10f)
-                {
-                    ammoRefillTimer = 0;
-                }
-            
-                if (Vector3.Distance(transform.position, destination) <= 10f)
-                {
-                    index++;
-                }
-            }
-            else
-            {
-                var finishDestination = new Vector3(finishPos.x, Ypos, finishPos.z);
-                spaceJetAgent.SetDestination(finishDestination);
-            }
+            // Ypos = transform.position.y;
+            //
+            // if (index < currentTrackCheckpoints.Count)
+            // {
+            //     var position = currentTrackCheckpoints[index].transform.position;
+            //     
+            //     var destination = new Vector3(position.x, Ypos, position.z);
+            //     Debug.Log("Destination Path: " + destination);
+            //     spaceJetAgent.SetDestination(destination);
+            //     
+            //     ammoRefillTimer += Time.deltaTime;
+            //     
+            //     AmmoRefill(ammoRefillTimer);
+            //
+            //     if (ammoRefillTimer >= 10f)
+            //     {
+            //         ammoRefillTimer = 0;
+            //     }
+            //
+            //     if (Vector3.Distance(transform.position, destination) <= 10f)
+            //     {
+            //         index++;
+            //     }
+            // }
+            // else
+            // {
+            //     var finishDestination = new Vector3(finishPos.x, Ypos, finishPos.z);
+            //     spaceJetAgent.SetDestination(finishDestination);
+            // }
         }
     }
     

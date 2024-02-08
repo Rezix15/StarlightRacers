@@ -25,8 +25,8 @@ public class RacePosTracker : MonoBehaviour
     private int racer1CheckpointCount;
     private int racer2CheckpointCount;
     private TextMeshProUGUI[] racerText;
-    
-    
+
+    public TextMeshProUGUI playerPosText;
     
     
     // Start is called before the first frame update
@@ -53,10 +53,20 @@ public class RacePosTracker : MonoBehaviour
         //finishPos = trackGen.ReturnFinishTrackPos();
         
 
+        //If i = 0 (If the player), set the textbox to be a specific one, otherwise borrow from the text found within
+        //the children.
         for (int i = 0; i < racers.Count; i++)
         {
-            racerText[i] = racers[i].GetComponentInChildren<TextMeshProUGUI>();
-            racerText[i].text = racePosTexts[i];
+            if (i == 0)
+            {
+                racerText[i] = playerPosText;
+            }
+            else
+            {
+                racerText[i] = racers[i].GetComponentInChildren<TextMeshProUGUI>();
+                racerText[i].text = racePosTexts[i];
+            }
+            
         }
     }
 
@@ -171,7 +181,6 @@ public class RacePosTracker : MonoBehaviour
         {
             racer1CheckpointCount = player1.ReturnCurrentCheckpointCount();
             currentRacer1Checkpoint = player1.ReturnCurrentCheckpoint();
-            Debug.Log( "Racer1Count: " + racer1CheckpointCount);
         }
         else
         {
@@ -191,7 +200,6 @@ public class RacePosTracker : MonoBehaviour
             racer2.TryGetComponent<SpacejetAI>(out SpacejetAI enemy);
             racer2CheckpointCount = enemy.ReturnCurrentCheckpointCount();
             currentRacer2Checkpoint = enemy.ReturnCurrentCheckpoint();
-            Debug.Log( "Racer2Count: " + racer2CheckpointCount);
         }
     }
 }
