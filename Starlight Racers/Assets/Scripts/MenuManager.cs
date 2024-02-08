@@ -78,12 +78,17 @@ public class MenuManager : MonoBehaviour
     private bool isKeyboard; //Bool to check whether input is keyboard
     private bool isGamepad; //Bool to check whether input is gamepad
 
+    private PlayerInput _input;
+
     private void Awake()
     {
         Controller = new PlayerController();
 
         Controller.Player.Accelerate.performed += _ => isActionPressed = true;
         Controller.Player.Accelerate.canceled += _ => isActionPressed = false;
+
+      
+
     }
 
     private void OnEnable()
@@ -102,6 +107,7 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+          _input = GetComponent<PlayerInput>();
         startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
         ToggleMenu(0);
 
@@ -234,26 +240,39 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    private void LastGameObject()
+    {
+        
+    }
+
     //Simple Function that is used to update the user display depending on the device being used
     private void UpdateUserInputDisplay()
     {
         //Determine the device that is being used.
-        if (Gamepad.current != null)
+        if (_input.currentControlScheme == "Controller")
         {
             isGamepad = true;
             isKeyboard = false;
             startButtonText.text = "Press A to start";
-            
+            Cursor.visible = false;
+
             if (menus[0].gameObject.activeInHierarchy)
             {
-                startButton = EventSystem.current.currentSelectedGameObject;
+                EventSystem.current.SetSelectedGameObject(startButton);
             }
         }
-        else if(Keyboard.current != null)
+        else if(_input.currentControlScheme == "Keyboard")
         {
             isKeyboard = true;
             isGamepad = false;
             startButtonText.text = "Click to start";
+            EventSystem.current.SetSelectedGameObject(null);
+            Cursor.visible = true;
+        }
+        else
+        {
+            startButtonText.text = _input.currentControlScheme;
+            
         }
     }
 

@@ -101,6 +101,8 @@ public class RaceManager : MonoBehaviour
         Debug.Log("Current Vehicle: " + MenuManager.currentSpaceJet.name);
         gameStart = false;
         
+        Cursor.visible = false;
+        
         switch (MenuManager.currentSpaceJet.name)
         {
             case "Absorber":
