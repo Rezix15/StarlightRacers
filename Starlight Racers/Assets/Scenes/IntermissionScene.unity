@@ -1337,6 +1337,7 @@ MonoBehaviour:
   laserDmgIcon: {fileID: 21300000, guid: 2f4979df074ae37429b1ee642c429d81, type: 3}
   defaultIcon: {fileID: 21300000, guid: cbde71afed66fa24eaa2b62a251fe712, type: 3}
   continueBtn: {fileID: 778260765}
+  rerollBtn: {fileID: 961301978}
 --- !u!1 &825398969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1476,7 +1477,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &961301979
 RectTransform:
   m_ObjectHideFlags: 0

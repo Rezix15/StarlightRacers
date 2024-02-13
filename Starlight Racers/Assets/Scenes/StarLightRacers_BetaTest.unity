@@ -4161,7 +4161,7 @@ MonoBehaviour:
   boosterObj: {fileID: 8363658589030094893, guid: 3c6fe119a25a4d14da5e4ef02de25281, type: 3}
   trafficLightObj: {fileID: 7624565907419748646, guid: f74c1b683d22e6c4e93216fd7a61652f, type: 3}
   scale: 45
-  reachLimit: 30000
+  reachLimit: 36000
   junctionTrackCountLimit: 1
 --- !u!4 &1225837805
 Transform:
@@ -4419,7 +4419,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398833420}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19611613, y: -0, z: -0, w: 0.9805807}
+  m_LocalRotation: {x: 0.19611613, y: 1e-45, z: -0, w: 0.9805807}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5851,13 +5851,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0acf0d0d40e66f947aac046307918f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrust: 15000
+  speed:
+    baseValue: 0
+  shieldMax:
+    baseValue: 0
+  laserDamage:
+    baseValue: 0
+  shieldRate:
+    baseValue: 0
   lasersPrefab: {fileID: 9109236819112678852, guid: 84792ad8594cc63479b95eb4d7aa4250, type: 3}
   laserGun1: {fileID: 1771652894}
   laserGun2: {fileID: 25075936}
   laserSpeed: 20
   responsiveness: 15
   laserAmmoMax: 0
+  currentCheckpoint: {fileID: 0}
+  checkpointCount: 0
   currentRacerDistance: 0
   shieldStatMax: 120
   index: 0
@@ -6001,6 +6010,33 @@ NavMeshAgent:
   m_BaseOffset: 60
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!54 &1858196452
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858196430}
+  serializedVersion: 4
+  m_Mass: 50
+  m_Drag: 1
+  m_AngularDrag: 1
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
 --- !u!1 &1860316555
 GameObject:
   m_ObjectHideFlags: 0
@@ -6450,7 +6486,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027345474}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.03651213, y: 0.000000004701602, z: -1.7178003e-10, w: 0.99933326}
+  m_LocalRotation: {x: 0.03651211, y: -0.0000000019750894, z: 7.2162755e-11, w: 0.99933326}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6697,6 +6733,10 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3944159284181345728, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6128836124389692505, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -6717,6 +6757,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 94169628061752398, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1858196451}
+    - targetCorrespondingSourceObject: {fileID: 94169628061752398, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1858196452}
   m_SourcePrefab: {fileID: 100100000, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
 --- !u!33 &3469287836907313645
 MeshFilter:

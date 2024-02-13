@@ -61,7 +61,7 @@ public class TrackGen : MonoBehaviour
     private Vector3 finishPos;
 
     [SerializeField]
-    private int scale;
+    private int scale = MenuManager.scaleLevel;
     
     //modifier value for the scale. Primarily used in regards to setting the correct positions for the neighbours
     private int scaleFactor;
@@ -69,7 +69,8 @@ public class TrackGen : MonoBehaviour
     //Unused variable
     //private int count = 0;
 
-    public int reachLimit;
+    [SerializeField]
+    private int reachLimit = MenuManager.reachLimit;
 
     public int junctionTrackCountLimit;
     int junctionTrackCount = 0;
@@ -79,6 +80,12 @@ public class TrackGen : MonoBehaviour
     private bool stopGeneration = false;
 
     public static List<GameObject> checkpoints;
+    
+    bool shouldFinish = false;
+
+    private List<GameObject> junctionTrackNeighbours;
+
+    private bool junctionTrackCheck = false;
     
     private void Awake()
     {
@@ -165,579 +172,625 @@ public class TrackGen : MonoBehaviour
         Vector3 newPosition;
         
         GenerateTrack(TrackType.Checkpoint, prevPosition, Quaternion.identity);
+
+        junctionTrackCheck = false;
+
+        trackCount++;
         
-        if (stopGeneration == false)
+        switch (trackType)
         {
-            trackCount++;
-            
-            switch (trackType)
+            case TrackType.StraightForward:
             {
-                case TrackType.StraightForward:
+                upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, junctionTrackObj, finishTrackObj};
+                
+                //upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, finishTrackObj};
+                
+                var curvedPositionOffsetX = scale * 0.34f;
+                var curvedPositionOffsetZ = scale * 1.2f;
+                initialPosition = new Vector3(0, 0, scaleFactor);
+                
+                newPosition = new Vector3(
+                    prevPosition.x + initialPosition.x, 
+                    prevPosition.y + initialPosition.y, 
+                    prevPosition.z + initialPosition.z
+                );
+
+                var boosterPosition = new Vector3(
+                    newPosition.x + boosterPos.x,
+                    newPosition.y + boosterPos.y,
+                    newPosition.z + boosterPos.z
+                );
+                
+                var trafficLightPosLeft = new Vector3(
+                    newPosition.x - trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + trafficPos.z
+                );
+
+                var trafficLightPosRight = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + trafficPos.z
+                );
+
+                randIndex = Random.Range(0, 3);
+                
+                if (junctionTrackCount < junctionTrackCountLimit)
                 {
-                    upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, junctionTrackObj, finishTrackObj};
+                    Debug.Log("NewPos: " + newPosition);
+                    Debug.Log("SpecificReachLimitMin: " + (reachLimit / 2f - 2000));
+                    Debug.Log("SpecificReachLimitMax: " + (reachLimit / 2f + 2500));
                     
-                    //upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, finishTrackObj};
-                    
-                    var curvedPositionOffsetX = scale * 0.34f;
-                    var curvedPositionOffsetZ = scale * 1.2f;
-                    initialPosition = new Vector3(0, 0, scaleFactor);
-                    
-                    newPosition = new Vector3(
-                        prevPosition.x + initialPosition.x, 
-                        prevPosition.y + initialPosition.y, 
-                        prevPosition.z + initialPosition.z
-                    );
-
-                    var boosterPosition = new Vector3(
-                        newPosition.x + boosterPos.x,
-                        newPosition.y + boosterPos.y,
-                        newPosition.z + boosterPos.z
-                    );
-                    
-                    var trafficLightPosLeft = new Vector3(
-                        newPosition.x - trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + trafficPos.z
-                    );
-
-                    var trafficLightPosRight = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + trafficPos.z
-                    );
-                    
-
-
-                    // if (junctionTrackCount >= junctionTrackCountLimit)
-                    // {
-                    //     randIndex = Random.Range(0, 3);
-                    // }
-                    // else
-                    // {
-                        randIndex = Random.Range(0, 3);
-                    //}
-                    
-                    //If the newPosition track has reached the 9,000 barrier on the z axis, allow the possible generation of
-                    //the finish Track. If the position exceeds 15,000 force generation of finishTrack.
-                    if ((newPosition.z >= (reachLimit * 0.9f) && newPosition.z < reachLimit) || (Mathf.Abs(newPosition.x) >= (reachLimit * 0.9f) && Mathf.Abs(newPosition.x) < reachLimit))
+                    if(((newPosition.x >= (reachLimit / 2f - 2000)) && (newPosition.x < (reachLimit / 2f + 2500))) || ((newPosition.z >= (reachLimit / 2f - 2000)) && (newPosition.z < (reachLimit / 2f + 2500))))
                     {
-                        randIndex = Random.Range(0, 4);
-                    }
-                    else if(newPosition.z >= reachLimit || Mathf.Abs(newPosition.x) >= reachLimit)
-                    {
+                        Debug.Log("GENERATE JUNCTION!");
+                        junctionTrackCheck = true;
+                        //randIndex = Random.Range(0, 4);
                         randIndex = 3;
                     }
-                    
-                    switch (randIndex)
+                }
+                
+                
+                //If the newPosition track has reached the 9,000 barrier on the z axis, allow the possible generation of
+                //the finish Track. If the position exceeds 15,000 force generation of finishTrack.
+                if ((newPosition.z >= (reachLimit * 0.9f) && newPosition.z < reachLimit) || (Mathf.Abs(newPosition.x) >= (reachLimit * 0.9f) && Mathf.Abs(newPosition.x) < reachLimit))
+                {
+                    randIndex = Random.Range(0, 4);
+                    shouldFinish = true;
+                }
+                else if(newPosition.z >= reachLimit || Mathf.Abs(newPosition.x) >= reachLimit)
+                {
+                    randIndex = 3;
+                    shouldFinish = true;
+                }
+                
+                switch (randIndex)
+                {
+                    case 0:
                     {
-                        case 0:
+                        //Generate Up Neighbours
+                        Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                        
+                        //Booster Track Generation
+                        if ((trackCount > 0 && trackCount % 4 == 0 && boosterRandomness == 1) )
                         {
-                            //Generate Up Neighbours
-                            Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
-                            
-                            //Booster Track Generation
-                            if ((trackCount > 0 && trackCount % 4 == 0 && boosterRandomness == 1) )
-                            {
-                                GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
-                            }
-                            
-                            //Traffic Light Generation
-                            if (trackCount % 5 == 0) 
-                            {
-                                Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
-                                Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
-                            }
-                           
-                            GenerateNeighbours(TrackType.StraightForward, newPosition);
-                            
-                            
-                            break;
-                        }
-
-                        case 1:
-                        {
-                            newPosition = new Vector3(
-                                (prevPosition.x + initialPosition.x) - curvedPositionOffsetX, 
-                                prevPosition.y + initialPosition.y, 
-                                (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
-                            );
-                            
-                            Instantiate(upNeighbours[1], newPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.UpCurvedLeft, newPosition);
-                            break;
-                        }
-
-                        case 2:
-                        {
-                            newPosition = new Vector3(
-                                (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
-                                prevPosition.y + initialPosition.y, 
-                                (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
-                            );
-                            
-                            Instantiate(upNeighbours[2], newPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.UpCurvedRight, newPosition);
-                            break;
+                            GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
                         }
                         
-                        //Finish Track/JunctionTrack generation
-                        case 3:
+                        //Traffic Light Generation
+                        if (trackCount % 5 == 0) 
                         {
-                            // if (junctionTrackCount < junctionTrackCountLimit && (trackCount % 4 == 0 || trackCount % 4 == 1) && shouldFinish == false)
-                            // {
-                            //     newPosition = new Vector3(
-                            //         (prevPosition.x + initialPosition.x),
-                            //         prevPosition.y + initialPosition.y, 
-                            //         (prevPosition.z + 2 * initialPosition.z)
-                            //     );
-                            //
-                            //     Instantiate(upNeighbours[3], newPosition, Quaternion.identity, transform);
-                            //     GenerateNeighbours(TrackType.JunctionTrack, newPosition);
-                            //     junctionTrackCount++;
-                            // }
-                            // else
-                            // {
+                            Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
+                            Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
+                        }
+                       
+                        GenerateNeighbours(TrackType.StraightForward, newPosition);
+                        
+                        
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        newPosition = new Vector3(
+                            (prevPosition.x + initialPosition.x) - curvedPositionOffsetX, 
+                            prevPosition.y + initialPosition.y, 
+                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                        );
+                        
+                        Instantiate(upNeighbours[1], newPosition, Quaternion.identity, transform);
+                        GenerateNeighbours(TrackType.UpCurvedLeft, newPosition);
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        newPosition = new Vector3(
+                            (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
+                            prevPosition.y + initialPosition.y, 
+                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                        );
+                        
+                        Instantiate(upNeighbours[2], newPosition, Quaternion.identity, transform);
+                        GenerateNeighbours(TrackType.UpCurvedRight, newPosition);
+                        break;
+                    }
+                    
+                    //Finish Track/JunctionTrack generation
+                    case 3:
+                    {
+                        if (junctionTrackCheck && shouldFinish == false )
+                        {
+                            newPosition = new Vector3(
+                                (prevPosition.x + initialPosition.x),
+                                prevPosition.y + initialPosition.y, 
+                                (prevPosition.z + 2 * initialPosition.z)
+                            );
+                        
+                            junctionTrackCount++;
+                            Instantiate(upNeighbours[3], newPosition, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.JunctionTrack, newPosition);
                             
-                            
+                        }
+                        else if(shouldFinish)
+                        {
                             //Finish Track
                             Instantiate(upNeighbours[4], newPosition, Quaternion.identity, transform);
                             finishPos = upNeighbours[4].transform.position;
-                            stopGeneration = true;
-                            GenerateNavMesh();
-                            //}
+                            //GenerateNavMesh();
                             
                             //Generate checkpoints list to be used for race positioning
                             checkpoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
                             checkpoints.Add(GameObject.FindGameObjectWithTag("Finish"));
                             Debug.Log("TrackCount: " + trackCount);
-                            
-                            break;
-                            
+
                         }
-                        
-                    }
-                    
-                    break;
-                }
-                
-                case TrackType.StraightRight:
-                {
-                    rightNeighbours = new GameObject[] {straightRightTrackObj, downCurvedRightTrackObj};
-                    
-                    randIndex = Random.Range(0, 2);
-                    
-                    initialPosition = new Vector3(scaleFactor, 0, 0);
-                    
-                    newPosition = new Vector3(
-                        prevPosition.x + initialPosition.x, 
-                        prevPosition.y + initialPosition.y, 
-                        prevPosition.z + initialPosition.z
-                    );
-                    
-                    var boosterPosition = new Vector3(
-                        newPosition.x + boosterPos.x,
-                        newPosition.y + boosterPos.y,
-                        newPosition.z + boosterPos.z
-                    );
-                    
-                    var trafficLightPosLeft = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z - 2 * trafficPos.z
-                    );
-
-                    var trafficLightPosRight = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + 2 * trafficPos.z
-                    );
-                    
-                    var curvedPositionOffsetX = scale * 1.2f;
-                    var curvedPositionOffsetZ = scale * 0.34f;
-                    
-                    
-                    switch (randIndex)
-                    {
-                        case 0:
+                        else
                         {
-                            //Generate the right Neighbour
-                            Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
-                            
-                            //Booster Track Generation
-                            if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
-                            {
-                                GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
-                            }
-                            
-                            //Traffic Light Generation
-                            if ((trackCount > 0 && trackCount % 5 == 0))
-                            {
-                                Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,0,0), transform);
-                                Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,0,0), transform);
-                            }
-                            
-                            GenerateNeighbours(TrackType.StraightRight, newPosition);
-                            
-                            
-                            break;
-                        }
-
-                        case 1:
-                        {
-                            newPosition = new Vector3(
-                                (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
-                                prevPosition.y + initialPosition.y, 
-                                (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
-                            );
-                            
-                            Instantiate(rightNeighbours[1], newPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.DownCurvedRight, newPosition);
-                            break;
-                        }
-                    }
-                    break;
-                }
-
-                case TrackType.StraightLeft:
-                {
-                    leftNeighbours = new GameObject[] { straightLeftTrackObj, downCurvedLeftTrackObj };
-                    
-                    randIndex = Random.Range(0, 2);
-                    
-                    initialPosition = new Vector3(-scaleFactor, 0, 0);
-                    
-                    var curvedPositionOffsetX = scale * 1.2f;
-                    var curvedPositionOffsetZ = scale * 0.34f;
-                    
-                    newPosition = new Vector3(
-                        prevPosition.x + initialPosition.x, 
-                        prevPosition.y + initialPosition.y, 
-                        prevPosition.z + initialPosition.z
-                    );
-                    
-                    var boosterPosition = new Vector3(
-                        newPosition.x + boosterPos.x,
-                        newPosition.y + boosterPos.y,
-                        newPosition.z + boosterPos.z
-                    );
-                    
-                    var trafficLightPosLeft = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z - 2 * trafficPos.z
-                    );
-
-                    var trafficLightPosRight = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + 2 * trafficPos.z
-                    );
-                    
-                    switch (randIndex)
-                    {
-                        case 0:
-                        {
-                            //Generate the left neighbour
-                            Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
-                            
-                            //Booster Track Generation
-                            if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
-                            {
-                                GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
-                            }
-                            
-                            //Traffic Light Generation
-                            if ((trackCount > 0 && trackCount % 5 == 0) )
-                            {
-                                Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,180,0), transform);
-                                Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,180,0), transform);
-                            }
-                            
-                            GenerateNeighbours(TrackType.StraightLeft, newPosition);
-                            
-                            break;
-                        }
-
-                        case 1:
-                        {
-                            newPosition = new Vector3(
-                                (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
-                                prevPosition.y + initialPosition.y, 
-                                (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
-                            );
-                            
-                            Instantiate(leftNeighbours[1], newPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.DownCurvedLeft, newPosition);
-                            break;
-                        }
-                        
-                        default:
-                            break;
-                    }
-                    
-                    break;
-                }
-
-                case TrackType.UpCurvedLeft:
-                {
-                    leftNeighbours = new GameObject[] { straightLeftTrackObj };
-                    //downNeighbours = new GameObject[] { straightForwardTrackObj };
-                    
-                    initialPosition = new Vector3(-(scale * 26.58f), 0, (scale * 16f));
-                    
-                    newPosition = new Vector3(
-                        prevPosition.x + initialPosition.x, 
-                        prevPosition.y + initialPosition.y, 
-                        prevPosition.z + initialPosition.z
-                    );
-                    
-                    var boosterPosition = new Vector3(
-                        newPosition.x + boosterPos.x,
-                        newPosition.y + boosterPos.y,
-                        newPosition.z + boosterPos.z
-                    );
-                   
-                    var trafficLightPosLeft = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z - 2 * trafficPos.z
-                    );
-
-                    var trafficLightPosRight = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + 2 * trafficPos.z
-                    );
-                    
-                    //Booster Track Generation
-                    if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
-                    {
-                        GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
-                    }
-                        
-                    //Traffic Light Generation
-                    if (trackCount % 5 == 0) 
-                    {
-                        Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,180,0), transform);
-                        Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,180,0), transform);
-                    }
-                    
-                    
-                    Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
-                    GenerateNeighbours(TrackType.StraightLeft, newPosition);
-                    break;
-                }
-                
-                case TrackType.UpCurvedRight:
-                {
-                    rightNeighbours = new GameObject[] { straightRightTrackObj };
-                    
-                    initialPosition = new Vector3((scale * 26.58f), 0, (scale * 16f));
-
-                    newPosition = new Vector3(
-                        prevPosition.x + initialPosition.x, 
-                        prevPosition.y + initialPosition.y, 
-                        prevPosition.z + initialPosition.z
-                    );
-                    
-                    var boosterPosition = new Vector3(
-                        newPosition.x + boosterPos.x,
-                        newPosition.y + boosterPos.y,
-                        newPosition.z + boosterPos.z
-                    );
-                    
-                    var trafficLightPosLeft = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z - 2 * trafficPos.z
-                    );
-
-                    var trafficLightPosRight = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + 2 * trafficPos.z
-                    );
-                    
-                    //Booster Track Generation
-                    if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
-                    {
-                        GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
-                    }
-                        
-                    //Traffic Light Generation
-                    if ((trackCount > 0 && trackCount % 5 == 0))
-                    {
-                        Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,0,0), transform);
-                        Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,0,0), transform);
-                    }
-                    
-                    Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
-                    GenerateNeighbours(TrackType.StraightRight, newPosition);
-                    break;
-                }
-                
-                case TrackType.DownCurvedLeft:
-                {
-                    upNeighbours = new GameObject[] { straightForwardTrackObj};
-                    
-                    initialPosition = new Vector3(-(scale * 16f), 0, (scale * 26.58f));
-                    
-                    
-                    newPosition = new Vector3(
-                        prevPosition.x + initialPosition.x, 
-                        prevPosition.y + initialPosition.y, 
-                        prevPosition.z + initialPosition.z
-                    );
-                    
-                    var boosterPosition = new Vector3(
-                        newPosition.x + boosterPos.x,
-                        newPosition.y + boosterPos.y,
-                        newPosition.z + boosterPos.z
-                    );
-                    
-                    var trafficLightPosLeft = new Vector3(
-                        newPosition.x - trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + trafficPos.z
-                    );
-
-                    var trafficLightPosRight = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + trafficPos.z
-                    );
-                    
-                    //Booster Track Generation
-                    if ((trackCount > 0 && trackCount % 4 == 0 && boosterRandomness == 1) )
-                    {
-                        GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
-                    }
-                    
-                    
-                    //Traffic Light Generation
-                    if (trackCount % 5 == 0) 
-                    {
-                        Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
-                        Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
-                    }
-                    
-               
-                    Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
-                    GenerateNeighbours(TrackType.StraightForward, newPosition);
-                    break;
-                }
-                
-                case TrackType.DownCurvedRight:
-                {
-                    upNeighbours = new GameObject[] { straightForwardTrackObj };
-                    
-                    initialPosition = new Vector3((scale * 16f), 0, (scale * 26.58f));
-                    
-                    
-                    newPosition = new Vector3(
-                        prevPosition.x + initialPosition.x, 
-                        prevPosition.y + initialPosition.y, 
-                        prevPosition.z + initialPosition.z
-                    );
-                    
-                    var boosterPosition = new Vector3(
-                        newPosition.x + boosterPos.x,
-                        newPosition.y + boosterPos.y,
-                        newPosition.z + boosterPos.z
-                    );
-                    
-                    var trafficLightPosLeft = new Vector3(
-                        newPosition.x - trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + trafficPos.z
-                    );
-
-                    var trafficLightPosRight = new Vector3(
-                        newPosition.x + trafficPos.x,
-                        newPosition.y + trafficPos.y,
-                        newPosition.z + trafficPos.z
-                    );
-                    
-                    //Booster Track Generation
-                    if ((trackCount > 0 && trackCount % 4 == 0 && boosterRandomness == 1) )
-                    {
-                        GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
-                    }
-                    
-                        
-                    //Traffic Light Generation
-                    if ((trackCount > 0 && trackCount % 5 == 0))
-                    {
-                        Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
-                        Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
-                    }
-                    
-                 
-                    Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
-                    GenerateNeighbours(TrackType.StraightForward, newPosition);
-                    break;
-                    
-                }
-
-                case TrackType.JunctionTrack:
-                {
-                    upNeighbours = new GameObject[] { straightForwardTrackObj };
-                    leftNeighbours = new GameObject[] { straightLeftTrackObj };
-                    rightNeighbours = new GameObject[] { straightRightTrackObj };
-                    initialPosition = new Vector3(0, 0, (scaleFactor * 2));
-
-                    randIndex = Random.Range(0, 3);
-                    
-                    newPosition = new Vector3(
-                        prevPosition.x + initialPosition.x, 
-                        prevPosition.y + initialPosition.y, 
-                        prevPosition.z + initialPosition.z
-                    );
-
-                    switch (randIndex)
-                    {
-                        case 0:
-                        {
+                            Debug.Log("JunctionTrack Generation failed: ");
                             Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
                             GenerateNeighbours(TrackType.StraightForward, newPosition);
-                            break;
                         }
-
-                        case 1:
-                        {
-                            initialPosition = new Vector3((-scaleFactor * 2), 0, 0);
-                    
-                            newPosition = new Vector3(
-                                prevPosition.x + initialPosition.x, 
-                                prevPosition.y + initialPosition.y, 
-                                prevPosition.z + initialPosition.z
-                            );
-                            
-                            Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.StraightLeft, newPosition);
-
-                            break;
-                        }
-
-                        case 2:
-                        {
-                            initialPosition = new Vector3((scaleFactor * 2), 0, 0);
-                    
-                            newPosition = new Vector3(
-                                prevPosition.x + initialPosition.x, 
-                                prevPosition.y + initialPosition.y, 
-                                prevPosition.z + initialPosition.z
-                            );
-
-                            Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.StraightRight, newPosition);
-                            break;
-                        }
+                      
+                        
+                        break;
+                        
                     }
                     
-                    break;
-                    
                 }
+                
+                break;
+            }
+            
+            case TrackType.StraightRight:
+            {
+                rightNeighbours = new GameObject[] {straightRightTrackObj, downCurvedRightTrackObj};
+                
+                randIndex = Random.Range(0, 2);
+                
+                initialPosition = new Vector3(scaleFactor, 0, 0);
+                
+                newPosition = new Vector3(
+                    prevPosition.x + initialPosition.x, 
+                    prevPosition.y + initialPosition.y, 
+                    prevPosition.z + initialPosition.z
+                );
+                
+                var boosterPosition = new Vector3(
+                    newPosition.x + boosterPos.x,
+                    newPosition.y + boosterPos.y,
+                    newPosition.z + boosterPos.z
+                );
+                
+                var trafficLightPosLeft = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z - 2 * trafficPos.z
+                );
+
+                var trafficLightPosRight = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + 2 * trafficPos.z
+                );
+                
+                var curvedPositionOffsetX = scale * 1.2f;
+                var curvedPositionOffsetZ = scale * 0.34f;
+                
+                
+                switch (randIndex)
+                {
+                    case 0:
+                    {
+                        //Generate the right Neighbour
+                        Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
+                        
+                        //Booster Track Generation
+                        if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
+                        {
+                            GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
+                        }
+                        
+                        //Traffic Light Generation
+                        if ((trackCount > 0 && trackCount % 5 == 0))
+                        {
+                            Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,0,0), transform);
+                            Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,0,0), transform);
+                        }
+                        
+                        GenerateNeighbours(TrackType.StraightRight, newPosition);
+                        
+                        
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        newPosition = new Vector3(
+                            (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
+                            prevPosition.y + initialPosition.y, 
+                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                        );
+                        
+                        Instantiate(rightNeighbours[1], newPosition, Quaternion.identity, transform);
+                        GenerateNeighbours(TrackType.DownCurvedRight, newPosition);
+                        break;
+                    }
+                }
+                break;
+            }
+
+            case TrackType.StraightLeft:
+            {
+                leftNeighbours = new GameObject[] { straightLeftTrackObj, downCurvedLeftTrackObj };
+                
+                randIndex = Random.Range(0, 2);
+                
+                initialPosition = new Vector3(-scaleFactor, 0, 0);
+                
+                var curvedPositionOffsetX = scale * 1.2f;
+                var curvedPositionOffsetZ = scale * 0.34f;
+                
+                newPosition = new Vector3(
+                    prevPosition.x + initialPosition.x, 
+                    prevPosition.y + initialPosition.y, 
+                    prevPosition.z + initialPosition.z
+                );
+                
+                var boosterPosition = new Vector3(
+                    newPosition.x + boosterPos.x,
+                    newPosition.y + boosterPos.y,
+                    newPosition.z + boosterPos.z
+                );
+                
+                var trafficLightPosLeft = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z - 2 * trafficPos.z
+                );
+
+                var trafficLightPosRight = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + 2 * trafficPos.z
+                );
+                
+                switch (randIndex)
+                {
+                    case 0:
+                    {
+                        //Generate the left neighbour
+                        Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
+                        
+                        //Booster Track Generation
+                        if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
+                        {
+                            GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
+                        }
+                        
+                        //Traffic Light Generation
+                        if ((trackCount > 0 && trackCount % 5 == 0) )
+                        {
+                            Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,180,0), transform);
+                            Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,180,0), transform);
+                        }
+                        
+                        GenerateNeighbours(TrackType.StraightLeft, newPosition);
+                        
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        newPosition = new Vector3(
+                            (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
+                            prevPosition.y + initialPosition.y, 
+                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                        );
+                        
+                        Instantiate(leftNeighbours[1], newPosition, Quaternion.identity, transform);
+                        GenerateNeighbours(TrackType.DownCurvedLeft, newPosition);
+                        break;
+                    }
+                    
+                    default:
+                        break;
+                }
+                
+                break;
+            }
+
+            case TrackType.UpCurvedLeft:
+            {
+                leftNeighbours = new GameObject[] { straightLeftTrackObj };
+                //downNeighbours = new GameObject[] { straightForwardTrackObj };
+                
+                initialPosition = new Vector3(-(scale * 26.58f), 0, (scale * 16f));
+                
+                newPosition = new Vector3(
+                    prevPosition.x + initialPosition.x, 
+                    prevPosition.y + initialPosition.y, 
+                    prevPosition.z + initialPosition.z
+                );
+                
+                var boosterPosition = new Vector3(
+                    newPosition.x + boosterPos.x,
+                    newPosition.y + boosterPos.y,
+                    newPosition.z + boosterPos.z
+                );
+               
+                var trafficLightPosLeft = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z - 2 * trafficPos.z
+                );
+
+                var trafficLightPosRight = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + 2 * trafficPos.z
+                );
+                
+                //Booster Track Generation
+                if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
+                {
+                    GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
+                }
+                    
+                //Traffic Light Generation
+                if (trackCount % 5 == 0) 
+                {
+                    Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,180,0), transform);
+                    Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,180,0), transform);
+                }
+                
+                
+                Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
+                GenerateNeighbours(TrackType.StraightLeft, newPosition);
+                break;
+            }
+            
+            case TrackType.UpCurvedRight:
+            {
+                rightNeighbours = new GameObject[] { straightRightTrackObj };
+                
+                initialPosition = new Vector3((scale * 26.58f), 0, (scale * 16f));
+
+                newPosition = new Vector3(
+                    prevPosition.x + initialPosition.x, 
+                    prevPosition.y + initialPosition.y, 
+                    prevPosition.z + initialPosition.z
+                );
+                
+                var boosterPosition = new Vector3(
+                    newPosition.x + boosterPos.x,
+                    newPosition.y + boosterPos.y,
+                    newPosition.z + boosterPos.z
+                );
+                
+                var trafficLightPosLeft = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z - 2 * trafficPos.z
+                );
+
+                var trafficLightPosRight = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + 2 * trafficPos.z
+                );
+                
+                //Booster Track Generation
+                if ((trackCount > 0 && trackCount % 4 == 0)  && boosterRandomness == 1)
+                {
+                    GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.Euler(0,-90,0));
+                }
+                    
+                //Traffic Light Generation
+                if ((trackCount > 0 && trackCount % 5 == 0))
+                {
+                    Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,0,0), transform);
+                    Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,0,0), transform);
+                }
+                
+                Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
+                GenerateNeighbours(TrackType.StraightRight, newPosition);
+                break;
+            }
+            
+            case TrackType.DownCurvedLeft:
+            {
+                upNeighbours = new GameObject[] { straightForwardTrackObj};
+                
+                initialPosition = new Vector3(-(scale * 16f), 0, (scale * 26.58f));
+                
+                
+                newPosition = new Vector3(
+                    prevPosition.x + initialPosition.x, 
+                    prevPosition.y + initialPosition.y, 
+                    prevPosition.z + initialPosition.z
+                );
+                
+                var boosterPosition = new Vector3(
+                    newPosition.x + boosterPos.x,
+                    newPosition.y + boosterPos.y,
+                    newPosition.z + boosterPos.z
+                );
+                
+                var trafficLightPosLeft = new Vector3(
+                    newPosition.x - trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + trafficPos.z
+                );
+
+                var trafficLightPosRight = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + trafficPos.z
+                );
+                
+                //Booster Track Generation
+                if ((trackCount > 0 && trackCount % 4 == 0 && boosterRandomness == 1) )
+                {
+                    GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
+                }
+                
+                
+                //Traffic Light Generation
+                if (trackCount % 5 == 0) 
+                {
+                    Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
+                    Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
+                }
+                
+           
+                Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                GenerateNeighbours(TrackType.StraightForward, newPosition);
+                break;
+            }
+            
+            case TrackType.DownCurvedRight:
+            {
+                upNeighbours = new GameObject[] { straightForwardTrackObj };
+                
+                initialPosition = new Vector3((scale * 16f), 0, (scale * 26.58f));
+                
+                
+                newPosition = new Vector3(
+                    prevPosition.x + initialPosition.x, 
+                    prevPosition.y + initialPosition.y, 
+                    prevPosition.z + initialPosition.z
+                );
+                
+                var boosterPosition = new Vector3(
+                    newPosition.x + boosterPos.x,
+                    newPosition.y + boosterPos.y,
+                    newPosition.z + boosterPos.z
+                );
+                
+                var trafficLightPosLeft = new Vector3(
+                    newPosition.x - trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + trafficPos.z
+                );
+
+                var trafficLightPosRight = new Vector3(
+                    newPosition.x + trafficPos.x,
+                    newPosition.y + trafficPos.y,
+                    newPosition.z + trafficPos.z
+                );
+                
+                //Booster Track Generation
+                if ((trackCount > 0 && trackCount % 4 == 0 && boosterRandomness == 1) )
+                {
+                    GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
+                }
+                
+                    
+                //Traffic Light Generation
+                if ((trackCount > 0 && trackCount % 5 == 0))
+                {
+                    Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
+                    Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
+                }
+                
+             
+                Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                GenerateNeighbours(TrackType.StraightForward, newPosition);
+                break;
+                
+            }
+
+            case TrackType.JunctionTrack:
+            {
+                upNeighbours = new GameObject[] { straightForwardTrackObj };
+                leftNeighbours = new GameObject[] { straightLeftTrackObj };
+                rightNeighbours = new GameObject[] { straightRightTrackObj };
+                var initialStraightPosition = new Vector3(0, 0, (scaleFactor * 2));
+                var initialLeftPos = new Vector3((-scaleFactor * 2), 0, 0);
+                var initialRightPos = new Vector3((scaleFactor * 2), 0, 0);
+                
+                var newStraightPosition = new Vector3(
+                    prevPosition.x + initialStraightPosition.x, 
+                    prevPosition.y + initialStraightPosition.y, 
+                    prevPosition.z + initialStraightPosition.z
+                );
+                
+                var newLeftPos = new Vector3(
+                    prevPosition.x + initialLeftPos.x, 
+                    prevPosition.y + initialLeftPos.y, 
+                    prevPosition.z + initialLeftPos.z
+                );
+                
+                var newRightPos = new Vector3(
+                    prevPosition.x + initialRightPos.x, 
+                    prevPosition.y + initialRightPos.y, 
+                    prevPosition.z + initialRightPos.z
+                );
+
+                
+                Instantiate(upNeighbours[0], newStraightPosition, Quaternion.identity, transform);
+                Instantiate(leftNeighbours[0], newLeftPos, Quaternion.identity, transform);
+                Instantiate(rightNeighbours[0], newRightPos, Quaternion.identity, transform);
+                // GenerateNeighbours(TrackType.JunctionTrack, newStraightPosition);
+                
+                randIndex = Random.Range(0, 3);
+                var index = 1;
+
+                switch (randIndex)
+                {
+                    case 0:
+                    {
+                        Instantiate(upNeighbours[0], newStraightPosition + (initialStraightPosition / 2), Quaternion.identity, transform);
+                        GenerateNeighbours(TrackType.StraightForward, newStraightPosition + (initialStraightPosition / 2));
+                        
+                        for (int i = 1; i < 10; i++)
+                        {
+                            Instantiate(leftNeighbours[0], newLeftPos + (initialLeftPos / 2) * i, Quaternion.identity, transform);
+                            Instantiate(rightNeighbours[0], newRightPos  + (initialRightPos / 2) * i, Quaternion.identity, transform);
+                        }
+                        
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        for (int i = index; i < 10; i++)
+                        {
+                            Instantiate(leftNeighbours[0], newLeftPos + (initialLeftPos / 2) * i, Quaternion.identity, transform);
+                            index++;
+                        }
+                        GenerateNeighbours(TrackType.StraightLeft, newLeftPos + (initialLeftPos / 2) * (index - 1));
+                        
+                        for (int i = 1; i < 10; i++)
+                        {
+                            Instantiate(rightNeighbours[0], newRightPos  + (initialRightPos / 2) * i, Quaternion.identity, transform);
+                        }
+                        
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        for (int i = index; i < 10; i++)
+                        {
+                            Instantiate(rightNeighbours[0], newRightPos  + (initialRightPos / 2) * i, Quaternion.identity, transform);
+                            index++;
+                        }
+                        GenerateNeighbours(TrackType.StraightRight, newRightPos + (initialRightPos / 2 ) * (index - 1));
+                        
+                        for (int i = 1; i < 10; i++)
+                        {
+                            Instantiate(leftNeighbours[0], newLeftPos + (initialLeftPos / 2) * i, Quaternion.identity, transform);
+                        }
+                        break;
+                    }
+                }
+                
+                
+                break;
+                
+            
                 
             }
         }

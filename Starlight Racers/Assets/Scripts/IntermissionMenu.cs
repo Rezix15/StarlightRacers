@@ -32,12 +32,19 @@ public class IntermissionMenu : MonoBehaviour
 
     public GameObject continueBtn;
 
+    public GameObject rerollBtn;
+
     private TextMeshProUGUI continueText;
+
+    private int rerollMax; //The amount of times the player is allowed to reroll
+    private int currentRerolls; 
     
     
     // Start is called before the first frame update
     void Start()
     {
+        currentRerolls = 0;
+        SetRerolls();
         componentsCards = new ComponentObj[3];
         RollComponents();
         DisplayContinueText();
@@ -76,7 +83,34 @@ public class IntermissionMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        rerollBtn.SetActive(currentRerolls < rerollMax); //Sets the reroll button to be active or inactive depending on how many rerolls have been done
+    }
+
+    private void SetRerolls()
+    {
+        switch (MenuManager.difficultyLevel)
+        {
+            //If difficulty is at easy mode
+            case 0:
+            {
+                rerollMax = 3;
+                break;
+            }
+            
+            //If difficulty is at normal mode
+            case 1:
+            {
+                rerollMax = 1;
+                break;
+            }
+            
+            //If difficulty is at hard mode
+            case 2:
+            {
+                rerollMax = 0;
+                break;
+            }
+        }
     }
 
     public void RollComponents()
@@ -89,6 +123,7 @@ public class IntermissionMenu : MonoBehaviour
         }
         
         currentComponent = componentsCards[0];
+        currentRerolls++;
     }
 
     private ComponentObj GenerateComponents(int index)

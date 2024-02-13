@@ -1,19 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class SpacejetAI : MonoBehaviour
 {
-    public float thrust = 10000.0f;
+    # region SpaceJet Stats
+    private Stat thrust;
+    private float grip;
+    
+    [SerializeField] private Stat speed;
+    
+    public Stat shieldMax; //Health
+    
+    [SerializeField]
+    private Stat laserDamage; //Defense
+    
+    [SerializeField]
+    private Stat shieldRate; //Defense Stat
+    
+    # endregion
+    
     private float lerpedSpeed = 4.0f;
     //private float decelSpeed = 3.0f;
-
-    private float horizontalInput;
-    private float verticalInput;
-
-    private bool isAccelerating = false;
 
     //private float turnSmoothTime = 0.1f;
     //private float turnSmoothVelocity = 0.1f;
@@ -33,14 +45,18 @@ public class SpacejetAI : MonoBehaviour
     private int laserAmmo;
 
     private Vector3 prevVelocity;
-
+    private float horizontalInput;
     private float banking_angle;
-
     private bool isBoosting = false;
+    private bool isAccelerating;
 
     float ammoRefillTimer;
 
+    [SerializeField]
     private GameObject currentCheckpoint;
+    
+    [SerializeField]
+    private int checkpointCount; //Counts the amount of times the racer has passed through the checkpoint
     public float currentRacerDistance;
 
     //This is the HP stat of the spaceJet
@@ -49,7 +65,7 @@ public class SpacejetAI : MonoBehaviour
     private bool isVulnerable;
 
     private bool takeDamage = true;
-    private int checkpointCount; //Counts the amount of times the racer has passed through the checkpoint
+    
 
     private NavMeshAgent spaceJetAgent;
     
@@ -60,9 +76,14 @@ public class SpacejetAI : MonoBehaviour
     private bool hasFinished = true;
 
     private float Ypos;
-    [SerializeField] private int index = 0;
+    [SerializeField] private int index;
     private Vector3 finishPos;
     private GameObject finishObj;
+    
+    private Rigidbody rb;
+
+    private int turnAmount;
+    RaycastHit raycastHit;
 
 
     private void Awake()
@@ -73,6 +94,7 @@ public class SpacejetAI : MonoBehaviour
 
     void Start()
     {
+        InitializeStats();
         ammoRefillTimer = 0; //set our timer to 0
         checkpointCount = 0;
         isVulnerable = false;
@@ -89,13 +111,26 @@ public class SpacejetAI : MonoBehaviour
         //
         // //spaceJetAgent.enabled = false;
 
-        currentTrack = FindObjectOfType<TrackGen>();
-        currentTrackCheckpoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
+        rb = gameObject.GetComponent<Rigidbody>();
+        
+        //Initialize the currentCheckpoint to be the first checkpoint in the array
+        currentCheckpoint = TrackGen.checkpoints[0];
 
         finishObj = GameObject.FindGameObjectWithTag("Finish");
         finishPos = finishObj.transform.position;
+        
 
 
+    }
+    
+    private void InitializeStats()
+    {
+        thrust = new Stat(MenuManager.enemySpaceJet.thrust);
+        grip = MenuManager.enemySpaceJet.grip;
+        speed = new Stat(MenuManager.enemySpaceJet.speed);
+        shieldMax = new Stat(MenuManager.enemySpaceJet.shield);
+        shieldRate = new Stat(MenuManager.enemySpaceJet.shieldRate);
+        laserDamage = new Stat(MenuManager.enemySpaceJet.laserDamage);
     }
 
     void OnGameStarted()
@@ -112,26 +147,28 @@ public class SpacejetAI : MonoBehaviour
     void FixedUpdate()
     {
         
-        // //If the jet is currently accelerating then allow user movement and update each second.
-        // if (isAccelerating)
-        // {
-        //     rb.AddForce(Vector3.Lerp(Vector3.zero,(transform.forward * thrust), Time.deltaTime * 200f));
-        //     
-        //     /*
-        //      *  # Implement Banking as described:
-        //     # https://www.cs.toronto.edu/~dt/siggraph97-course/cwr87/
-        //     var temp_up = global_transform.basis.y.lerp(Vector3.UP + (acceleration * banking), delta * 5.0)
-        //     look_at(global_transform.origin - vel.normalized(), temp_up)
-        //      */
-        //     var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
-        //     rb.AddTorque(transform.up * (0.8f * horizontalInput), ForceMode.Acceleration);
-        //     
-        //     //add in banking
-        //     //banking_angle = rb.angularVelocity.z;
-        //     //Vector3 tempUp = Vector3.Lerp(transform.up, Vector3.up + (acceleration * banking_angle), Time.deltaTime * 5.0f);
-        //     //transform.LookAt(transform.position - rb.velocity.normalized,tempUp);
-        //     prevVelocity = rb.velocity; //update our previous velocity
-        // }
+        //If the jet is currently accelerating then allow user movement and update each second.
+        if (isAccelerating)
+        {
+            rb.AddForce(Vector3.Lerp(Vector3.zero,(transform.forward * speed.trueValue), Time.deltaTime * thrust.trueValue));
+            
+            /*
+             *  # Implement Banking as described:
+            # https://www.cs.toronto.edu/~dt/siggraph97-course/cwr87/
+            var temp_up = global_transform.basis.y.lerp(Vector3.UP + (acceleration * banking), delta * 5.0)
+            look_at(global_transform.origin - vel.normalized(), temp_up)
+             */
+            var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
+            Movement(currentCheckpoint.transform.position);
+            
+            Debug.Log("HorizontalInput: " + horizontalInput);
+            
+            //add in banking
+            //banking_angle = rb.angularVelocity.z;
+            //Vector3 tempUp = Vector3.Lerp(transform.up, Vector3.up + (acceleration * banking_angle), Time.deltaTime * 5.0f);
+            //transform.LookAt(transform.position - rb.velocity.normalized,tempUp);
+            prevVelocity = rb.velocity; //update our previous velocity
+        }
         
     }
     
@@ -143,7 +180,7 @@ public class SpacejetAI : MonoBehaviour
         if (hasFinished == false)
         {
             finishTime += Time.deltaTime;
-            
+
             // Ypos = transform.position.y;
             //
             // if (index < currentTrackCheckpoints.Count)
@@ -174,6 +211,111 @@ public class SpacejetAI : MonoBehaviour
             //     spaceJetAgent.SetDestination(finishDestination);
             // }
         }
+    }
+    
+    
+    
+
+    //Inspired by https://dawn-studio.de/tutorials/boids/
+    private void Movement(Vector3 targetPos)
+    {
+        
+        var newTargetPos = TrackGen.checkpoints[checkpointCount+1].transform.position;
+        
+        if (Vector3.Distance(transform.position, targetPos) < 0.1f)
+        {
+            currentCheckpoint = TrackGen.checkpoints[checkpointCount];
+            newTargetPos = TrackGen.checkpoints[checkpointCount+1].transform.position;
+        }
+        
+        if (checkpointCount < TrackGen.checkpoints.Count - 1)
+        {
+            targetPos = new Vector3(newTargetPos.x, Ypos, newTargetPos.z);
+            
+            var detectPosition = new Vector3(transform.position.x, 
+                transform.position.y,
+                transform.position.z + 30f
+            );
+            //transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * 1);
+
+            
+            if (Physics.Raycast(detectPosition, transform.forward, out raycastHit, MenuManager.scaleLevel * 10,
+                    LayerMask.GetMask("Wall")))
+            {
+                Debug.Log("Raycast Hit at: " + raycastHit);
+                
+
+                // Debug.Log("transform.position.x - targetPos.x: " + (transform.position.x - targetPos.x));
+                //
+                // Debug.Log("Mathf ver:  " + Mathf.Abs(transform.position.x - targetPos.x));
+                // horizontalInput = (Vector3.Distance(raycastHit.point, transform.position));
+                // Debug.Log("horizontalInput: " + horizontalInput);
+
+                // var transformRotation = transform.rotation;
+                // var dir = 0;
+                //
+                // if (targetPos.x < 0)
+                // {
+                //     dir = -1;
+                // }
+                // else
+                // {
+                //     dir = 1;
+                // }
+                //
+                // Debug.Log("dir: " + dir);
+                //
+                // var desiredAngle = transformRotation.y * dir + 0.1f;
+                //var desiredTargetAngle = 90 * dir;
+                //
+                // Debug.Log("DesiredAngle: " + desiredAngle);
+                // Debug.Log("desiredTargetAngle: " + desiredTargetAngle);
+
+
+                // if (Mathf.Abs(transform.position.x - targetPos.x) > 100)
+                // {
+                //     if ((dir > 0 && transform.eulerAngles.y < desiredTargetAngle - 60 || dir < 0 && transform.eulerAngles.y < 360 - Mathf.Abs(desiredTargetAngle) - 60))
+                //     {
+                //         horizontalInput += 2 * targetPos.normalized.x;
+                //         horizontalInput = Mathf.Clamp(horizontalInput, -1, 1);
+                //         
+                //         rb.AddTorque(transform.up * (grip * horizontalInput), ForceMode.Acceleration);
+                //         
+                //     }
+                //     else
+                //     {
+                //         horizontalInput = 0;
+                //         transform.eulerAngles = new Vector3(0, desiredTargetAngle, 0);
+                //     }
+                // }
+                // else
+                // {
+                //     Debug.Log("This..");
+                //     horizontalInput = 0;
+                // }
+
+                if (turnAmount < 40)
+                {
+                    var toTarget = (targetPos - transform.position).normalized;
+                    
+                    horizontalInput += 2 * Mathf.Sign(Vector3.Dot(toTarget, transform.right));
+                    horizontalInput = Mathf.Clamp(horizontalInput, -1, 1);
+                    rb.AddTorque(transform.up * (grip * horizontalInput), ForceMode.Acceleration);
+                    turnAmount++;
+                }
+                else
+                {
+                    horizontalInput = 0;
+                }
+                
+            }
+            
+        }
+        
+
+
+
+
     }
     
     private void AmmoRefill(float ammoTimer)
@@ -225,6 +367,7 @@ public class SpacejetAI : MonoBehaviour
             if (currentCheckpoint == TrackGen.checkpoints[checkpointCount])
             {
                 checkpointCount++;
+                turnAmount = 0;
             }
         }
         

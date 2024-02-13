@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class MenuManager : MonoBehaviour
 {
@@ -28,8 +29,11 @@ public class MenuManager : MonoBehaviour
     public TextMeshProUGUI descriptiveText1;
 
     public static SpaceJetObj currentSpaceJet;
+    public static SpaceJetObj enemySpaceJet;
 
     public SpaceJetObj[] spaceJets;
+
+    private List<SpaceJetObj> availableSpaceJets;
 
     public TextMeshProUGUI spaceJetNameText;
 
@@ -65,7 +69,11 @@ public class MenuManager : MonoBehaviour
 
     public Image[] indicators;
 
+    public Image[] difficultyMenuIndicators;
+
     public Button[] menuOptions;
+
+    public Button[] difMenuOptions;
 
     private int menuIndex;
 
@@ -78,7 +86,13 @@ public class MenuManager : MonoBehaviour
     private bool isKeyboard; //Bool to check whether input is keyboard
     private bool isGamepad; //Bool to check whether input is gamepad
 
-    private PlayerInput _input;
+    private PlayerInput playerInput;
+
+    private GameObject lastHoveredObj;
+
+    public static int difficultyLevel; //global variable that will be used to define the difficulty level for our game.
+    public static int scaleLevel; //global variable that will set the scale of the track.
+    public static int reachLimit;
 
     private void Awake()
     {
@@ -107,9 +121,10 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-          _input = GetComponent<PlayerInput>();
+          playerInput = GetComponent<PlayerInput>();
         startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
         ToggleMenu(0);
+        scaleLevel = 45;
 
         // speedStatImg = new Image[10];
         // shieldStatImg = new Image[10];
@@ -131,6 +146,9 @@ public class MenuManager : MonoBehaviour
 
         prefabSpaceJets = new GameObject[childCount];
 
+        difficultyLevel = 1; //Set the difficulty level to be at 1, which is normal mode
+        
+
         //The lists that stores the amount of component boosts that the player has
         componentBoosts = new List<ComponentObj>();
         
@@ -148,6 +166,8 @@ public class MenuManager : MonoBehaviour
                 prefabSpaceJets[i].SetActive(true);
             }
         }
+
+        availableSpaceJets = new List<SpaceJetObj>(spaceJets);
     }
 
     // Update is called once per frame
@@ -155,6 +175,7 @@ public class MenuManager : MonoBehaviour
     {
         UpdateUserInputDisplay();
         ToggleThroughMenu();
+        ToggleThroughDifficultyMenu();
         
     }
 
@@ -162,7 +183,7 @@ public class MenuManager : MonoBehaviour
     {
         ToggleMenu(1);
         
-        if (isGamepad)
+        if (playerInput.currentControlScheme == "Controller")
         {
             EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
         }
@@ -170,21 +191,20 @@ public class MenuManager : MonoBehaviour
     
     
 
-    private void WaitForKeyPress()
-    {
-        if (isActionPressed && !hasBeenPressed)
-        {
-            ToggleMenu(1);
-            hasBeenPressed = true;
-            EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
-        }
-    }
+    // private void WaitForKeyPress()
+    // {
+    //     if (isActionPressed && !hasBeenPressed)
+    //     {
+    //         ToggleMenu(1);
+    //         hasBeenPressed = true;
+    //         EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
+    //     }
+    // }
 
     private void ToggleThroughMenu()
     {
         GameObject selectedOpt = EventSystem.current.currentSelectedGameObject;
-
-
+        
         if (isGamepad)
         {
             for (int i = 0; i < menuOptions.Length; i++)
@@ -200,6 +220,26 @@ public class MenuManager : MonoBehaviour
             }
         }
         
+    }
+
+    private void ToggleThroughDifficultyMenu()
+    {
+        GameObject selectedOpt = EventSystem.current.currentSelectedGameObject;
+        
+        if (isGamepad)
+        {
+            for (int i = 0; i < difMenuOptions.Length; i++)
+            {
+                difficultyMenuIndicators[i].gameObject.SetActive(difMenuOptions[i].gameObject == selectedOpt);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < difMenuOptions.Length; i++)
+            {
+                difficultyMenuIndicators[i].gameObject.SetActive(false);
+            }
+        }
     }
     
     
@@ -249,7 +289,7 @@ public class MenuManager : MonoBehaviour
     private void UpdateUserInputDisplay()
     {
         //Determine the device that is being used.
-        if (_input.currentControlScheme == "Controller")
+        if (playerInput.currentControlScheme == "Controller")
         {
             isGamepad = true;
             isKeyboard = false;
@@ -261,7 +301,7 @@ public class MenuManager : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(startButton);
             }
         }
-        else if(_input.currentControlScheme == "Keyboard")
+        else if(playerInput.currentControlScheme == "Keyboard")
         {
             isKeyboard = true;
             isGamepad = false;
@@ -271,7 +311,7 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            startButtonText.text = _input.currentControlScheme;
+            startButtonText.text = playerInput.currentControlScheme;
             
         }
     }
@@ -290,8 +330,60 @@ public class MenuManager : MonoBehaviour
     {
         //ToggleMenu(3);
         RaceCount = 1;
+
+        availableSpaceJets.Remove(currentSpaceJet); //Remove current spaceJet
+
+        var randIndex = Random.Range(0, availableSpaceJets.Count);
+
+        enemySpaceJet = availableSpaceJets[randIndex];
+        
         SceneManager.LoadScene("IntermissionScene");
     }
+
+    //Function to set the difficulty level of the game
+    public void DifficultySetting(int difficultyVar)
+    {
+        switch (difficultyVar)
+        {
+            case 0:
+            {
+                reachLimit = scaleLevel * 600;
+                break;
+            }
+
+            case 1:
+            {
+                reachLimit = scaleLevel * 666;
+                break;
+            }
+
+            case 2:
+            {
+                reachLimit = scaleLevel * 800;
+                break;
+            }
+
+            default:
+            {
+                reachLimit = scaleLevel * 600;
+                break;
+            }
+        }
+        
+        difficultyLevel = difficultyVar;
+        ToggleMenu(3);
+        
+        rButton.SetActive(true);
+        
+        //If device is a gamepad
+        if (isGamepad)
+        {
+            EventSystem.current.SetSelectedGameObject(rButton);
+        }
+        
+        DisplayStats();
+    }
+    
 
     public void ToggleLeft()
     {
@@ -417,15 +509,11 @@ public class MenuManager : MonoBehaviour
     {
         //SceneManager.LoadScene("StarLightRacers_BetaTest");
         ToggleMenu(2);
-        rButton.SetActive(true);
         
-        //If device is a gamepad
-        if (isGamepad)
+        if (playerInput.currentControlScheme == "Controller")
         {
-            EventSystem.current.SetSelectedGameObject(rButton);
+            EventSystem.current.SetSelectedGameObject(difMenuOptions[1].gameObject);
         }
-        
-        DisplayStats();
     }
 
     private void ButtonInactivity()
