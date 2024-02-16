@@ -177,9 +177,15 @@ public class RaceManager : MonoBehaviour
         yield return new WaitForSeconds(2);
         countdownText.text = "3";
         yield return new WaitForSeconds(1);
+        countdownText.text = "";
+        yield return new WaitForSeconds(1);
         countdownText.text = "2";
         yield return new WaitForSeconds(1);
+        countdownText.text = "";
+        yield return new WaitForSeconds(1);
         countdownText.text = "1";
+        yield return new WaitForSeconds(1);
+        countdownText.text = "";
         yield return new WaitForSeconds(1);
         countdownText.text = "GO!";
         yield return new WaitForSeconds(0.4f);

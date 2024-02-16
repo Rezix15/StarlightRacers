@@ -16,7 +16,7 @@ public class MenuManager : MonoBehaviour
 
     private Color[] materialColors;
 
-    public List<Transform> menus;
+    public List<Transform> menus; //List to store all the menus that are in our scene
 
     private int menu;
 
@@ -27,13 +27,14 @@ public class MenuManager : MonoBehaviour
     private bool hasBeenPressed = false;
 
     public TextMeshProUGUI descriptiveText1;
+    public TextMeshProUGUI difDescriptiveText; //Descriptive text for the difficulty menu
 
     public static SpaceJetObj currentSpaceJet;
     public static SpaceJetObj enemySpaceJet;
 
-    public SpaceJetObj[] spaceJets;
+    public SpaceJetObj[] spaceJets; //Array that stores all the spacejets 
 
-    private List<SpaceJetObj> availableSpaceJets;
+    private List<SpaceJetObj> availableSpaceJets; //Array that stores all the remaining spacejets when allocating a random one
 
     public TextMeshProUGUI spaceJetNameText;
 
@@ -92,7 +93,7 @@ public class MenuManager : MonoBehaviour
 
     public static int difficultyLevel; //global variable that will be used to define the difficulty level for our game.
     public static int scaleLevel; //global variable that will set the scale of the track.
-    public static int reachLimit;
+    public static int reachLimit; //global variable that sets the maximum limit co-ordinate the track gen can go
 
     private void Awake()
     {
@@ -244,6 +245,7 @@ public class MenuManager : MonoBehaviour
     
     
 
+    //Function that causes the descriptive text to change depending on the id of the button
     public void HoverButton(int id)
     {
         switch (id)
@@ -269,6 +271,27 @@ public class MenuManager : MonoBehaviour
             case 4:
             {
                 descriptiveText1.text = "Need to quit?";
+                break;
+            }
+
+            case 5:
+            {
+                difDescriptiveText.text = 
+                    "Great for new beginners, who are unfamiliar with the mechanics. ";
+                break;
+            }
+
+            case 6:
+            {
+                difDescriptiveText.text =
+                    "Great for players who are not looking for an easy challenge but also not a difficult one.";
+                break;
+            }
+
+            case 7:
+            {
+                difDescriptiveText.text =
+                    "For players who seek a great challenge and experience the true thrill of racing. ";
                 break;
             }
 
