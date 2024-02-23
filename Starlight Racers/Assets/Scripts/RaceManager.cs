@@ -176,17 +176,17 @@ public class RaceManager : MonoBehaviour
         
         yield return new WaitForSeconds(2);
         countdownText.text = "3";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         countdownText.text = "";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         countdownText.text = "2";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         countdownText.text = "";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         countdownText.text = "1";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         countdownText.text = "";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         countdownText.text = "GO!";
         yield return new WaitForSeconds(0.4f);
         GameStarted?.Invoke();
