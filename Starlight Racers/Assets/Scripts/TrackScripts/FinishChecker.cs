@@ -71,8 +71,8 @@ public class FinishChecker : MonoBehaviour
             {
                 MenuManager.RaceCount++;
                 MenuManager.totalFinishTime += playerFinishTime;
-                SceneManager.LoadScene("IntermissionScene");
                 CoinManager.coinCount += 500;
+                SceneManager.LoadScene("IntermissionScene");
             }
             else
             {
