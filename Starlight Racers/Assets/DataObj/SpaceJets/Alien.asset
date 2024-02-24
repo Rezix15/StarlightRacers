@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Alien
   m_EditorClassIdentifier: 
   name: UFO
-  speed: 15000
+  speed: 25000
   shield: 250
   shieldRate: 30
   grip: 4

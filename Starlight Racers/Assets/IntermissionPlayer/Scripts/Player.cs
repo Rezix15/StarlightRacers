@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
         
         Vector3 dir = new Vector3(horizontalInput, 0f, forwardInput);
 
-        if (dir.magnitude >= 0.1f && BoosterShopkeeper.ActivateBoosterMenu == false)
+        if (dir.magnitude >= 0.1f && DialogueManager.inDialogue == false)
         {
             float targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float turningAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);

@@ -122,7 +122,7 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-          playerInput = GetComponent<PlayerInput>();
+        playerInput = GetComponent<PlayerInput>();
         startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
         ToggleMenu(0);
         scaleLevel = 45;
@@ -474,7 +474,7 @@ public class MenuManager : MonoBehaviour
 
 
         //Calculate the speedStat UI Display
-        var speedVal = (currentSpaceJet.speed / 30000f) * speedStatImg.Length;
+        var speedVal = (currentSpaceJet.speed / 40000f) * speedStatImg.Length;
 
         for (int i = 0; i < speedStatImg.Length; i++)
         {

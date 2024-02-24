@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ghost
   m_EditorClassIdentifier: 
   name: Ghost Rider
-  speed: 20000
+  speed: 30000
   shield: 150
   shieldRate: 20
   grip: 3

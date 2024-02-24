@@ -39,6 +39,7 @@ public class IntermissionMenu : MonoBehaviour
     private int rerollMax; //The amount of times the player is allowed to reroll
     private int currentRerolls; 
     
+    private string dialogue1;
     
     // Start is called before the first frame update
     void Start()
@@ -48,6 +49,7 @@ public class IntermissionMenu : MonoBehaviour
         componentsCards = new ComponentObj[3];
         RollComponents();
         //DisplayContinueText();
+        dialogue1 = "Thanks for your purchase. I hope I can be of benefit to you and good luck on your race";
     }
 
     private void ComponentDisplay(int index)
@@ -231,13 +233,20 @@ public class IntermissionMenu : MonoBehaviour
     {
         BoosterShopkeeper.ActivateBoosterMenu = false;
     }
-    
 
+
+    IEnumerator EndingMessage(string dialogue)
+    {
+        DialogueManager.currentDialogue = new Dialogue("Cleric1", dialogue);
+        yield return new WaitForSeconds(2);
+        DialogueManager.inDialogue = false;
+    }
+    
     public void ContinueSelected()
     {
-        
         MenuManager.componentBoosts.Add(componentsCards[selector]);
         BoosterShopkeeper.ActivateBoosterMenu = false;
-        BoosterShopkeeper.successfulAttempts = BoosterShopkeeper.successfulAttempts++;
+        BoosterShopkeeper.successfulAttempts++;
+        StartCoroutine(EndingMessage(dialogue1));
     }
 }
