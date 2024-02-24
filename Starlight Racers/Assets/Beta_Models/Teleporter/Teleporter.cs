@@ -13,6 +13,11 @@ public class Teleporter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    private void OnEnable()
+    {
         teleportActive = true;
         StartCoroutine(SpawnEffect());
     }
@@ -34,7 +39,8 @@ public class Teleporter : MonoBehaviour
 
             for (int i = 0; i < 5; i++)
             {
-                var effect = Instantiate(teleporterEffect, spawnPos, quaternion.Euler(-90, 0, 0));
+                var rotation = Quaternion.Euler(90, 0, 0);
+                var effect = Instantiate(teleporterEffect, spawnPos, rotation);
                 teleporterEffects.Add(effect);
                 yield return new WaitForSeconds(0.2f);
             }

@@ -91,6 +91,8 @@ public class MenuManager : MonoBehaviour
 
     private GameObject lastHoveredObj;
 
+    public Image submitButtonIcon;
+
     public static int difficultyLevel; //global variable that will be used to define the difficulty level for our game.
     public static int scaleLevel; //global variable that will set the scale of the track.
     public static int reachLimit; //global variable that sets the maximum limit co-ordinate the track gen can go
@@ -99,8 +101,8 @@ public class MenuManager : MonoBehaviour
     {
         Controller = new PlayerController();
 
-        Controller.Player.Accelerate.performed += _ => isActionPressed = true;
-        Controller.Player.Accelerate.canceled += _ => isActionPressed = false;
+        Controller.MainMenu.Submit.performed += _ => isActionPressed = true;
+        Controller.MainMenu.Submit.canceled += _ => isActionPressed = false;
 
       
 
@@ -125,6 +127,7 @@ public class MenuManager : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
         ToggleMenu(0);
+        ToggleStartMenu(0);
         scaleLevel = 45;
 
         // speedStatImg = new Image[10];
@@ -182,11 +185,23 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        ToggleMenu(1);
+        //ToggleMenu(1);
+        
+        ToggleStartMenu(1);
         
         if (playerInput.currentControlScheme == "Controller")
         {
             EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
+        }
+    }
+
+    public void ExitMenu()
+    {
+        ToggleStartMenu(0);
+        
+        if (playerInput.currentControlScheme == "Controller")
+        {
+            EventSystem.current.SetSelectedGameObject(startButton);
         }
     }
     
@@ -255,13 +270,7 @@ public class MenuManager : MonoBehaviour
                 descriptiveText1.text = "Race against opponents in a single-player Grand Prix.";
                 break;
             }
-
-            case 2:
-            {
-                descriptiveText1.text = "Purchase upgrades for your space-jets.";
-                break;
-            }
-
+            
             case 3:
             {
                 descriptiveText1.text = "Need certain fixes for your experience?";
@@ -316,10 +325,11 @@ public class MenuManager : MonoBehaviour
         {
             isGamepad = true;
             isKeyboard = false;
-            startButtonText.text = "Press A to start";
+            startButtonText.text = "Press     to Start";
+            submitButtonIcon.gameObject.SetActive(true);
             Cursor.visible = false;
 
-            if (menus[0].gameObject.activeInHierarchy)
+            if (menus[0].gameObject.activeInHierarchy && startButton.gameObject.activeInHierarchy)
             {
                 EventSystem.current.SetSelectedGameObject(startButton);
             }
@@ -328,6 +338,7 @@ public class MenuManager : MonoBehaviour
         {
             isKeyboard = true;
             isGamepad = false;
+            submitButtonIcon.gameObject.SetActive(false);
             startButtonText.text = "Click to start";
             EventSystem.current.SetSelectedGameObject(null);
             Cursor.visible = true;
@@ -394,7 +405,7 @@ public class MenuManager : MonoBehaviour
         }
         
         difficultyLevel = difficultyVar;
-        ToggleMenu(3);
+        ToggleMenu(2);
         
         rButton.SetActive(true);
         
@@ -526,12 +537,41 @@ public class MenuManager : MonoBehaviour
             menus[i].gameObject.SetActive(i == position);
         }
     }
+    
+    //Function to toggle between specific menus
+    void ToggleStartMenu(int position)
+    {
+        switch (position)
+        {
+            case 0:
+            {
+                startButton.SetActive(true);
+                foreach (var t in menuOptions)
+                {
+                    t.gameObject.SetActive(false);
+                }
+                break;
+            }
+
+            case 1:
+            {
+                startButton.SetActive(false);
+                foreach (var t in menuOptions)
+                {
+                    t.gameObject.SetActive(true);
+                }
+                
+                
+                break;
+            }
+        }
+    }
 
     //When the play button is pressed.
     public void OnPlayClicked()
     {
         //SceneManager.LoadScene("StarLightRacers_BetaTest");
-        ToggleMenu(2);
+        ToggleMenu(1);
         
         if (playerInput.currentControlScheme == "Controller")
         {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Absorber
   m_EditorClassIdentifier: 
   name: Absorber
-  speed: 35000
+  speed: 30000
   shield: 120
   shieldRate: 20
   grip: 6
