@@ -304,6 +304,246 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""IntermissionScene"",
+            ""id"": ""1667ef9a-cc39-4be5-9bae-5fb5b86e6a2f"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""7d454140-a9cf-412f-9967-9af94d573f3d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Turn"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""c16054f5-3647-479e-8b31-a0e5a41c2e2c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Run"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca64b059-4c81-441f-b7dc-40287b9e9ab2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""38ce42b5-aa0e-485f-85d9-0a69f921f10b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Talk"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa71074b-f25c-417e-add8-1512b1d1364e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""9959fcff-283a-4add-a1a2-1c47d84ab097"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""7ac4ed73-1ba2-44a3-8181-df3a227f2ed7"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""8d7e19c8-59c4-4d52-a189-682e30ee790f"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""e4c1f5ba-c25d-49b2-afca-a9a3d23e85e0"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""ac1f7a4c-b869-45a4-bfda-d1405b951c10"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""50824fcd-d0cb-4e40-ba4e-45983a9b6c57"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""5940c9d3-58c6-452c-97ff-699666e2195a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""4b6e0e39-52ae-43f6-a9f5-8a7f0b1c3bcf"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6809e41b-9ed2-41f0-8c51-82cca6da27d5"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""8ecbe97a-36da-4d53-93ec-0f0f8462e37f"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""91273eb2-a36b-4e22-8424-e89f9c0bc449"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6c149a48-c5b3-4a81-b61a-25554ec80a96"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""28d516cc-18d9-43e2-855c-16d2aa822e07"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f8e1473-5c9c-4cd6-a9fa-3f1e9352c51f"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""74626b5c-38e0-486c-8682-1df5ca45b9bb"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0681ff77-b39d-4749-a52d-6a12531c65a1"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5bac124-9a14-4467-b601-7a500bf403cb"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Talk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -344,6 +584,13 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         m_Player_ShootLeft = m_Player.FindAction("ShootLeft", throwIfNotFound: true);
         m_Player_ShootRight = m_Player.FindAction("ShootRight", throwIfNotFound: true);
         m_Player_Boost = m_Player.FindAction("Boost", throwIfNotFound: true);
+        // IntermissionScene
+        m_IntermissionScene = asset.FindActionMap("IntermissionScene", throwIfNotFound: true);
+        m_IntermissionScene_Movement = m_IntermissionScene.FindAction("Movement", throwIfNotFound: true);
+        m_IntermissionScene_Turn = m_IntermissionScene.FindAction("Turn", throwIfNotFound: true);
+        m_IntermissionScene_Run = m_IntermissionScene.FindAction("Run", throwIfNotFound: true);
+        m_IntermissionScene_Jump = m_IntermissionScene.FindAction("Jump", throwIfNotFound: true);
+        m_IntermissionScene_Talk = m_IntermissionScene.FindAction("Talk", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -487,6 +734,84 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // IntermissionScene
+    private readonly InputActionMap m_IntermissionScene;
+    private List<IIntermissionSceneActions> m_IntermissionSceneActionsCallbackInterfaces = new List<IIntermissionSceneActions>();
+    private readonly InputAction m_IntermissionScene_Movement;
+    private readonly InputAction m_IntermissionScene_Turn;
+    private readonly InputAction m_IntermissionScene_Run;
+    private readonly InputAction m_IntermissionScene_Jump;
+    private readonly InputAction m_IntermissionScene_Talk;
+    public struct IntermissionSceneActions
+    {
+        private @PlayerController m_Wrapper;
+        public IntermissionSceneActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_IntermissionScene_Movement;
+        public InputAction @Turn => m_Wrapper.m_IntermissionScene_Turn;
+        public InputAction @Run => m_Wrapper.m_IntermissionScene_Run;
+        public InputAction @Jump => m_Wrapper.m_IntermissionScene_Jump;
+        public InputAction @Talk => m_Wrapper.m_IntermissionScene_Talk;
+        public InputActionMap Get() { return m_Wrapper.m_IntermissionScene; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(IntermissionSceneActions set) { return set.Get(); }
+        public void AddCallbacks(IIntermissionSceneActions instance)
+        {
+            if (instance == null || m_Wrapper.m_IntermissionSceneActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_IntermissionSceneActionsCallbackInterfaces.Add(instance);
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @Turn.started += instance.OnTurn;
+            @Turn.performed += instance.OnTurn;
+            @Turn.canceled += instance.OnTurn;
+            @Run.started += instance.OnRun;
+            @Run.performed += instance.OnRun;
+            @Run.canceled += instance.OnRun;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Talk.started += instance.OnTalk;
+            @Talk.performed += instance.OnTalk;
+            @Talk.canceled += instance.OnTalk;
+        }
+
+        private void UnregisterCallbacks(IIntermissionSceneActions instance)
+        {
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @Turn.started -= instance.OnTurn;
+            @Turn.performed -= instance.OnTurn;
+            @Turn.canceled -= instance.OnTurn;
+            @Run.started -= instance.OnRun;
+            @Run.performed -= instance.OnRun;
+            @Run.canceled -= instance.OnRun;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Talk.started -= instance.OnTalk;
+            @Talk.performed -= instance.OnTalk;
+            @Talk.canceled -= instance.OnTalk;
+        }
+
+        public void RemoveCallbacks(IIntermissionSceneActions instance)
+        {
+            if (m_Wrapper.m_IntermissionSceneActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IIntermissionSceneActions instance)
+        {
+            foreach (var item in m_Wrapper.m_IntermissionSceneActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_IntermissionSceneActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public IntermissionSceneActions @IntermissionScene => new IntermissionSceneActions(this);
     private int m_ControllerSchemeIndex = -1;
     public InputControlScheme ControllerScheme
     {
@@ -513,5 +838,13 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         void OnShootLeft(InputAction.CallbackContext context);
         void OnShootRight(InputAction.CallbackContext context);
         void OnBoost(InputAction.CallbackContext context);
+    }
+    public interface IIntermissionSceneActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnTurn(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnTalk(InputAction.CallbackContext context);
     }
 }

@@ -47,7 +47,7 @@ public class IntermissionMenu : MonoBehaviour
         SetRerolls();
         componentsCards = new ComponentObj[3];
         RollComponents();
-        DisplayContinueText();
+        //DisplayContinueText();
     }
 
     private void ComponentDisplay(int index)
@@ -58,27 +58,27 @@ public class IntermissionMenu : MonoBehaviour
         skillDescs[index].text = "Boost vehicle " + componentsCards[index].targetStat.ToString().ToLower() + " by " + (componentsCards[index].statModifierVal * 100) +"%";
     }
 
-    void DisplayContinueText()
-    {
-        continueText = continueBtn.GetComponentInChildren<TextMeshProUGUI>();
-
-        if (MenuManager.RaceCount > 0)
-        {
-            continueText.text = "Start Race";
-        }
-        else if(MenuManager.RaceCount < 3)
-        {
-            continueText.text = "Next Race";
-        }
-        else if(MenuManager.RaceCount == 3)
-        {
-            continueText.text = "Final Race";
-        }
-        else
-        {
-            continueText.text = "??? Race";
-        }
-    }
+    // void DisplayContinueText()
+    // {
+    //     continueText = continueBtn.GetComponentInChildren<TextMeshProUGUI>();
+    //
+    //     if (MenuManager.RaceCount > 0)
+    //     {
+    //         continueText.text = "Start Race";
+    //     }
+    //     else if(MenuManager.RaceCount < 3)
+    //     {
+    //         continueText.text = "Next Race";
+    //     }
+    //     else if(MenuManager.RaceCount == 3)
+    //     {
+    //         continueText.text = "Final Race";
+    //     }
+    //     else
+    //     {
+    //         continueText.text = "??? Race";
+    //     }
+    // }
 
     // Update is called once per frame
     void Update()
@@ -225,11 +225,19 @@ public class IntermissionMenu : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(continueBtn);
     }
+
+    //Player exits out
+    public void Exit()
+    {
+        BoosterShopkeeper.ActivateBoosterMenu = false;
+    }
     
 
     public void ContinueSelected()
     {
-        SceneManager.LoadScene("StarLightRacers_BetaTest");
+        
         MenuManager.componentBoosts.Add(componentsCards[selector]);
+        BoosterShopkeeper.ActivateBoosterMenu = false;
+        BoosterShopkeeper.successfulAttempts = BoosterShopkeeper.successfulAttempts++;
     }
 }
