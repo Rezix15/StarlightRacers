@@ -10,10 +10,14 @@ public class Teleporter : MonoBehaviour
     public GameObject teleporterEffect;
 
     private bool teleportActive;
+
+    private string teleporterDialogue;
+
+    private bool inTeleport;
     // Start is called before the first frame update
     void Start()
     {
-        
+        teleporterDialogue = "Are you sure that you want to begin to the race?";
     }
 
     private void OnEnable()
@@ -55,9 +59,23 @@ public class Teleporter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") )
         {
-            SceneManager.LoadScene("StarLightRacers_BetaTest");
+            inTeleport = true;
+
+            if (inTeleport)
+            {
+                DialogueManager.inDialogue = true;
+                DialogueManager.currentDialogue = new Dialogue("Teleporter", teleporterDialogue, Dialogue.DialogueType.Question);
+            }
+            
         }
+    }
+    
+    
+
+    private void OnTriggerExit(Collider other)
+    {
+        inTeleport = false;
     }
 }

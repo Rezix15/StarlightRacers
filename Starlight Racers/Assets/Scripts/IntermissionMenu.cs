@@ -237,7 +237,7 @@ public class IntermissionMenu : MonoBehaviour
 
     IEnumerator EndingMessage(string dialogue)
     {
-        DialogueManager.currentDialogue = new Dialogue("Cleric1", dialogue);
+        DialogueManager.currentDialogue = new Dialogue("Cleric1", dialogue, Dialogue.DialogueType.Text);
         yield return new WaitForSeconds(2);
         DialogueManager.inDialogue = false;
     }

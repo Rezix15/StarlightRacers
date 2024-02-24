@@ -69,7 +69,7 @@ public class BoosterShopkeeper : MonoBehaviour
         if (other.CompareTag("Player") && successfulAttempts == 0)
         {
             DialogueManager.inDialogue = true;
-            DialogueManager.currentDialogue = new Dialogue("Cleric1", dialogue1);
+            DialogueManager.currentDialogue = new Dialogue("Cleric1", dialogue1, Dialogue.DialogueType.Text);
         }
     }
 
