@@ -124,6 +124,7 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CoinManager.coinCount = 0;
         playerInput = GetComponent<PlayerInput>();
         startButtonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
         ToggleMenu(0);
