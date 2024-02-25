@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -15,11 +17,19 @@ public class DialogueManager : MonoBehaviour
     public static bool inDialogue;
 
     public static Dialogue currentDialogue;
+
+    private bool firstEntry;
+    
+    //private PlayerController Controller;
+    
     // Start is called before the first frame update
     void Start()
     {
+        firstEntry = true;
         inDialogue = false;
     }
+    
+    
 
     // Update is called once per frame
     void Update()
@@ -32,13 +42,19 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    // private void OnEnable()
+    // {
+    //     if (currentDialogue!= null && currentDialogue.GetDialogueType() == Dialogue.DialogueType.Question)
+    //     {
+    //         EventSystem.current.SetSelectedGameObject(options[1]);
+    //     }
+    // }
+
     private void SetDialogue()
     {
         characterNameText.text = currentDialogue.GetCharacterName();
         dialogueText.text = currentDialogue.GetText();
         var dialogueType = currentDialogue.GetDialogueType();
-        
-        //SceneManager.LoadScene("StarLightRacers_BetaTest");
 
         switch (dialogueType)
         {
@@ -47,6 +63,12 @@ public class DialogueManager : MonoBehaviour
                 foreach (var option in options)
                 {
                     option.SetActive(true);
+                }
+
+                if (firstEntry)
+                {
+                    EventSystem.current.SetSelectedGameObject(options[1]);
+                    firstEntry = false;
                 }
                 
                 break;
@@ -74,6 +96,7 @@ public class DialogueManager : MonoBehaviour
     {
         inDialogue = false;
         currentDialogue = null;
+        firstEntry = true;
     }
     
     

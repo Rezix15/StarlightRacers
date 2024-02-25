@@ -89,7 +89,7 @@ public class MenuManager : MonoBehaviour
 
     private PlayerInput playerInput;
 
-    private GameObject lastHoveredObj;
+    private GameObject lastHoveredObj; //The last selected button, the player has chosen
 
     public Image submitButtonIcon;
 
@@ -97,15 +97,14 @@ public class MenuManager : MonoBehaviour
     public static int scaleLevel; //global variable that will set the scale of the track.
     public static int reachLimit; //global variable that sets the maximum limit co-ordinate the track gen can go
 
+    private bool wasKeyboard;
+
     private void Awake()
     {
         Controller = new PlayerController();
 
         Controller.MainMenu.Submit.performed += _ => isActionPressed = true;
         Controller.MainMenu.Submit.canceled += _ => isActionPressed = false;
-
-      
-
     }
 
     private void OnEnable()
@@ -130,6 +129,7 @@ public class MenuManager : MonoBehaviour
         ToggleMenu(0);
         ToggleStartMenu(0);
         scaleLevel = 45;
+        wasKeyboard = false;
 
         // speedStatImg = new Image[10];
         // shieldStatImg = new Image[10];
@@ -178,6 +178,7 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("wasKeyboard: " + wasKeyboard);
         UpdateUserInputDisplay();
         ToggleThroughMenu();
         ToggleThroughDifficultyMenu();
@@ -193,6 +194,7 @@ public class MenuManager : MonoBehaviour
         if (playerInput.currentControlScheme == "Controller")
         {
             EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
+            lastHoveredObj = menuOptions[0].gameObject;
         }
     }
 
@@ -221,6 +223,9 @@ public class MenuManager : MonoBehaviour
     private void ToggleThroughMenu()
     {
         GameObject selectedOpt = EventSystem.current.currentSelectedGameObject;
+        lastHoveredObj = selectedOpt;
+        
+        //Debug.Log("lastHoveredObj: " + lastHoveredObj.name);
         
         if (isGamepad)
         {
@@ -341,7 +346,7 @@ public class MenuManager : MonoBehaviour
             isGamepad = false;
             submitButtonIcon.gameObject.SetActive(false);
             startButtonText.text = "Click to start";
-            EventSystem.current.SetSelectedGameObject(null);
+            //EventSystem.current.SetSelectedGameObject(null);
             Cursor.visible = true;
         }
         else

@@ -78,6 +78,23 @@ public class Spacejet : MonoBehaviour
     private float distToNextCheckpoint;
 
     private Modifier componentModifier;
+
+    //Ability gauge that is needed to use the special abiility
+    private int abilityGauge = 0;
+
+    #region CreationAbilityRegion
+    
+    private CreationAbility creationAbility;
+    public GameObject shieldEffect;
+    public GameObject bomb;
+    
+
+    #endregion
+    
+    
+    
+    private GhostAbility GhostAbility;
+    
     private void Awake()
     {
         Controller = new PlayerController();
@@ -133,6 +150,31 @@ public class Spacejet : MonoBehaviour
         currentCheckpoint = new GameObject();
         hasFinished = false;
         RaceManager.GameStarted += OnGameStart;
+        
+        switch (MenuManager.currentSpaceJet.name)
+        {
+            case "Absorber":
+            {
+                creationAbility = new CreationAbility("Transmogrifier", 30f, 
+                    SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
+                break;
+            }
+            
+            case "UFO": 
+            {
+                break;
+            }
+            
+            case "Bolt Glider": 
+            {
+                break;
+            }
+            
+            case "Ghost Rider": 
+            {
+                break;
+            }
+        }
     }
 
     void OnGameStart()
@@ -415,8 +457,11 @@ public class Spacejet : MonoBehaviour
     {
         return checkpointCount;
     }
-    
-    
+
+    public void UseAbility()
+    {
+        
+    }
     
     public float GetCurrentShieldStat()
     {
