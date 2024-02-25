@@ -87,7 +87,8 @@ public class Spacejet : MonoBehaviour
     private CreationAbility creationAbility;
     public GameObject shieldEffect;
     public GameObject bomb;
-    
+    private bool isShieldActive = false;
+    private Modifier shieldPowerUp = new Modifier(1);
 
     #endregion
     
@@ -116,6 +117,9 @@ public class Spacejet : MonoBehaviour
 
         Controller.Player.Boost.performed += _ => shieldBoostPressed = true;
         Controller.Player.Boost.canceled += _ => shieldBoostPressed = false;
+        
+        Controller.Player.SpecialAbility.performed += _ => UseAbility();
+        Controller.Player.SpecialAbility.canceled += _ => UseAbility();
 
     }
 
@@ -155,7 +159,9 @@ public class Spacejet : MonoBehaviour
         {
             case "Absorber":
             {
-                creationAbility = new CreationAbility("Transmogrifier", 30f, 
+                creationAbility = gameObject.AddComponent<CreationAbility>();
+                
+                creationAbility.Initialize("Transmogrifier", 30f, 
                     SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
                 break;
             }
@@ -187,6 +193,11 @@ public class Spacejet : MonoBehaviour
 
     void Update()
     {
+        if (abilityGauge < 100)
+        {
+            abilityGauge++;
+        }
+        
         //If the current Laser Ammo is below the max, start a timer for every 10 seconds to refill ammo
         if (laserAmmo < laserAmmoMax)
         {
@@ -200,6 +211,8 @@ public class Spacejet : MonoBehaviour
             }
 
         }
+        
+        AddShieldPowerUp();
 
         //if the player has not finished the race, start timer
         if (hasFinished == false && canMove)
@@ -207,6 +220,23 @@ public class Spacejet : MonoBehaviour
             finishTime += Time.deltaTime;
         }
         
+    }
+
+    private void AddShieldPowerUp()
+    {
+        var shield = FindObjectOfType<ShieldEffect>();
+
+        if (shield != null && isShieldActive == false)
+        {
+            shieldPowerUp = new Modifier(shield.shieldModifierBonus);
+            shieldRate.AddModifier(shieldPowerUp);
+            isShieldActive = true;
+        }
+        else if(shield == null)
+        {
+            shieldRate.RemoveModifier(shieldPowerUp);
+            isShieldActive = false;
+        }
     }
 
     void HandleInput()
@@ -302,10 +332,10 @@ public class Spacejet : MonoBehaviour
             {
                 componentModifier = new Modifier(componentBoost.statModifierVal);
                 
-                Debug.Log("Components Count: " + MenuManager.componentBoosts.Count);
-                Debug.Log("Component Name: " + componentBoost.name);
-                Debug.Log("Component TargetedStat: " + componentBoost.targetStat);
-                Debug.Log("Components ModifierVal: " + componentBoost.statModifierVal);
+                // Debug.Log("Components Count: " + MenuManager.componentBoosts.Count);
+                // Debug.Log("Component Name: " + componentBoost.name);
+                // Debug.Log("Component TargetedStat: " + componentBoost.targetStat);
+                // Debug.Log("Components ModifierVal: " + componentBoost.statModifierVal);
                 
                 switch (componentBoost.targetStat)
                 {
@@ -458,9 +488,16 @@ public class Spacejet : MonoBehaviour
         return checkpointCount;
     }
 
-    public void UseAbility()
+    private void UseAbility()
     {
-        
+        if (abilityGauge >= 100 && creationAbility != null)
+        {
+            creationAbility.UseAbility();
+        }
+        else if(abilityGauge < 100 && creationAbility != null)
+        {
+            Debug.Log("Ability is not ready time remaining: " + abilityGauge);
+        }
     }
     
     public float GetCurrentShieldStat()

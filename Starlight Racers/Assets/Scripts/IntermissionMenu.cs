@@ -9,6 +9,7 @@ using Button = UnityEngine.UIElements.Button;
 
 public class IntermissionMenu : MonoBehaviour
 {
+    public GameObject upgradeComp; //Going to be the first component Selected
     public static ComponentObj currentComponent;
 
     public ComponentObj[] components;
@@ -44,12 +45,18 @@ public class IntermissionMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (MenuManager.RaceCount > 1)
+        {
+            EventSystem.current.SetSelectedGameObject(upgradeComp);
+        }
+        
         currentRerolls = 0;
         SetRerolls();
         componentsCards = new ComponentObj[3];
         RollComponents();
         //DisplayContinueText();
         dialogue1 = "Thanks for your purchase. I hope I can be of benefit to you and good luck on your race";
+        Debug.Log("CurrentSelectedObj: " + EventSystem.current.currentSelectedGameObject.name);
     }
 
     private void ComponentDisplay(int index)
@@ -85,6 +92,7 @@ public class IntermissionMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("CurrentSelectedObj: " + EventSystem.current.currentSelectedGameObject.name);
         rerollBtn.SetActive(currentRerolls < rerollMax); //Sets the reroll button to be active or inactive depending on how many rerolls have been done
     }
 

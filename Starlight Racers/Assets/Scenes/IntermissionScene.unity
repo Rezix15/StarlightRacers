@@ -2469,7 +2469,7 @@ GameObject:
   - component: {fileID: 818692487}
   - component: {fileID: 818692488}
   m_Layer: 0
-  m_Name: MenuManager
+  m_Name: IntermissionMenuManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2502,6 +2502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7337e262cb1225488e04bb76c13f083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeComp: {fileID: 1279575095}
   componentNames:
   - {fileID: 1521440434}
   - {fileID: 222302867}
@@ -6438,7 +6439,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1673105506}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.28978413, y: 0.000000016468091, z: -0.0000000049861364, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: -0.000000016468091, z: 0.0000000049861364, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

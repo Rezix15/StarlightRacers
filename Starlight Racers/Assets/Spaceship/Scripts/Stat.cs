@@ -54,7 +54,11 @@ public class Stat
 
     public void RemoveModifier(Modifier mod)
     {
-        modifiers.Remove(mod);
+        if (mod != null)
+        {
+            modifiers.Remove(mod);
+        }
+        
     }
 
 }

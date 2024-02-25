@@ -80,6 +80,15 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SpecialAbility"",
+                    ""type"": ""Button"",
+                    ""id"": ""5850169a-4a77-4199-8baf-d4a1d254977d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -300,6 +309,28 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Boost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e1056720-a083-49ca-b1e4-2b3123658d3e"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""SpecialAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72be3b51-1f30-4581-ac79-f40020d21e22"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SpecialAbility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -773,6 +804,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         m_Player_ShootLeft = m_Player.FindAction("ShootLeft", throwIfNotFound: true);
         m_Player_ShootRight = m_Player.FindAction("ShootRight", throwIfNotFound: true);
         m_Player_Boost = m_Player.FindAction("Boost", throwIfNotFound: true);
+        m_Player_SpecialAbility = m_Player.FindAction("SpecialAbility", throwIfNotFound: true);
         //  MainMenu
         m_MainMenu = asset.FindActionMap(" MainMenu", throwIfNotFound: true);
         m_MainMenu_Vertical = m_MainMenu.FindAction("Vertical", throwIfNotFound: true);
@@ -852,6 +884,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ShootLeft;
     private readonly InputAction m_Player_ShootRight;
     private readonly InputAction m_Player_Boost;
+    private readonly InputAction m_Player_SpecialAbility;
     public struct PlayerActions
     {
         private @PlayerController m_Wrapper;
@@ -862,6 +895,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         public InputAction @ShootLeft => m_Wrapper.m_Player_ShootLeft;
         public InputAction @ShootRight => m_Wrapper.m_Player_ShootRight;
         public InputAction @Boost => m_Wrapper.m_Player_Boost;
+        public InputAction @SpecialAbility => m_Wrapper.m_Player_SpecialAbility;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -889,6 +923,9 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @Boost.started += instance.OnBoost;
             @Boost.performed += instance.OnBoost;
             @Boost.canceled += instance.OnBoost;
+            @SpecialAbility.started += instance.OnSpecialAbility;
+            @SpecialAbility.performed += instance.OnSpecialAbility;
+            @SpecialAbility.canceled += instance.OnSpecialAbility;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -911,6 +948,9 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @Boost.started -= instance.OnBoost;
             @Boost.performed -= instance.OnBoost;
             @Boost.canceled -= instance.OnBoost;
+            @SpecialAbility.started -= instance.OnSpecialAbility;
+            @SpecialAbility.performed -= instance.OnSpecialAbility;
+            @SpecialAbility.canceled -= instance.OnSpecialAbility;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1094,6 +1134,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         void OnShootLeft(InputAction.CallbackContext context);
         void OnShootRight(InputAction.CallbackContext context);
         void OnBoost(InputAction.CallbackContext context);
+        void OnSpecialAbility(InputAction.CallbackContext context);
     }
     public interface IMainMenuActions
     {

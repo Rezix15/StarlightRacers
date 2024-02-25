@@ -29,8 +29,6 @@ public class DialogueManager : MonoBehaviour
         inDialogue = false;
     }
     
-    
-
     // Update is called once per frame
     void Update()
     {
@@ -88,8 +86,10 @@ public class DialogueManager : MonoBehaviour
     //Functions that are meant for the teleporter
     public void AcceptTeleport()
     {
-        SceneManager.LoadScene("StarLightRacers_BetaTest");
+        firstEntry = true;
         inDialogue = false;
+        currentDialogue = null;
+        SceneManager.LoadScene("StarLightRacers_BetaTest");
     }
 
     public void DenyTeleport()

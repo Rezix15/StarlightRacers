@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
     
-public class SpecialAbility 
+public class SpecialAbility : MonoBehaviour
 {
     //The type of ability used
     public enum AbilityTypes

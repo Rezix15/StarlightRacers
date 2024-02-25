@@ -14,30 +14,62 @@ public class CreationAbility : SpecialAbility
     private GameObject bomb;
 
     private int randIndex; //Random Value that dictates which effect is spawned
+
+    
+
+    public void Initialize(string powerName, float cooldownTime, AbilityTypes abilityType, GameObject shieldEffectObj, GameObject bombObj)
+    {
+        this.abilityName = powerName;
+        this.AbilityType = abilityType;
+        this.cooldownTimer = cooldownTime;
+        this.shieldEffect = shieldEffectObj;
+        this.bomb = bombObj;
+    }
     
     public CreationAbility(string abilityName, float cooldownTimer, AbilityTypes abilityType, GameObject shieldEffect, GameObject bomb) : base(abilityName, cooldownTimer, abilityType)
     {
-        this.abilityName = abilityName;
-        this.AbilityType = abilityType;
-        this.cooldownTimer = cooldownTimer;
-        this.shieldEffect = shieldEffect;
-        this.bomb = bomb;
+        
+        Initialize(abilityName, cooldownTimer, abilityType, shieldEffect, bomb);
     }
     
     //Ability that creates uses materials found in the race to create weapons and buffs
     public override void AbilityEffect()
     {
-        randIndex = Random.Range(0, 3);
+        //randIndex = Random.Range(0, 2);
+        randIndex = 0;
+        var player = GameObject.FindGameObjectWithTag("PlayerRacer");
+        var playerPos = player.transform.position;
+
+        var spawnPos = new Vector3(playerPos.x, playerPos.y + 2, playerPos.z);
 
         switch (randIndex)
         {
-            
+            //Generate shield
+            case 0:
+            {
+                var shieldObj = Instantiate(shieldEffect, spawnPos, Quaternion.Euler(90, 0, 0));
+                shieldObj.transform.SetParent(player.transform);
+                StartCoroutine(StartTimer(shieldObj));
+                break;
+            }
+
+            //Generate bomb
+            case 1:
+            {
+                break;
+            }
         }
     }
 
     public override void UseAbility()
     {
-        
+        AbilityEffect();
+    }
+
+    IEnumerator StartTimer(GameObject obj)
+    {
+        yield return new WaitForSeconds(cooldownTimer);
+        Destroy(obj);
     }
     
     
