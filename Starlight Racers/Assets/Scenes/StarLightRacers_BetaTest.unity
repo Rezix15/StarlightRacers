@@ -4116,7 +4116,7 @@ MonoBehaviour:
   currentShieldStat: 0
   finishTime: 0
   shieldEffect: {fileID: 8631539394924550130, guid: b6811a99b260b0442874b8107b5bec96, type: 3}
-  bomb: {fileID: 919132149155446097, guid: f0fd60224721bc9489f3b84f6d25954b, type: 3}
+  bomb: {fileID: 8608979036305017855, guid: 00b360ca5588bed44afd64f153fb843f, type: 3}
 --- !u!65 &1101817271
 BoxCollider:
   m_ObjectHideFlags: 0

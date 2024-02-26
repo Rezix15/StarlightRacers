@@ -56,7 +56,7 @@ public class IntermissionMenu : MonoBehaviour
         RollComponents();
         //DisplayContinueText();
         dialogue1 = "Thanks for your purchase. I hope I can be of benefit to you and good luck on your race";
-        Debug.Log("CurrentSelectedObj: " + EventSystem.current.currentSelectedGameObject.name);
+        //Debug.Log("CurrentSelectedObj: " + EventSystem.current.currentSelectedGameObject.name);
     }
 
     private void ComponentDisplay(int index)
@@ -92,7 +92,7 @@ public class IntermissionMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("CurrentSelectedObj: " + EventSystem.current.currentSelectedGameObject.name);
+        //Debug.Log("CurrentSelectedObj: " + EventSystem.current.currentSelectedGameObject.name);
         rerollBtn.SetActive(currentRerolls < rerollMax); //Sets the reroll button to be active or inactive depending on how many rerolls have been done
     }
 

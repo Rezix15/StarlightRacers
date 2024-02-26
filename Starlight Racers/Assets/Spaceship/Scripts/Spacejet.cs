@@ -89,7 +89,9 @@ public class Spacejet : MonoBehaviour
     public GameObject bomb;
     private bool isShieldActive = false;
     private Modifier shieldPowerUp = new Modifier(1);
+    private bool wasShieldActive = false;
 
+    private bool abilityActive = false;
     #endregion
     
     
@@ -226,16 +228,20 @@ public class Spacejet : MonoBehaviour
     {
         var shield = FindObjectOfType<ShieldEffect>();
 
-        if (shield != null && isShieldActive == false)
+        if (shield != null && isShieldActive == false && wasShieldActive == false)
         {
             shieldPowerUp = new Modifier(shield.shieldModifierBonus);
             shieldRate.AddModifier(shieldPowerUp);
             isShieldActive = true;
+            abilityActive = true;
+            wasShieldActive = true;
         }
-        else if(shield == null)
+        else if(shield == null && wasShieldActive)
         {
             shieldRate.RemoveModifier(shieldPowerUp);
             isShieldActive = false;
+            abilityActive = false;
+            wasShieldActive =false;
         }
     }
 
@@ -490,9 +496,12 @@ public class Spacejet : MonoBehaviour
 
     private void UseAbility()
     {
-        if (abilityGauge >= 100 && creationAbility != null)
+        if (abilityGauge >= 100 && creationAbility != null && abilityActive == false)
         {
+            abilityActive = true;
             creationAbility.UseAbility();
+            abilityActive = false;
+            abilityGauge = 0;
         }
         else if(abilityGauge < 100 && creationAbility != null)
         {

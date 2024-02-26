@@ -232,13 +232,13 @@ public class TrackGen : MonoBehaviour
                 
                 if (junctionTrackCount < junctionTrackCountLimit)
                 {
-                    Debug.Log("NewPos: " + newPosition);
-                    Debug.Log("SpecificReachLimitMin: " + (reachLimit / 2f - 2000));
-                    Debug.Log("SpecificReachLimitMax: " + (reachLimit / 2f + 2500));
+                    // Debug.Log("NewPos: " + newPosition);
+                    // Debug.Log("SpecificReachLimitMin: " + (reachLimit / 2f - 2000));
+                    // Debug.Log("SpecificReachLimitMax: " + (reachLimit / 2f + 2500));
                     
                     if(((newPosition.x >= (reachLimit / 2f - 2000)) && (newPosition.x < (reachLimit / 2f + 2500))) || ((newPosition.z >= (reachLimit / 2f - 2000)) && (newPosition.z < (reachLimit / 2f + 2500))))
                     {
-                        Debug.Log("GENERATE JUNCTION!");
+                        //Debug.Log("GENERATE JUNCTION!");
                         junctionTrackCheck = true;
                         //randIndex = Random.Range(0, 4);
                         randIndex = 3;
@@ -326,7 +326,7 @@ public class TrackGen : MonoBehaviour
                         
                             Instantiate(upNeighbours[3], newPosition + initialPosition, Quaternion.identity, transform);
                             GenerateNeighbours(TrackType.ArchTrack, newPosition + initialPosition);
-                            Debug.Log("Generated Arch");
+                            //Debug.Log("Generated Arch");
                         }
                         else if (junctionTrackCheck && shouldFinish == false )
                         {
@@ -351,7 +351,7 @@ public class TrackGen : MonoBehaviour
                             //Generate checkpoints list to be used for race positioning
                             checkpoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
                             checkpoints.Add(GameObject.FindGameObjectWithTag("Finish"));
-                            Debug.Log("TrackCount: " + trackCount);
+                            //Debug.Log("TrackCount: " + trackCount);
 
                         }
                         else

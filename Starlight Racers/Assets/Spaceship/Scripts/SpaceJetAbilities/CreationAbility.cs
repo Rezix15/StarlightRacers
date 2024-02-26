@@ -15,8 +15,8 @@ public class CreationAbility : SpecialAbility
 
     private int randIndex; //Random Value that dictates which effect is spawned
 
+    //private bool isAbilityActive;
     
-
     public void Initialize(string powerName, float cooldownTime, AbilityTypes abilityType, GameObject shieldEffectObj, GameObject bombObj)
     {
         this.abilityName = powerName;
@@ -35,13 +35,13 @@ public class CreationAbility : SpecialAbility
     //Ability that creates uses materials found in the race to create weapons and buffs
     public override void AbilityEffect()
     {
-        //randIndex = Random.Range(0, 2);
-        randIndex = 0;
+        randIndex = Random.Range(0, 2);
         var player = GameObject.FindGameObjectWithTag("PlayerRacer");
         var playerPos = player.transform.position;
 
         var spawnPos = new Vector3(playerPos.x, playerPos.y + 2, playerPos.z);
-
+        var bombSpawnPos = new Vector3(playerPos.x, playerPos.y, playerPos.z - 10);
+        
         switch (randIndex)
         {
             //Generate shield
@@ -56,6 +56,7 @@ public class CreationAbility : SpecialAbility
             //Generate bomb
             case 1:
             {
+                StartCoroutine(BombDrops(bombSpawnPos));
                 break;
             }
         }
@@ -70,6 +71,17 @@ public class CreationAbility : SpecialAbility
     {
         yield return new WaitForSeconds(cooldownTimer);
         Destroy(obj);
+    }
+
+    IEnumerator BombDrops(Vector3 bombSpawnPos)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            var bombObj = Instantiate(bomb, bombSpawnPos, Quaternion.Euler(90, 0, 0));
+            yield return new WaitForSeconds(cooldownTimer / 3);
+            Destroy(bombObj);
+            yield return new WaitForSeconds(0.2f);
+        }
     }
     
     
