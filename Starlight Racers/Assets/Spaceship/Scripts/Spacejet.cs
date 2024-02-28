@@ -15,6 +15,8 @@ public class Spacejet : MonoBehaviour
     // private float spaceJetLaserDmg;
 
     public SpaceJetStats spaceJetStat;
+
+    private int boosterPadSpeed;
     
     // = new Stat(0)
 
@@ -94,6 +96,7 @@ public class Spacejet : MonoBehaviour
     private bool abilityActive = false;
     #endregion
     
+    float boostTimer = 0;
     
     
     private GhostAbility GhostAbility;
@@ -156,6 +159,7 @@ public class Spacejet : MonoBehaviour
         currentCheckpoint = new GameObject();
         hasFinished = false;
         RaceManager.GameStarted += OnGameStart;
+        boosterPadSpeed = 25000;
         
         switch (MenuManager.currentSpaceJet.name)
         {
@@ -305,28 +309,25 @@ public class Spacejet : MonoBehaviour
     //Function that sacrifices the shield gauge to increase speed. If user shield expires when boosting, destroy player
     private void ShieldBoost()
     {
-        float boostTimer = 0;
+        Debug.Log("shieldRate: " + shieldRate.trueValue);
         
         if (currentShieldStat > 0 && shieldBoostPressed)
         {
             rb.AddForce(transform.forward * (2.5f * speed.trueValue), ForceMode.Force);
             //currentShieldStat-= (1 - (0.4f * shieldRate.trueValue));
 
-            currentShieldStat -= 0.4f * (1 - (shieldRate.trueValue / 100));
+            //currentShieldStat -= 0.4f * (1 - (Mathf.Clamp(shieldRate.trueValue, 0f, 4f) / 100));
 
-            if (currentShieldStat <= 0 && boostTimer <= 5f)
-            {
-                boostTimer += Time.deltaTime;
-            }
-            else if(currentShieldStat <= 0)
-            {
-                //Debug.Log("Player has been eliminated from the race");
-                Destroy(gameObject);
-            }
+            currentShieldStat -= 0.4f * (1 - Mathf.Clamp(shieldRate.trueValue / 100, 0f, 0.8f));
         }
-        else
+        else if(currentShieldStat <= 0 && boostTimer <= 5f && shieldBoostPressed)
         {
-            boostTimer = 0;
+            boostTimer += Time.deltaTime;
+        }
+        else if(currentShieldStat <= 0 && shieldBoostPressed)
+        {
+            //Debug.Log("Player has been eliminated from the race");
+            Destroy(gameObject);
         }
     }
 
@@ -421,7 +422,7 @@ public class Spacejet : MonoBehaviour
     {
         isBoosting = true;
         
-        rb.AddForce(transform.forward * (1.5f * speed.trueValue), ForceMode.Impulse);
+        rb.AddForce(transform.forward * (1.5f * boosterPadSpeed), ForceMode.Impulse);
         
         yield return new WaitForSeconds(2f);
         
@@ -470,7 +471,7 @@ public class Spacejet : MonoBehaviour
         
         if (other.gameObject.layer == 7)
         {
-            currentShieldStat--;
+            currentShieldStat -= 0.4f * (1 - Mathf.Clamp(shieldRate.trueValue / 100, 0f, 0.8f));
         }
     }
 
@@ -483,6 +484,7 @@ public class Spacejet : MonoBehaviour
         }
     }
 
+    //Return the current ammo count 
     //Return the current ammo count 
     public int GetLaserAmmoCount()
     {

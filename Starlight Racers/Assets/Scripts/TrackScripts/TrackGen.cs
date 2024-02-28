@@ -62,8 +62,7 @@ public class TrackGen : MonoBehaviour
     
     //Generate the End positions
     private Vector3 finishPos;
-
-    [SerializeField]
+    
     private int scale = MenuManager.scaleLevel;
     
     //modifier value for the scale. Primarily used in regards to setting the correct positions for the neighbours
@@ -71,8 +70,7 @@ public class TrackGen : MonoBehaviour
 
     //Unused variable
     //private int count = 0;
-
-    [SerializeField]
+    
     private int reachLimit = MenuManager.reachLimit;
 
     public int junctionTrackCountLimit;
@@ -125,8 +123,8 @@ public class TrackGen : MonoBehaviour
 
         //Set a scaleFactor
         scaleFactor = scale * 10;
-        boosterPos = new Vector3(0, -0.6f * scale, 0);
-        trafficPos = new Vector3(scale * 3, 0.75f * scale, scale * 1.5f);
+        boosterPos = new Vector3(0, (-0.6f * scale) + 1.15f, 0);
+        trafficPos = new Vector3(scale * 3, (0.75f * scale) + 1.15f, scale * 1.5f);
         
 
         //GenerateInitialPosition
@@ -194,8 +192,18 @@ public class TrackGen : MonoBehaviour
                 
                 //upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, finishTrackObj};
                 
-                var curvedPositionOffsetX = scale * 0.34f;
-                var curvedPositionOffsetZ = scale * 1.2f;
+                // var curvedPositionOffsetX = scale * 0.34f;
+                // var curvedPositionOffsetZ = scale * 1.2f;
+                
+                // var curvedPositionOffsetX = scale * 16f;
+                // var curvedPositionOffsetZ = scale * 26.4f;
+                
+                // var curvedPositionOffsetX = scale * 0.37f;
+                // var curvedPositionOffsetZ = scale * 1.24f;
+
+                var upCurvedPosL = new Vector3(scale * 16f, 0, scale * 16.44f);
+                var upCurvedPosR = new Vector3(scale * 0.356f, 0, scale * 1.24f);
+                
                 initialPosition = new Vector3(0, 0, scaleFactor);
                 
                 newPosition = new Vector3(
@@ -290,9 +298,9 @@ public class TrackGen : MonoBehaviour
                     case 1:
                     {
                         newPosition = new Vector3(
-                            (prevPosition.x + initialPosition.x) - curvedPositionOffsetX, 
+                            (prevPosition.x + initialPosition.x) - upCurvedPosL.x, 
                             prevPosition.y + initialPosition.y, 
-                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                            (prevPosition.z + initialPosition.z) + upCurvedPosL.z
                         );
                         
                         Instantiate(upNeighbours[1], newPosition, Quaternion.identity, transform);
@@ -303,9 +311,9 @@ public class TrackGen : MonoBehaviour
                     case 2:
                     {
                         newPosition = new Vector3(
-                            (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
+                            (prevPosition.x + initialPosition.x) + upCurvedPosR.x, 
                             prevPosition.y + initialPosition.y, 
-                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                            (prevPosition.z + initialPosition.z) + upCurvedPosR.z
                         );
                         
                         Instantiate(upNeighbours[2], newPosition, Quaternion.identity, transform);
@@ -403,9 +411,11 @@ public class TrackGen : MonoBehaviour
                     newPosition.z + 2 * trafficPos.z
                 );
                 
-                var curvedPositionOffsetX = scale * 1.2f;
-                var curvedPositionOffsetZ = scale * 0.34f;
+                // var curvedPositionOffsetX = scale * 1.2f;
+                // var curvedPositionOffsetZ = scale * 0.34f;
                 
+                
+                var downCurvedPosR = new Vector3(scale * 26.6f, 0, scale * 16f);
                 
                 GenerateTrack(TrackType.Checkpoint, newPosition, Quaternion.Euler(0,90,0));
                 switch (randIndex)
@@ -437,9 +447,9 @@ public class TrackGen : MonoBehaviour
                     case 1:
                     {
                         newPosition = new Vector3(
-                            (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
+                            prevPosition.x + downCurvedPosR.x, 
                             prevPosition.y + initialPosition.y, 
-                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                            prevPosition.z + downCurvedPosR.z
                         );
                         
                         Instantiate(rightNeighbours[1], newPosition, Quaternion.identity, transform);
@@ -458,8 +468,12 @@ public class TrackGen : MonoBehaviour
                 
                 initialPosition = new Vector3(-scaleFactor, 0, 0);
                 
-                var curvedPositionOffsetX = scale * 1.2f;
-                var curvedPositionOffsetZ = scale * 0.34f;
+                // var curvedPositionOffsetX = scale * 1.2f;
+                // var curvedPositionOffsetZ = scale * 0.34f;
+                
+                //var downCurvedPosL = new Vector3(scale * 11.24f, 0, scale * 0.38f);
+
+                var downCurvedPosL = new Vector3(-(scale * 11.24f), 0, (scale * 0.38f));
                 
                 newPosition = new Vector3(
                     prevPosition.x + initialPosition.x, 
@@ -515,9 +529,9 @@ public class TrackGen : MonoBehaviour
                     case 1:
                     {
                         newPosition = new Vector3(
-                            (prevPosition.x + initialPosition.x) + curvedPositionOffsetX, 
+                            prevPosition.x + downCurvedPosL.x, 
                             prevPosition.y + initialPosition.y, 
-                            (prevPosition.z + initialPosition.z) + curvedPositionOffsetZ
+                            prevPosition.z + downCurvedPosL.z
                         );
                         
                         Instantiate(leftNeighbours[1], newPosition, Quaternion.identity, transform);
@@ -536,8 +550,8 @@ public class TrackGen : MonoBehaviour
             {
                 leftNeighbours = new GameObject[] { straightLeftTrackObj };
                 //downNeighbours = new GameObject[] { straightForwardTrackObj };
-                
-                initialPosition = new Vector3(-(scale * 26.58f), 0, (scale * 16f));
+
+                initialPosition = new Vector3(-(scale * 11.23f), 0, (scale * 0.37f));
                 
                 newPosition = new Vector3(
                     prevPosition.x + initialPosition.x, 
@@ -588,7 +602,9 @@ public class TrackGen : MonoBehaviour
             {
                 rightNeighbours = new GameObject[] { straightRightTrackObj };
                 
-                initialPosition = new Vector3((scale * 26.58f), 0, (scale * 16f));
+                //initialPosition = new Vector3((scale * 26.58f), 0, (scale * 16f));
+                
+                initialPosition = new Vector3(scale * 26.53f, 0, scale * 16f);
 
                 newPosition = new Vector3(
                     prevPosition.x + initialPosition.x, 
@@ -638,8 +654,11 @@ public class TrackGen : MonoBehaviour
             {
                 upNeighbours = new GameObject[] { straightForwardTrackObj};
                 
-                initialPosition = new Vector3(-(scale * 16f), 0, (scale * 26.58f));
+                //initialPosition = new Vector3(-(scale * 16f), 0, (scale * 26.58f));
                 
+                initialPosition = new Vector3(-(scale * 16f), 0, (scale * 16.44f));
+                
+                //initialPosition = new Vector3(-(scale * 11.24f), 0, (scale * 0.38f));
                 
                 newPosition = new Vector3(
                     prevPosition.x + initialPosition.x, 
@@ -691,8 +710,11 @@ public class TrackGen : MonoBehaviour
             {
                 upNeighbours = new GameObject[] { straightForwardTrackObj };
                 
-                initialPosition = new Vector3((scale * 16f), 0, (scale * 26.58f));
+                //initialPosition = new Vector3((scale * 16f), 0, (scale * 26.58f));
                 
+                //initialPosition = new Vector3((scale * 11.24f), 0, (scale * 0.38f));
+                
+                initialPosition = new Vector3(scale * 0.379f, 0, scale * 11.23f);
                 
                 newPosition = new Vector3(
                     prevPosition.x + initialPosition.x, 

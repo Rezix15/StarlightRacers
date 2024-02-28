@@ -4201,21 +4201,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startTrackObj: {fileID: 1393370057757823438, guid: 8dd6a4612d5df664482ea94f371ea461, type: 3}
   finishTrackObj: {fileID: 6568056068367628586, guid: 9624e858266140d43a1212728e0ffddb, type: 3}
-  straightForwardTrackObj: {fileID: 1971595611835856198, guid: 9b75d03a028d21c408b1706b9d6891b2, type: 3}
-  straightLeftTrackObj: {fileID: 7426889783253288310, guid: ed1b5081c7e111d41b0ed263a347d918, type: 3}
-  straightRightTrackObj: {fileID: 2306230257821200842, guid: 43eb4433af046c2458b41759dead36c8, type: 3}
-  upCurvedLeftTrackObj: {fileID: 3470400604091817373, guid: 8b23d5f5216c0004484962473a2dbaf5, type: 3}
-  upCurvedRightTrackObj: {fileID: 1637635316936684679, guid: e8a60b7f764ad8440bb125087dbf10fb, type: 3}
-  downCurvedLeftTrackObj: {fileID: 8632992114229095409, guid: dd670eca657394c45b80ee78d73cb3c4, type: 3}
-  downCurvedRightTrackObj: {fileID: 2315917992995823804, guid: 1ffec0beac33f2b4c88a9dfa19080b33, type: 3}
-  junctionTrackObj: {fileID: 7779213265408202954, guid: ca1f86f34f96e2a4b829ab7098c0bc20, type: 3}
+  straightForwardTrackObj: {fileID: 8143200395637452275, guid: a8ee680bdef344c46a64b07a1ac3a571, type: 3}
+  straightLeftTrackObj: {fileID: 4206869128042376907, guid: 7c048ff374afe4643928f79d41713fc2, type: 3}
+  straightRightTrackObj: {fileID: 5664122191950308730, guid: 070357ed79f50de4986bfffe0351f48e, type: 3}
+  upCurvedLeftTrackObj: {fileID: 4847280205126028791, guid: 226ab7f2beb747048b8d4be84c599b5a, type: 3}
+  upCurvedRightTrackObj: {fileID: 7687377626124402887, guid: 77bad3311e6eeee489f721c42584611b, type: 3}
+  downCurvedLeftTrackObj: {fileID: 7783534383035911550, guid: 60a5ee5e8b1442e4fba43a1019d06c2a, type: 3}
+  downCurvedRightTrackObj: {fileID: 6860406213164093489, guid: ef7f02b4ef3c9b841b16c46b50258886, type: 3}
+  junctionTrackObj: {fileID: 8942379376641926916, guid: a2012e049f96d6c4bac49a256eb92605, type: 3}
   archTrackObj: {fileID: 5327402514300937725, guid: 8e1dfa1f630c7f246bff344fa6ecf6db, type: 3}
   checkpointObj: {fileID: 679806092176451267, guid: 19a01f91abf2dd04fac6b3d137b51a33, type: 3}
   boosterObj: {fileID: 8363658589030094893, guid: 3c6fe119a25a4d14da5e4ef02de25281, type: 3}
   portalObj: {fileID: 4587124611266113223, guid: 2587db753eb33034291e6c87e3a9c0ce, type: 3}
   trafficLightObj: {fileID: 7624565907419748646, guid: f74c1b683d22e6c4e93216fd7a61652f, type: 3}
-  scale: 45
-  reachLimit: 36000
   junctionTrackCountLimit: 1
 --- !u!4 &1225837805
 Transform:
@@ -4273,7 +4271,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1306617235}
   - component: {fileID: 1306617238}
-  - component: {fileID: 1306617237}
   - component: {fileID: 1306617239}
   m_Layer: 0
   m_Name: cm
@@ -4297,33 +4294,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2118570207}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1306617237
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306617234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
-  m_LookaheadTime: 0
-  m_LookaheadSmoothing: 0
-  m_LookaheadIgnoreY: 0
-  m_HorizontalDamping: 0.5
-  m_VerticalDamping: 0.5
-  m_ScreenX: 0.5
-  m_ScreenY: 0.5
-  m_DeadZoneWidth: 0
-  m_DeadZoneHeight: 0
-  m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
-  m_BiasX: 0
-  m_BiasY: 0
-  m_CenterOnActivate: 1
 --- !u!114 &1306617238
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -4409,7 +4379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1349792448
 Transform:
   m_ObjectHideFlags: 0
@@ -6738,6 +6708,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2118570207}
   - component: {fileID: 2118570206}
+  - component: {fileID: 2118570208}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -6763,7 +6734,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
+  m_LookAt: {fileID: 1101817267}
   m_Follow: {fileID: 491009352}
   m_Lens:
     FieldOfView: 60.000004
@@ -6792,7 +6763,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2118570205}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000030489367, y: -0.122183256, z: 0.0000000037534122, w: 0.9925076}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 30, y: 45, z: -52.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6800,6 +6771,36 @@ Transform:
   - {fileID: 1306617235}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2118570208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118570205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 129
+  m_IgnoreTag: Player
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 2
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0
+  m_Damping: 0
+  m_DampingWhenOccluded: 0
+  m_OptimalTargetDistance: 0
 --- !u!4 &543450652924089928
 Transform:
   m_ObjectHideFlags: 0

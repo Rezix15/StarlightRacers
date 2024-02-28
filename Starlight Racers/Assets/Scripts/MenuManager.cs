@@ -93,12 +93,16 @@ public class MenuManager : MonoBehaviour
 
     public Image submitButtonIcon;
 
+    public TextMeshProUGUI specialAbilityText;
+    public TextMeshProUGUI specialAbilityDesc;
+
     public static int difficultyLevel; //global variable that will be used to define the difficulty level for our game.
     public static int scaleLevel; //global variable that will set the scale of the track.
     public static int reachLimit; //global variable that sets the maximum limit co-ordinate the track gen can go
 
     private bool wasKeyboard;
 
+    public GameObject selectVehicleIndicator;
     private void Awake()
     {
         Controller = new PlayerController();
@@ -191,11 +195,14 @@ public class MenuManager : MonoBehaviour
         
         ToggleStartMenu(1);
         
-        if (playerInput.currentControlScheme == "Controller")
-        {
-            EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
-            lastHoveredObj = menuOptions[0].gameObject;
-        }
+        // if (playerInput.currentControlScheme == "Controller")
+        // {
+        //     EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
+        //     lastHoveredObj = menuOptions[0].gameObject;
+        // }
+        
+        EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
+        lastHoveredObj = menuOptions[0].gameObject;
     }
 
     public void ExitMenu()
@@ -227,19 +234,24 @@ public class MenuManager : MonoBehaviour
         
         //Debug.Log("lastHoveredObj: " + lastHoveredObj.name);
         
-        if (isGamepad)
+        // if (isGamepad)
+        // {
+        //     for (int i = 0; i < menuOptions.Length; i++)
+        //     {
+        //         indicators[i].gameObject.SetActive(menuOptions[i].gameObject == selectedOpt);
+        //     }
+        // }
+        // else
+        // {
+        //     for (int i = 0; i < menuOptions.Length; i++)
+        //     {
+        //         indicators[i].gameObject.SetActive(false);
+        //     }
+        // }
+        
+        for (int i = 0; i < menuOptions.Length; i++)
         {
-            for (int i = 0; i < menuOptions.Length; i++)
-            {
-                indicators[i].gameObject.SetActive(menuOptions[i].gameObject == selectedOpt);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < menuOptions.Length; i++)
-            {
-                indicators[i].gameObject.SetActive(false);
-            }
+            indicators[i].gameObject.SetActive(menuOptions[i].gameObject == selectedOpt);
         }
         
     }
@@ -248,19 +260,24 @@ public class MenuManager : MonoBehaviour
     {
         GameObject selectedOpt = EventSystem.current.currentSelectedGameObject;
         
-        if (isGamepad)
+        // if (isGamepad)
+        // {
+        //     for (int i = 0; i < difMenuOptions.Length; i++)
+        //     {
+        //         difficultyMenuIndicators[i].gameObject.SetActive(difMenuOptions[i].gameObject == selectedOpt);
+        //     }
+        // }
+        // else
+        // {
+        //     for (int i = 0; i < difMenuOptions.Length; i++)
+        //     {
+        //         difficultyMenuIndicators[i].gameObject.SetActive(false);
+        //     }
+        // }
+        
+        for (int i = 0; i < difMenuOptions.Length; i++)
         {
-            for (int i = 0; i < difMenuOptions.Length; i++)
-            {
-                difficultyMenuIndicators[i].gameObject.SetActive(difMenuOptions[i].gameObject == selectedOpt);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < difMenuOptions.Length; i++)
-            {
-                difficultyMenuIndicators[i].gameObject.SetActive(false);
-            }
+            difficultyMenuIndicators[i].gameObject.SetActive(difMenuOptions[i].gameObject == selectedOpt);
         }
     }
     
@@ -385,21 +402,24 @@ public class MenuManager : MonoBehaviour
     {
         switch (difficultyVar)
         {
+            //Easy
             case 0:
             {
-                reachLimit = scaleLevel * 600;
+                reachLimit = 30000;  
                 break;
             }
 
+            //Medium
             case 1:
             {
-                reachLimit = scaleLevel * 666;
+                reachLimit = 35000;
                 break;
             }
 
+            //Hard
             case 2:
             {
-                reachLimit = scaleLevel * 800;
+                reachLimit = 40000;
                 break;
             }
 
@@ -415,11 +435,13 @@ public class MenuManager : MonoBehaviour
         
         rButton.SetActive(true);
         
-        //If device is a gamepad
-        if (isGamepad)
-        {
-            EventSystem.current.SetSelectedGameObject(rButton);
-        }
+        // //If device is a gamepad
+        // if (isGamepad)
+        // {
+        //     EventSystem.current.SetSelectedGameObject(rButton);
+        // }
+        
+        EventSystem.current.SetSelectedGameObject(rButton);
         
         DisplayStats();
     }
@@ -471,6 +493,11 @@ public class MenuManager : MonoBehaviour
         DisplayStats();
     }
 
+    public void OnSelectButtonHighlighted(bool status)
+    {
+        selectVehicleIndicator.SetActive(status);
+    }
+
     private void DisplayStats()
     {
         currentSpaceJet = spaceJets[currentId];
@@ -489,9 +516,49 @@ public class MenuManager : MonoBehaviour
 
         spaceJetNameText.text = currentSpaceJet.name;
 
+        //Displaying the corresponding ability
+        switch (currentSpaceJet.name)
+        {
+            case "Absorber":
+            {
+                specialAbilityText.text = "Special Ability: Transmogrifier";
+                specialAbilityDesc.text = currentSpaceJet.name +
+                                          " gathers materials from the area around the player and" +
+                                          " is able to transmogrify it into different powerUps.";
+                break;
+            }
+            
+            case "UFO": 
+            {
+                specialAbilityText.text = "Special Ability: UFO";
+                specialAbilityDesc.text = currentSpaceJet.name +
+                                          " shares the same name as its ability. What is the true" +
+                                          " power of these aliens?";
+                break;
+            }
+            
+            case "Bolt Glider": 
+            {
+                specialAbilityText.text = "Special Ability: ElectroShift";
+                specialAbilityDesc.text = currentSpaceJet.name +
+                                          " is able to shift into gear modes that increase its speed " +
+                                          "and also change the properties that can give it an advantage in a dire situation"; 
+                break;
+            }
+            
+            case "Ghost Rider": 
+            {
+                specialAbilityText.text = "Special Ability: Invisible";
+                specialAbilityDesc.text = currentSpaceJet.name +
+                                          " is able to turn invisible and distort the area around the player, giving full" +
+                                          " immunity to damage for a few seconds and also slow down nearby opponents"; 
+                break;
+            }
+        }
+
 
         //Calculate the speedStat UI Display
-        var speedVal = (currentSpaceJet.speed / 40000f) * speedStatImg.Length;
+        var speedVal = (currentSpaceJet.speed / 35000f) * speedStatImg.Length;
 
         for (int i = 0; i < speedStatImg.Length; i++)
         {
@@ -579,22 +646,25 @@ public class MenuManager : MonoBehaviour
         //SceneManager.LoadScene("StarLightRacers_BetaTest");
         ToggleMenu(1);
         
-        if (playerInput.currentControlScheme == "Controller")
-        {
-            EventSystem.current.SetSelectedGameObject(difMenuOptions[1].gameObject);
-        }
+        // if (playerInput.currentControlScheme == "Controller")
+        // {
+        //     EventSystem.current.SetSelectedGameObject(difMenuOptions[1].gameObject);
+        // }
+        
+        EventSystem.current.SetSelectedGameObject(difMenuOptions[1].gameObject);
     }
 
     private void ButtonInactivity()
     {
-        if (lButton.activeInHierarchy == false && rButton.activeInHierarchy && isGamepad)
+        if (lButton.activeInHierarchy == false && rButton.activeInHierarchy)
         {
             EventSystem.current.SetSelectedGameObject(rButton);
         }
-        else if (rButton.activeInHierarchy == false && lButton.activeInHierarchy && isGamepad)
+        else if (rButton.activeInHierarchy == false && lButton.activeInHierarchy)
         {
             EventSystem.current.SetSelectedGameObject(lButton);
         }
-        
     }
+    
+    
 }
