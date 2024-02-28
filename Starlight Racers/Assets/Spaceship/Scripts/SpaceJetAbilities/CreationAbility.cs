@@ -40,7 +40,6 @@ public class CreationAbility : SpecialAbility
         var playerPos = player.transform.position;
 
         var spawnPos = new Vector3(playerPos.x, playerPos.y + 2, playerPos.z);
-        var bombSpawnPos = new Vector3(playerPos.x, playerPos.y, playerPos.z - 10);
         
         switch (randIndex)
         {
@@ -56,7 +55,7 @@ public class CreationAbility : SpecialAbility
             //Generate bomb
             case 1:
             {
-                StartCoroutine(BombDrops(bombSpawnPos));
+                StartCoroutine(BombDrops());
                 break;
             }
         }
@@ -73,10 +72,13 @@ public class CreationAbility : SpecialAbility
         Destroy(obj);
     }
 
-    IEnumerator BombDrops(Vector3 bombSpawnPos)
+    IEnumerator BombDrops()
     {
         for (int i = 0; i < 3; i++)
         {
+            var player = GameObject.FindGameObjectWithTag("PlayerRacer");
+            var playerPos = player.transform.position;
+            var bombSpawnPos = new Vector3(playerPos.x, playerPos.y, playerPos.z - (20 + (bomb.transform.localScale.x / 30 )) );
             var bombObj = Instantiate(bomb, bombSpawnPos, Quaternion.Euler(90, 0, 0));
             yield return new WaitForSeconds(cooldownTimer / 3);
             Destroy(bombObj);

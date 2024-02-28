@@ -123,8 +123,8 @@ public class TrackGen : MonoBehaviour
 
         //Set a scaleFactor
         scaleFactor = scale * 10;
-        boosterPos = new Vector3(0, (-0.6f * scale) + 1.15f, 0);
-        trafficPos = new Vector3(scale * 3, (0.75f * scale) + 1.15f, scale * 1.5f);
+        boosterPos = new Vector3(0, (-0.44f * scale), 0);
+        trafficPos = new Vector3(scale * 3, (0.75f * scale) + 1.15f , scale * 1.5f);
         
 
         //GenerateInitialPosition
