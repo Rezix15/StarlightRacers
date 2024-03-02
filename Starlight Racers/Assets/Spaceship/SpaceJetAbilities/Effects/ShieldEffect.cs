@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShieldEffect : MonoBehaviour
 {
-    private int scaleMax = 14;
+    public int scaleMax;
 
     private int scale = 1;
 

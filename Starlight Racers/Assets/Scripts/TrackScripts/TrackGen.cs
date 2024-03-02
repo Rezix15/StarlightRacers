@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class TrackGen : MonoBehaviour
 {
+    public int trackSeed = 0;
     private NavMeshSurface meshSurface;
     public enum TrackType
     {
@@ -49,7 +50,7 @@ public class TrackGen : MonoBehaviour
     public GameObject diagonalLeftObj;
     public GameObject diagonalRightObj;
     public GameObject angleShifterObj; //An object that will be used to shift the angle of our player
-    
+    public GameObject enemySpawnerObj;
 
     //Unique Obj
     public GameObject boosterObj;
@@ -96,11 +97,13 @@ public class TrackGen : MonoBehaviour
 
     private bool junctionTrackCheck = false;
 
-    private int archChance = 4; // probability that the arch track will be generated. Currently it is at 3 which means 33%
-    
+    private int specialChance = 4; // probability that the arch track will be generated. Currently it is at 3 which means 33%
+
+    public bool generateRandomSeed = true;
     private void Awake()
     {
         //Initialize objects respective local scales
+        # region scaleObjects
         startTrackObj.transform.localScale = new Vector3(scale, scale, scale);
         finishTrackObj.transform.localScale = new Vector3(scale, scale, scale);
         straightForwardTrackObj.transform.localScale = new Vector3(scale, scale, scale);
@@ -116,12 +119,27 @@ public class TrackGen : MonoBehaviour
         portalObj.transform.localScale = new Vector3(scale * 15, scale * 15, scale * 15);
         trafficLightObj.transform.localScale = new Vector3(scale * 66.66f, scale * 66.66f, scale * 66.66f);
         angleShifterObj.transform.localScale = new Vector3(scale, scale, scale); 
-        meshSurface = GetComponent<NavMeshSurface>();
+        enemySpawnerObj.transform.localScale = new Vector3(scale, scale, scale); 
+        //meshSurface = GetComponent<NavMeshSurface>();
+        # endregion
+        
+        //Seed Generation
+        GenerateTrackSeed();
     }
 
     private void GenerateNavMesh()
     {
         meshSurface.BuildNavMesh();
+    }
+
+    private void GenerateTrackSeed()
+    {
+        if (generateRandomSeed)
+        {
+            trackSeed = (int)System.DateTime.Now.Ticks;
+        }
+        
+        Random.InitState(trackSeed);
     }
 
     // Start is called before the first frame update
@@ -251,7 +269,7 @@ public class TrackGen : MonoBehaviour
 
                 if ((trackCount > 0 && trackCount % 5 == 0) && shouldFinish == false && junctionTrackCheck == false) 
                 {
-                    archIndex = Random.Range(0, archChance);
+                    archIndex = Random.Range(0, specialChance);
                     randIndex = 3;
                 }
                 
@@ -305,6 +323,12 @@ public class TrackGen : MonoBehaviour
                             Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
                             Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
                         }
+                        
+                        if ((trackCount > 0 && trackCount % 6 == 0) )
+                        {
+                            Instantiate(enemySpawnerObj, newPosition, Quaternion.identity, transform);
+                        }
+
                        
                         GenerateNeighbours(TrackType.StraightForward, newPosition);
                         break;
@@ -339,7 +363,7 @@ public class TrackGen : MonoBehaviour
                     //Special Track Generation (Finish/Arch/Junction)
                     case 3:
                     {
-                        // if (archIndex % archChance == 1 ) 
+                        // if (archIndex % specialChance == 1 ) 
                         // {
                         //     newPosition = new Vector3(
                         //         (prevPosition.x + initialPosition.x),
@@ -351,7 +375,7 @@ public class TrackGen : MonoBehaviour
                         //     GenerateNeighbours(TrackType.ArchTrack, newPosition + initialPosition);
                         //     //Debug.Log("Generated Arch");
                         // }
-                        if(archIndex % archChance == 1 || archIndex % archChance == 2)
+                        if(archIndex % specialChance == 1 || archIndex % specialChance == 2)
                         {
                             Instantiate(upNeighbours[4], newDiagonalPos, Quaternion.identity, transform);
                             GenerateNeighbours(TrackType.DiagonalForward, newDiagonalPos);

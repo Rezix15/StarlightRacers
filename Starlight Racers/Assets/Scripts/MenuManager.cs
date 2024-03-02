@@ -182,7 +182,7 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("wasKeyboard: " + wasKeyboard);
+        // Debug.Log("wasKeyboard: " + wasKeyboard);
         UpdateUserInputDisplay();
         ToggleThroughMenu();
         ToggleThroughDifficultyMenu();

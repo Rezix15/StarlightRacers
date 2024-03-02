@@ -19,6 +19,8 @@ TagManager:
   - currentBoostIcon
   - DownTrack
   - ForwardTrack
+  - RobotEnemy
+  - EnemyLaser
   layers:
   - Default
   - TransparentFX

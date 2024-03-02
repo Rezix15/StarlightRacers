@@ -4236,6 +4236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1c3a54893f672458914dc78825e6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackSeed: 1680387413
   startTrackObj: {fileID: 1393370057757823438, guid: 8dd6a4612d5df664482ea94f371ea461, type: 3}
   finishTrackObj: {fileID: 6568056068367628586, guid: 9624e858266140d43a1212728e0ffddb, type: 3}
   straightForwardTrackObj: {fileID: 8143200395637452275, guid: a8ee680bdef344c46a64b07a1ac3a571, type: 3}
@@ -4252,10 +4253,12 @@ MonoBehaviour:
   diagonalLeftObj: {fileID: 5790846087120965958, guid: 395d12fae76fe4c4996063986d3d7e15, type: 3}
   diagonalRightObj: {fileID: 1681034436355413371, guid: f303dbbd7ab502f4e8a4636646cfe25b, type: 3}
   angleShifterObj: {fileID: 8689594078820487808, guid: f1d4942de4d58c645ab80de8d139bfc5, type: 3}
+  enemySpawnerObj: {fileID: 6708633121154662552, guid: 6104cea6ddd71704f99bb154b18dd4c0, type: 3}
   boosterObj: {fileID: 8363658589030094893, guid: 3c6fe119a25a4d14da5e4ef02de25281, type: 3}
   portalObj: {fileID: 4587124611266113223, guid: 2587db753eb33034291e6c87e3a9c0ce, type: 3}
   trafficLightObj: {fileID: 7624565907419748646, guid: f74c1b683d22e6c4e93216fd7a61652f, type: 3}
   junctionTrackCountLimit: 1
+  generateRandomSeed: 0
 --- !u!4 &1225837805
 Transform:
   m_ObjectHideFlags: 0
@@ -4265,7 +4268,7 @@ Transform:
   m_GameObject: {fileID: 1225837803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

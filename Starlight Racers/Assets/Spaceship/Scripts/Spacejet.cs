@@ -32,7 +32,7 @@ public class Spacejet : MonoBehaviour
     public Stat shieldMax; //Health
     
     [SerializeField]
-    private Stat laserDamage; //Defense
+    private Stat laserDamage; //LaserDamage
     
     [SerializeField]
     private Stat shieldRate; //Defense Stat
@@ -347,7 +347,7 @@ public class Spacejet : MonoBehaviour
     //Function that sacrifices the shield gauge to increase speed. If user shield expires when boosting, destroy player
     private void ShieldBoost()
     {
-        Debug.Log("shieldRate: " + shieldRate.trueValue);
+        // Debug.Log("shieldRate: " + shieldRate.trueValue);
         
         if (currentShieldStat > 0 && shieldBoostPressed)
         {
@@ -485,7 +485,6 @@ public class Spacejet : MonoBehaviour
             {
                 checkpointCount++;
             }
-            
         }
         
         if (other.gameObject.CompareTag("DownTrack"))
@@ -520,6 +519,11 @@ public class Spacejet : MonoBehaviour
         if (other.gameObject.layer == 7)
         {
             currentShieldStat -= 0.4f * (1 - Mathf.Clamp(shieldRate.trueValue / 100, 0f, 0.8f));
+        }
+
+        if (other.gameObject.CompareTag("RobotEnemy"))
+        {
+            currentShieldStat -= 0.4f * (5 - Mathf.Clamp(shieldRate.trueValue / 100, 0f, 0.8f));
         }
     }
 
