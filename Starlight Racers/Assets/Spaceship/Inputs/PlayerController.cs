@@ -337,6 +337,390 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""Player1"",
+            ""id"": ""f3df5bcc-9016-4ec9-a29e-dd32c0e89bd6"",
+            ""actions"": [
+                {
+                    ""name"": ""Accelerate"",
+                    ""type"": ""Value"",
+                    ""id"": ""81cc405d-07ce-4100-a14d-48c8a585a9ae"",
+                    ""expectedControlType"": ""Key"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""ab44b0c1-767d-4d6d-9314-36b332f55a29"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Turn"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""3337a028-6d5f-40fb-8eb8-7824fb17b0a3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ShootLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""06656441-a7d9-46d6-83fb-81e1a0e04316"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShootRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""d60e277a-369b-49e8-9898-c8c769de9b54"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Boost"",
+                    ""type"": ""Value"",
+                    ""id"": ""a50d22dc-d779-4504-9be3-cc72f18ed9b6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SpecialAbility"",
+                    ""type"": ""Button"",
+                    ""id"": ""2710b4eb-d9fd-41c3-b2b9-9a72804b2526"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""63fe6104-639d-42cc-aa96-db928322c72c"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""ShootLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e635d49-ab9f-4f38-88fd-3752c1f87026"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""ShootRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""7eaa07e5-a6be-4501-8c5e-f667cf151cd6"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""48129468-a0ba-45b0-9864-8e191bbd8dc8"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6d0e2ac7-aa34-4f9c-8b8b-a9a53fc1e3b7"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""69e5c671-5212-4b2c-9bce-ea941e123338"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Accelerate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""c44280ac-f343-4f4b-8d47-35a0fe7b18c5"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""b0523be0-6392-46d3-ac84-5bb36de95e48"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""9c44e3c3-d125-4e82-9367-d7a4d8d2a59f"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a243054-0eb0-45b8-ac94-bf391b63ba82"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Boost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7965e316-0cab-4060-9344-62794d17a70b"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""SpecialAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Player2"",
+            ""id"": ""048b54d5-8736-4f4d-b2d9-0030ab1c0427"",
+            ""actions"": [
+                {
+                    ""name"": ""Accelerate"",
+                    ""type"": ""Value"",
+                    ""id"": ""d4628d4d-1fc8-4a2b-8964-6e5a3ec47ea0"",
+                    ""expectedControlType"": ""Key"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""7db47ba9-9696-407c-b5d6-bae815ab281a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Turn"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""ab9112ab-faad-4793-b6b8-0b885c205be8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ShootLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""eff7475d-48f7-481f-b33d-041711a35cd6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShootRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""7e478f73-93af-4278-91ff-0bf1facc0703"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Boost"",
+                    ""type"": ""Value"",
+                    ""id"": ""78f45d71-2125-4907-9dcf-c3dec41d15ee"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SpecialAbility"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca7255c5-b554-412c-be47-a39615fb3f0b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""efffaf0e-5b3f-4f0e-8445-04fd34af00e7"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ShootLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d92c7321-b861-4560-855d-129c82dac9cd"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ShootRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""bd439d7d-e7ad-4440-8373-13679a7b7ba2"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""23eefc03-e3ad-4a85-b96e-c384a249b2ed"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""62b620c8-2d52-494d-aad2-3705ddb5acd3"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""939578c0-5125-4aab-8fb5-0793b50dec4b"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Accelerate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""39fcc1bd-cde2-4ba7-889a-30cecc902850"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""fdc3b1f1-32b5-420c-a329-4fe260956800"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""7094abc9-21b8-45a6-8bd4-c9e49acb02d4"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""252a0808-4692-4b9b-8106-d90810764a5b"",
+                    ""path"": ""<Keyboard>/Space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Boost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d1238a52-86ad-448f-9c28-b461f03230b7"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SpecialAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": "" MainMenu"",
             ""id"": ""e608d963-eb8e-4525-b40c-cc63666dc66f"",
             ""actions"": [
@@ -816,6 +1200,24 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         m_Player_ShootRight = m_Player.FindAction("ShootRight", throwIfNotFound: true);
         m_Player_Boost = m_Player.FindAction("Boost", throwIfNotFound: true);
         m_Player_SpecialAbility = m_Player.FindAction("SpecialAbility", throwIfNotFound: true);
+        // Player1
+        m_Player1 = asset.FindActionMap("Player1", throwIfNotFound: true);
+        m_Player1_Accelerate = m_Player1.FindAction("Accelerate", throwIfNotFound: true);
+        m_Player1_Movement = m_Player1.FindAction("Movement", throwIfNotFound: true);
+        m_Player1_Turn = m_Player1.FindAction("Turn", throwIfNotFound: true);
+        m_Player1_ShootLeft = m_Player1.FindAction("ShootLeft", throwIfNotFound: true);
+        m_Player1_ShootRight = m_Player1.FindAction("ShootRight", throwIfNotFound: true);
+        m_Player1_Boost = m_Player1.FindAction("Boost", throwIfNotFound: true);
+        m_Player1_SpecialAbility = m_Player1.FindAction("SpecialAbility", throwIfNotFound: true);
+        // Player2
+        m_Player2 = asset.FindActionMap("Player2", throwIfNotFound: true);
+        m_Player2_Accelerate = m_Player2.FindAction("Accelerate", throwIfNotFound: true);
+        m_Player2_Movement = m_Player2.FindAction("Movement", throwIfNotFound: true);
+        m_Player2_Turn = m_Player2.FindAction("Turn", throwIfNotFound: true);
+        m_Player2_ShootLeft = m_Player2.FindAction("ShootLeft", throwIfNotFound: true);
+        m_Player2_ShootRight = m_Player2.FindAction("ShootRight", throwIfNotFound: true);
+        m_Player2_Boost = m_Player2.FindAction("Boost", throwIfNotFound: true);
+        m_Player2_SpecialAbility = m_Player2.FindAction("SpecialAbility", throwIfNotFound: true);
         //  MainMenu
         m_MainMenu = asset.FindActionMap(" MainMenu", throwIfNotFound: true);
         m_MainMenu_Vertical = m_MainMenu.FindAction("Vertical", throwIfNotFound: true);
@@ -980,6 +1382,194 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
     }
     public PlayerActions @Player => new PlayerActions(this);
 
+    // Player1
+    private readonly InputActionMap m_Player1;
+    private List<IPlayer1Actions> m_Player1ActionsCallbackInterfaces = new List<IPlayer1Actions>();
+    private readonly InputAction m_Player1_Accelerate;
+    private readonly InputAction m_Player1_Movement;
+    private readonly InputAction m_Player1_Turn;
+    private readonly InputAction m_Player1_ShootLeft;
+    private readonly InputAction m_Player1_ShootRight;
+    private readonly InputAction m_Player1_Boost;
+    private readonly InputAction m_Player1_SpecialAbility;
+    public struct Player1Actions
+    {
+        private @PlayerController m_Wrapper;
+        public Player1Actions(@PlayerController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Accelerate => m_Wrapper.m_Player1_Accelerate;
+        public InputAction @Movement => m_Wrapper.m_Player1_Movement;
+        public InputAction @Turn => m_Wrapper.m_Player1_Turn;
+        public InputAction @ShootLeft => m_Wrapper.m_Player1_ShootLeft;
+        public InputAction @ShootRight => m_Wrapper.m_Player1_ShootRight;
+        public InputAction @Boost => m_Wrapper.m_Player1_Boost;
+        public InputAction @SpecialAbility => m_Wrapper.m_Player1_SpecialAbility;
+        public InputActionMap Get() { return m_Wrapper.m_Player1; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Player1Actions set) { return set.Get(); }
+        public void AddCallbacks(IPlayer1Actions instance)
+        {
+            if (instance == null || m_Wrapper.m_Player1ActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Player1ActionsCallbackInterfaces.Add(instance);
+            @Accelerate.started += instance.OnAccelerate;
+            @Accelerate.performed += instance.OnAccelerate;
+            @Accelerate.canceled += instance.OnAccelerate;
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @Turn.started += instance.OnTurn;
+            @Turn.performed += instance.OnTurn;
+            @Turn.canceled += instance.OnTurn;
+            @ShootLeft.started += instance.OnShootLeft;
+            @ShootLeft.performed += instance.OnShootLeft;
+            @ShootLeft.canceled += instance.OnShootLeft;
+            @ShootRight.started += instance.OnShootRight;
+            @ShootRight.performed += instance.OnShootRight;
+            @ShootRight.canceled += instance.OnShootRight;
+            @Boost.started += instance.OnBoost;
+            @Boost.performed += instance.OnBoost;
+            @Boost.canceled += instance.OnBoost;
+            @SpecialAbility.started += instance.OnSpecialAbility;
+            @SpecialAbility.performed += instance.OnSpecialAbility;
+            @SpecialAbility.canceled += instance.OnSpecialAbility;
+        }
+
+        private void UnregisterCallbacks(IPlayer1Actions instance)
+        {
+            @Accelerate.started -= instance.OnAccelerate;
+            @Accelerate.performed -= instance.OnAccelerate;
+            @Accelerate.canceled -= instance.OnAccelerate;
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @Turn.started -= instance.OnTurn;
+            @Turn.performed -= instance.OnTurn;
+            @Turn.canceled -= instance.OnTurn;
+            @ShootLeft.started -= instance.OnShootLeft;
+            @ShootLeft.performed -= instance.OnShootLeft;
+            @ShootLeft.canceled -= instance.OnShootLeft;
+            @ShootRight.started -= instance.OnShootRight;
+            @ShootRight.performed -= instance.OnShootRight;
+            @ShootRight.canceled -= instance.OnShootRight;
+            @Boost.started -= instance.OnBoost;
+            @Boost.performed -= instance.OnBoost;
+            @Boost.canceled -= instance.OnBoost;
+            @SpecialAbility.started -= instance.OnSpecialAbility;
+            @SpecialAbility.performed -= instance.OnSpecialAbility;
+            @SpecialAbility.canceled -= instance.OnSpecialAbility;
+        }
+
+        public void RemoveCallbacks(IPlayer1Actions instance)
+        {
+            if (m_Wrapper.m_Player1ActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayer1Actions instance)
+        {
+            foreach (var item in m_Wrapper.m_Player1ActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Player1ActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public Player1Actions @Player1 => new Player1Actions(this);
+
+    // Player2
+    private readonly InputActionMap m_Player2;
+    private List<IPlayer2Actions> m_Player2ActionsCallbackInterfaces = new List<IPlayer2Actions>();
+    private readonly InputAction m_Player2_Accelerate;
+    private readonly InputAction m_Player2_Movement;
+    private readonly InputAction m_Player2_Turn;
+    private readonly InputAction m_Player2_ShootLeft;
+    private readonly InputAction m_Player2_ShootRight;
+    private readonly InputAction m_Player2_Boost;
+    private readonly InputAction m_Player2_SpecialAbility;
+    public struct Player2Actions
+    {
+        private @PlayerController m_Wrapper;
+        public Player2Actions(@PlayerController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Accelerate => m_Wrapper.m_Player2_Accelerate;
+        public InputAction @Movement => m_Wrapper.m_Player2_Movement;
+        public InputAction @Turn => m_Wrapper.m_Player2_Turn;
+        public InputAction @ShootLeft => m_Wrapper.m_Player2_ShootLeft;
+        public InputAction @ShootRight => m_Wrapper.m_Player2_ShootRight;
+        public InputAction @Boost => m_Wrapper.m_Player2_Boost;
+        public InputAction @SpecialAbility => m_Wrapper.m_Player2_SpecialAbility;
+        public InputActionMap Get() { return m_Wrapper.m_Player2; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Player2Actions set) { return set.Get(); }
+        public void AddCallbacks(IPlayer2Actions instance)
+        {
+            if (instance == null || m_Wrapper.m_Player2ActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Player2ActionsCallbackInterfaces.Add(instance);
+            @Accelerate.started += instance.OnAccelerate;
+            @Accelerate.performed += instance.OnAccelerate;
+            @Accelerate.canceled += instance.OnAccelerate;
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @Turn.started += instance.OnTurn;
+            @Turn.performed += instance.OnTurn;
+            @Turn.canceled += instance.OnTurn;
+            @ShootLeft.started += instance.OnShootLeft;
+            @ShootLeft.performed += instance.OnShootLeft;
+            @ShootLeft.canceled += instance.OnShootLeft;
+            @ShootRight.started += instance.OnShootRight;
+            @ShootRight.performed += instance.OnShootRight;
+            @ShootRight.canceled += instance.OnShootRight;
+            @Boost.started += instance.OnBoost;
+            @Boost.performed += instance.OnBoost;
+            @Boost.canceled += instance.OnBoost;
+            @SpecialAbility.started += instance.OnSpecialAbility;
+            @SpecialAbility.performed += instance.OnSpecialAbility;
+            @SpecialAbility.canceled += instance.OnSpecialAbility;
+        }
+
+        private void UnregisterCallbacks(IPlayer2Actions instance)
+        {
+            @Accelerate.started -= instance.OnAccelerate;
+            @Accelerate.performed -= instance.OnAccelerate;
+            @Accelerate.canceled -= instance.OnAccelerate;
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @Turn.started -= instance.OnTurn;
+            @Turn.performed -= instance.OnTurn;
+            @Turn.canceled -= instance.OnTurn;
+            @ShootLeft.started -= instance.OnShootLeft;
+            @ShootLeft.performed -= instance.OnShootLeft;
+            @ShootLeft.canceled -= instance.OnShootLeft;
+            @ShootRight.started -= instance.OnShootRight;
+            @ShootRight.performed -= instance.OnShootRight;
+            @ShootRight.canceled -= instance.OnShootRight;
+            @Boost.started -= instance.OnBoost;
+            @Boost.performed -= instance.OnBoost;
+            @Boost.canceled -= instance.OnBoost;
+            @SpecialAbility.started -= instance.OnSpecialAbility;
+            @SpecialAbility.performed -= instance.OnSpecialAbility;
+            @SpecialAbility.canceled -= instance.OnSpecialAbility;
+        }
+
+        public void RemoveCallbacks(IPlayer2Actions instance)
+        {
+            if (m_Wrapper.m_Player2ActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayer2Actions instance)
+        {
+            foreach (var item in m_Wrapper.m_Player2ActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Player2ActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public Player2Actions @Player2 => new Player2Actions(this);
+
     //  MainMenu
     private readonly InputActionMap m_MainMenu;
     private List<IMainMenuActions> m_MainMenuActionsCallbackInterfaces = new List<IMainMenuActions>();
@@ -1138,6 +1728,26 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         }
     }
     public interface IPlayerActions
+    {
+        void OnAccelerate(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
+        void OnTurn(InputAction.CallbackContext context);
+        void OnShootLeft(InputAction.CallbackContext context);
+        void OnShootRight(InputAction.CallbackContext context);
+        void OnBoost(InputAction.CallbackContext context);
+        void OnSpecialAbility(InputAction.CallbackContext context);
+    }
+    public interface IPlayer1Actions
+    {
+        void OnAccelerate(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
+        void OnTurn(InputAction.CallbackContext context);
+        void OnShootLeft(InputAction.CallbackContext context);
+        void OnShootRight(InputAction.CallbackContext context);
+        void OnBoost(InputAction.CallbackContext context);
+        void OnSpecialAbility(InputAction.CallbackContext context);
+    }
+    public interface IPlayer2Actions
     {
         void OnAccelerate(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);

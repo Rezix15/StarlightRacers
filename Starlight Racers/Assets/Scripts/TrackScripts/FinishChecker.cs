@@ -9,7 +9,9 @@ using UnityEngine.SceneManagement;
 public class FinishChecker : MonoBehaviour
 {
     public TextMeshProUGUI countdownText;
+    public TextMeshProUGUI countdownTextP2;
     public TextMeshProUGUI finishTimer;
+    public TextMeshProUGUI finishTimerP2;
     private float playerFinishTime;
     private string playerFinishTimeText;
 
@@ -18,18 +20,26 @@ public class FinishChecker : MonoBehaviour
     private RaceManager RaceManager;
 
     private bool hasFinished;
+
+    private int finishedPlayers;
+
+    private int playerCount;
     
     // Start is called before the first frame update
     void Start()
     {
         //player = player.GetComponent<Spacejet>();
-        var countdownObj = GameObject.FindGameObjectWithTag("Countdown");
-        countdownText = countdownObj.GetComponent<TextMeshProUGUI>();
+        var countdownObj = GameObject.FindGameObjectsWithTag("Countdown");
+        countdownText = countdownObj[1].GetComponent<TextMeshProUGUI>();
+        countdownTextP2 = countdownObj[0].GetComponent<TextMeshProUGUI>();
 
-        var finishTimerObj = GameObject.FindGameObjectWithTag("FinishTimer");
-        finishTimer = finishTimerObj.GetComponent<TextMeshProUGUI>();
-
+        var finishTimerObj = GameObject.FindGameObjectsWithTag("FinishTimer");
+        finishTimer = finishTimerObj[1].GetComponent<TextMeshProUGUI>();
+        finishTimerP2 = finishTimerObj[0].GetComponent<TextMeshProUGUI>();
         hasFinished = false;
+
+        playerCount = GameObject.FindGameObjectsWithTag("PlayerRacer").Length;
+
     }
 
     // Update is called once per frame
@@ -58,7 +68,7 @@ public class FinishChecker : MonoBehaviour
         }
         else if(other.CompareTag("Player") && hasFinished == false)
         {
-            StartCoroutine(PlayerFinished());
+            StartCoroutine(PlayerFinished(player.isPlayer2));
             player = other.gameObject.GetComponentInParent<Spacejet>();
             Debug.Log("Player: " + player);
             playerFinishTime = player.ReturnFinishTime();
@@ -66,13 +76,23 @@ public class FinishChecker : MonoBehaviour
 
             finishTimer.text = playerFinishTimeText;
             finishTimer.gameObject.SetActive(true);
+
+            if (!player.hasFinished)
+            {
+                finishedPlayers++;
+            }
             
-            if (MenuManager.RaceCount < 3)
+            if (MenuManager.RaceCount < 3 )
             {
                 MenuManager.RaceCount++;
                 MenuManager.totalFinishTime += playerFinishTime;
                 CoinManager.coinCount += 500;
-                SceneManager.LoadScene("IntermissionScene");
+
+                if (playerCount < 2 || (playerCount >= 2 && finishedPlayers >=2))
+                {
+                    SceneManager.LoadScene("IntermissionScene");   
+                }
+                
             }
             else
             {
@@ -80,27 +100,46 @@ public class FinishChecker : MonoBehaviour
                 finishTimer.text = "Finish Time: " + playerFinishTimeText;
             }
             
-            StartCoroutine(FinishTimeCountdown());
-            
-
-
-
+            StartCoroutine(FinishTimeCountdown(player.isPlayer2));
         }
     }
 
-    IEnumerator PlayerFinished()
+    IEnumerator PlayerFinished(bool isPlayer2)
     {
-        countdownText.gameObject.SetActive(true);
-        countdownText.text = "FINISH!";
-        yield return new WaitForSeconds(1);
-        countdownText.gameObject.SetActive(false);
+        if (isPlayer2)
+        {
+            countdownTextP2.gameObject.SetActive(true);
+            countdownTextP2.text = "FINISH!";
+            yield return new WaitForSeconds(1);
+            countdownTextP2.gameObject.SetActive(false);
+        }
+        else
+        {
+            countdownText.gameObject.SetActive(true);
+            countdownText.text = "FINISH!";
+            yield return new WaitForSeconds(1);
+            countdownText.gameObject.SetActive(false);
+        }
+        
     }
 
-    IEnumerator FinishTimeCountdown()
+    IEnumerator FinishTimeCountdown(bool isPlayer2)
     {
-        yield return new WaitForSeconds(4);
-        finishTimer.text = "";
-        hasFinished = true;
+        if (isPlayer2)
+        {
+            yield return new WaitForSeconds(4);
+            finishTimerP2.text = "";
+        }
+        else
+        {
+            yield return new WaitForSeconds(4);
+            finishTimer.text = "";
+        }
+        
+        if(playerCount < 2 || (playerCount >= 2 && finishedPlayers >=2))
+        {
+            hasFinished = true;
+        }
     }
     
     

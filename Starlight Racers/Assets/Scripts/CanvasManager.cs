@@ -100,13 +100,16 @@ public class CanvasManager : MonoBehaviour
     void UpdateUI()
     {
         //Display Timer onto Canvas
-        int seconds = Mathf.FloorToInt(timer % 60); //calculates seconds.
-        int minutes = Mathf.FloorToInt(timer / 60); //calculates minutes.
-        int milliseconds = Mathf.FloorToInt(timer * 1000) % 1000; //calculates milliseconds.
+        if (!spacejet.hasFinished)
+        {
+            int seconds = Mathf.FloorToInt(timer % 60); //calculates seconds.
+            int minutes = Mathf.FloorToInt(timer / 60); //calculates minutes.
+            int milliseconds = Mathf.FloorToInt(timer * 1000) % 1000; //calculates milliseconds.
         
-        string timedString = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
+            string timedString = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
 
-        timerText.text = timedString;
+            timerText.text = timedString;
+        }
         
         laserAmmoAmount = spacejet.GetLaserAmmoCount();
 

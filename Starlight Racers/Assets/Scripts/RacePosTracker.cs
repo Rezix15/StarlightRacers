@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class RacePosTracker : MonoBehaviour
 {
-    private Spacejet SpaceJetPlayer;
+    private Spacejet[] SpaceJetPlayers;
     private GameObject currentRacer1Checkpoint;
     private GameObject currentRacer2Checkpoint;
     
@@ -27,7 +27,7 @@ public class RacePosTracker : MonoBehaviour
     private TextMeshProUGUI[] racerText;
 
     public TextMeshProUGUI playerPosText;
-    
+    public TextMeshProUGUI playerPosTextP2;
     
     // Start is called before the first frame update
 
@@ -35,12 +35,19 @@ public class RacePosTracker : MonoBehaviour
     {
         trackGen = trackGen.GetComponent<TrackGen>();
 
-        SpaceJetPlayer = FindObjectOfType<Spacejet>();
+        SpaceJetPlayers = FindObjectsOfType<Spacejet>();
         SpaceJetAis = FindObjectsOfType<SpacejetAI>();
         
-        racers = new List<GameObject> { SpaceJetPlayer.gameObject };
+        racers = new List<GameObject>();
         
         //racerTextPosition = new TextMeshProUGUI[racers.Count];
+        
+        
+        foreach (var spacejetPlayer in SpaceJetPlayers)
+        {
+            racers.Add(spacejetPlayer.gameObject);
+        }
+
         
         foreach (var spaceJetAi in SpaceJetAis)
         {
@@ -55,17 +62,23 @@ public class RacePosTracker : MonoBehaviour
 
         //If i = 0 (If the player), set the textbox to be a specific one, otherwise borrow from the text found within
         //the children.
+
+        racerText[0] = playerPosText;
+        racerText[1] = playerPosTextP2;
+        
         for (int i = 0; i < racers.Count; i++)
         {
-            if (i == 0)
-            {
-                racerText[i] = playerPosText;
-            }
-            else
-            {
-                racerText[i] = racers[i].GetComponentInChildren<TextMeshProUGUI>();
-                racerText[i].text = racePosTexts[i];
-            }
+            racerText[i].text = racePosTexts[i];
+            
+            // if (i == 0)
+            // {
+            //     racerText[i] = playerPosText;
+            // }
+            // else
+            // {
+            //     racerText[i] = racers[i].GetComponentInChildren<TextMeshProUGUI>();
+            //     racerText[i].text = racePosTexts[i];
+            // }
             
         }
     }

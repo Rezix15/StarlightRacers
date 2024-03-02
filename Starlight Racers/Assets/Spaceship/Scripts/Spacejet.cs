@@ -82,7 +82,7 @@ public class Spacejet : MonoBehaviour
 
     private bool shieldBoostPressed; //checks the input for the shieldBoost
     [SerializeField] private float finishTime = 0; //player finish time
-    private bool hasFinished;
+    public bool hasFinished;
 
     private float distToNextCheckpoint;
 
@@ -105,8 +105,10 @@ public class Spacejet : MonoBehaviour
     
     float boostTimer = 0;
     
-    
     private GhostAbility GhostAbility;
+    
+    public bool isPlayer1;
+    public bool isPlayer2;
     
     private void Awake()
     {
@@ -117,21 +119,59 @@ public class Spacejet : MonoBehaviour
         {
             UpgradeComponents();
         }
-        
-        Controller.Player.Accelerate.performed += _ => isAccelerating = true;
-        Controller.Player.Accelerate.canceled += _ => isAccelerating = false;
 
-        Controller.Player.ShootLeft.performed += _ => FireLaserLeft();
-        Controller.Player.ShootLeft.canceled += _ => FireLaserLeft();
-        
-        Controller.Player.ShootRight.performed += _ => FireLaserRight();
-        Controller.Player.ShootLeft.canceled += _ => FireLaserRight();
+        if (isPlayer1)
+        {
+            Controller.Player1.Accelerate.performed += _ => isAccelerating = true;
+            Controller.Player1.Accelerate.canceled += _ => isAccelerating = false;
 
-        Controller.Player.Boost.performed += _ => shieldBoostPressed = true;
-        Controller.Player.Boost.canceled += _ => shieldBoostPressed = false;
+            Controller.Player1.ShootLeft.performed += _ => FireLaserLeft();
+            Controller.Player1.ShootLeft.canceled += _ => FireLaserLeft();
         
-        Controller.Player.SpecialAbility.performed += _ => UseAbility();
-        Controller.Player.SpecialAbility.canceled += _ => UseAbility();
+            Controller.Player1.ShootRight.performed += _ => FireLaserRight();
+            Controller.Player1.ShootLeft.canceled += _ => FireLaserRight();
+
+            Controller.Player1.Boost.performed += _ => shieldBoostPressed = true;
+            Controller.Player1.Boost.canceled += _ => shieldBoostPressed = false;
+        
+            Controller.Player1.SpecialAbility.performed += _ => UseAbility();
+            Controller.Player1.SpecialAbility.canceled += _ => UseAbility(); 
+        }
+        else if(isPlayer2)
+        {
+            Controller.Player2.Accelerate.performed += _ => isAccelerating = true;
+            Controller.Player2.Accelerate.canceled += _ => isAccelerating = false;
+
+            Controller.Player2.ShootLeft.performed += _ => FireLaserLeft();
+            Controller.Player2.ShootLeft.canceled += _ => FireLaserLeft();
+        
+            Controller.Player2.ShootRight.performed += _ => FireLaserRight();
+            Controller.Player2.ShootLeft.canceled += _ => FireLaserRight();
+
+            Controller.Player2.Boost.performed += _ => shieldBoostPressed = true;
+            Controller.Player2.Boost.canceled += _ => shieldBoostPressed = false;
+        
+            Controller.Player2.SpecialAbility.performed += _ => UseAbility();
+            Controller.Player2.SpecialAbility.canceled += _ => UseAbility();
+        }
+        else
+        {
+            Controller.Player.Accelerate.performed += _ => isAccelerating = true;
+            Controller.Player.Accelerate.canceled += _ => isAccelerating = false;
+
+            Controller.Player.ShootLeft.performed += _ => FireLaserLeft();
+            Controller.Player.ShootLeft.canceled += _ => FireLaserLeft();
+        
+            Controller.Player.ShootRight.performed += _ => FireLaserRight();
+            Controller.Player.ShootLeft.canceled += _ => FireLaserRight();
+
+            Controller.Player.Boost.performed += _ => shieldBoostPressed = true;
+            Controller.Player.Boost.canceled += _ => shieldBoostPressed = false;
+        
+            Controller.Player.SpecialAbility.performed += _ => UseAbility();
+            Controller.Player.SpecialAbility.canceled += _ => UseAbility();
+        }
+        
 
     }
 
@@ -149,12 +189,25 @@ public class Spacejet : MonoBehaviour
     //Initialize the stats of the spaceJet using the current vehicle that was chosen in the menu.
     private void InitializeStats()
     {
-        thrust = new Stat(MenuManager.currentSpaceJet.thrust);
-        grip = MenuManager.currentSpaceJet.grip;
-        speed = new Stat(MenuManager.currentSpaceJet.speed);
-        shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
-        shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
-        laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
+        if(isPlayer2)
+        {
+            thrust = new Stat(MenuManager.enemySpaceJet.thrust);
+            grip = MenuManager.enemySpaceJet.grip;
+            speed = new Stat(MenuManager.enemySpaceJet.speed);
+            shieldMax = new Stat(MenuManager.enemySpaceJet.shield);
+            shieldRate = new Stat(MenuManager.enemySpaceJet.shieldRate);
+            laserDamage = new Stat(MenuManager.enemySpaceJet.laserDamage);
+        }
+        else
+        {
+            thrust = new Stat(MenuManager.currentSpaceJet.thrust);
+            grip = MenuManager.currentSpaceJet.grip;
+            speed = new Stat(MenuManager.currentSpaceJet.speed);
+            shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
+            shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
+            laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
+        }
+        
     }
     
     void Start()
@@ -167,33 +220,67 @@ public class Spacejet : MonoBehaviour
         hasFinished = false;
         RaceManager.GameStarted += OnGameStart;
         boosterPadSpeed = 25000;
+
         
-        switch (MenuManager.currentSpaceJet.name)
+        if(isPlayer2)
         {
-            case "Absorber":
+            switch (MenuManager.enemySpaceJet.name)
             {
-                creationAbility = gameObject.AddComponent<CreationAbility>();
+                case "Absorber":
+                {
+                    creationAbility = gameObject.AddComponent<CreationAbility>();
                 
-                creationAbility.Initialize("Transmogrifier", 30f, 
-                    SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
-                break;
-            }
+                    creationAbility.Initialize("Transmogrifier", 30f, 
+                        SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
+                    break;
+                }
             
-            case "UFO": 
-            {
-                break;
-            }
+                case "UFO": 
+                {
+                    break;
+                }
             
-            case "Bolt Glider": 
-            {
-                break;
-            }
+                case "Bolt Glider": 
+                {
+                    break;
+                }
             
-            case "Ghost Rider": 
-            {
-                break;
+                case "Ghost Rider": 
+                {
+                    break;
+                }
             }
         }
+        else
+        {
+            switch (MenuManager.currentSpaceJet.name)
+            {
+                case "Absorber":
+                {
+                    creationAbility = gameObject.AddComponent<CreationAbility>();
+                
+                    creationAbility.Initialize("Transmogrifier", 30f, 
+                        SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
+                    break;
+                }
+            
+                case "UFO": 
+                {
+                    break;
+                }
+            
+                case "Bolt Glider": 
+                {
+                    break;
+                }
+            
+                case "Ghost Rider": 
+                {
+                    break;
+                }
+            }
+        }
+        
     }
 
     void OnGameStart()
@@ -222,6 +309,15 @@ public class Spacejet : MonoBehaviour
     void Update()
     {
         //UpdateGravity();
+
+        // if (isPlayer1)
+        // {
+        //     Debug.Log("P1: HorizontalInput" + horizontalInput);
+        // }
+        // else if(isPlayer2)
+        // {
+        //     Debug.Log("P2: HorizontalInput" + horizontalInput);
+        // }
         
         if (abilityGauge < 100)
         {
@@ -283,18 +379,35 @@ public class Spacejet : MonoBehaviour
     {
         if (!canMove)
             return;
-        Controller.Player.Movement.performed += context => forwardInput = context.ReadValue<float>();
+
+        if (isPlayer1)
+        {
+            Controller.Player1.Movement.performed += context => forwardInput = context.ReadValue<float>();
+            Controller.Player1.Movement.canceled += context => forwardInput = forwardInput = 0f;
         
-        // Debug.Log( "forward input: " + forwardInput);
-        //
-        // PlayerInput input = gameObject.GetComponent<PlayerInput>();
-        // var device = input.GetDevice<InputDevice>();
-        // Debug.Log(device.name);
-        Controller.Player.Movement.canceled += context => forwardInput = forwardInput = 0f;
+            //Get input axes
+            Controller.Player1.Turn.performed += context => horizontalInput = context.ReadValue<float>();
+            Controller.Player1.Turn.canceled += context => horizontalInput = horizontalInput = 0f;
+        }
+        else if (isPlayer2)
+        {
+            Controller.Player2.Movement.performed += context => forwardInput = context.ReadValue<float>();
+            Controller.Player2.Movement.canceled += context => forwardInput = forwardInput = 0f;
         
-        //Get input axes
-        Controller.Player.Turn.performed += context => horizontalInput = context.ReadValue<float>();
-        Controller.Player.Turn.canceled += context => horizontalInput = horizontalInput = 0f;
+            //Get input axes
+            Controller.Player2.Turn.performed += context => horizontalInput = context.ReadValue<float>();
+            Controller.Player2.Turn.canceled += context => horizontalInput = horizontalInput = 0f;
+        }
+        else
+        {
+            Controller.Player.Movement.performed += context => forwardInput = context.ReadValue<float>();
+            Controller.Player.Movement.canceled += context => forwardInput = forwardInput = 0f;
+        
+            //Get input axes
+            Controller.Player.Turn.performed += context => horizontalInput = context.ReadValue<float>();
+            Controller.Player.Turn.canceled += context => horizontalInput = horizontalInput = 0f;
+        }
+        
         
     }
 

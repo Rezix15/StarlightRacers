@@ -95,10 +95,6 @@ public class Player : MonoBehaviour
         controller = GetComponent<CharacterController>();
         
         anim.SetFloat(playerSpeed, 0);
-
-        Debug.Log("Gravity is now On");
-        
-        //_isPaused = MenuManager.Instance.isPaused;
     }
     
     // Update is called once per frame

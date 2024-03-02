@@ -89,7 +89,8 @@ public class DialogueManager : MonoBehaviour
         firstEntry = true;
         inDialogue = false;
         currentDialogue = null;
-        SceneManager.LoadScene("StarLightRacers_BetaTest");
+        //SceneManager.LoadScene("StarLightRacers_BetaTest");
+        SceneManager.LoadScene("StarLightRacers_BetaTest(Multiplayer)");
     }
 
     public void DenyTeleport()

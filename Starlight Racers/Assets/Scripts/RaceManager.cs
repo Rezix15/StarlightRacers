@@ -13,7 +13,9 @@ public class RaceManager : MonoBehaviour
     public static RaceManager instance { get; set; } 
     public bool gameStart;
 
-    public TextMeshProUGUI countdownText;
+    public TextMeshProUGUI countdownTextP1;
+    public TextMeshProUGUI countdownTextP2;
+    
     
     private Spacejet SpaceJetPlayer;
     private SpacejetAI[] SpaceJetAis;
@@ -34,12 +36,16 @@ public class RaceManager : MonoBehaviour
 
     public static GameStart GameStarted;
 
-    public GameObject absorberPrefab;
-    public GameObject spaceJetBeta;
+    public GameObject player1AbsorberPrefab;
+    public GameObject player1SpaceJetBeta;
+    
+    public GameObject player2AbsorberPrefab;
+    public GameObject player2SpaceJetBeta;
 
     private int RaceCount;
 
     public static List<GameObject> checkpoints;
+    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
     private void Awake()
     {
@@ -107,18 +113,18 @@ public class RaceManager : MonoBehaviour
         {
             case "Absorber":
             {
-                absorberPrefab.SetActive(true);
-                spaceJetBeta.SetActive(false);
+                player1AbsorberPrefab.SetActive(true);
+                player1SpaceJetBeta.SetActive(false);
                 var randomColor = Random.Range(0, absorberColors.Length);
                 // absorberRenderer = absorberPrefab.GetComponent<Renderer>();
-                spaceJetGlow.SetColor("_EmissionColor", absorberColors[randomColor]);
+                spaceJetGlow.SetColor(EmissionColor, absorberColors[randomColor]);
                 break;
             }
 
             case "Bolt Glider":
             {
-                absorberPrefab.SetActive(false);
-                spaceJetBeta.SetActive(true);
+                player1AbsorberPrefab.SetActive(false);
+                player1SpaceJetBeta.SetActive(true);
                 var randomColor = Random.Range(0, boltColors.Length);
                 // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
                 spaceJetColor.color = boltColors[randomColor];
@@ -127,8 +133,8 @@ public class RaceManager : MonoBehaviour
             
             case "UFO":
             {
-                absorberPrefab.SetActive(false);
-                spaceJetBeta.SetActive(true);
+                player1AbsorberPrefab.SetActive(false);
+                player1SpaceJetBeta.SetActive(true);
                 // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
                 var randomColor = Random.Range(0, ufoColors.Length);
                 spaceJetColor.color = ufoColors[randomColor];
@@ -137,8 +143,51 @@ public class RaceManager : MonoBehaviour
             
             case "Ghost Rider":
             {
-                absorberPrefab.SetActive(false);
-                spaceJetBeta.SetActive(true);
+                player1AbsorberPrefab.SetActive(false);
+                player1SpaceJetBeta.SetActive(true);
+                // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
+                var randomColor = Random.Range(0, ghostColors.Length);
+                spaceJetColor.color = ghostColors[randomColor];
+                break;
+            }
+        }
+        
+        switch (MenuManager.enemySpaceJet.name)
+        {
+            case "Absorber":
+            {
+                player2AbsorberPrefab.SetActive(true);
+                player2SpaceJetBeta.SetActive(false);
+                var randomColor = Random.Range(0, absorberColors.Length);
+                // absorberRenderer = absorberPrefab.GetComponent<Renderer>();
+                spaceJetGlow.SetColor(EmissionColor, absorberColors[randomColor]);
+                break;
+            }
+
+            case "Bolt Glider":
+            {
+                player2AbsorberPrefab.SetActive(false);
+                player2SpaceJetBeta.SetActive(true);
+                var randomColor = Random.Range(0, boltColors.Length);
+                // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
+                spaceJetColor.color = boltColors[randomColor];
+                break;
+            }
+            
+            case "UFO":
+            {
+                player2AbsorberPrefab.SetActive(false);
+                player2SpaceJetBeta.SetActive(true);
+                // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
+                var randomColor = Random.Range(0, ufoColors.Length);
+                spaceJetColor.color = ufoColors[randomColor];
+                break;
+            }
+            
+            case "Ghost Rider":
+            {
+                player2AbsorberPrefab.SetActive(false);
+                player2SpaceJetBeta.SetActive(true);
                 // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
                 var randomColor = Random.Range(0, ghostColors.Length);
                 spaceJetColor.color = ghostColors[randomColor];
@@ -175,22 +224,30 @@ public class RaceManager : MonoBehaviour
     {
         
         yield return new WaitForSeconds(2);
-        countdownText.text = "3";
+        countdownTextP1.text = "3";
+        countdownTextP2.text = "3";
         yield return new WaitForSeconds(0.5f);
-        countdownText.text = "";
+        countdownTextP1.text = "";
+        countdownTextP2.text = "";
         yield return new WaitForSeconds(0.5f);
-        countdownText.text = "2";
+        countdownTextP1.text = "2";
+        countdownTextP2.text = "2";
         yield return new WaitForSeconds(0.5f);
-        countdownText.text = "";
+        countdownTextP1.text = "";
+        countdownTextP2.text = "";
         yield return new WaitForSeconds(0.5f);
-        countdownText.text = "1";
+        countdownTextP1.text = "1";
+        countdownTextP2.text = "1";
         yield return new WaitForSeconds(0.5f);
-        countdownText.text = "";
+        countdownTextP1.text = "";
+        countdownTextP2.text = "";
         yield return new WaitForSeconds(0.5f);
-        countdownText.text = "GO!";
+        countdownTextP1.text = "GO!";
+        countdownTextP2.text = "GO!";
         yield return new WaitForSeconds(0.4f);
         GameStarted?.Invoke();
-        countdownText.gameObject.SetActive(false);
+        countdownTextP1.gameObject.SetActive(false);
+        countdownTextP2.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

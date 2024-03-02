@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IntermissionScene.unity
     guid: 0bd50aa5af53255479793b7e953ea624
+  - enabled: 1
+    path: Assets/Scenes/StarLightRacers_BetaTest(Multiplayer).unity
+    guid: 5928d7843d9e1054aa0469c3a9514e35
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 19aa60a43c9261c4694c5f6882af20e2, type: 2}
