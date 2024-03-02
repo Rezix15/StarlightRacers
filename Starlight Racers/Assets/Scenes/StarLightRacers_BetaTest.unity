@@ -4026,6 +4026,7 @@ Transform:
   - {fileID: 1349792448}
   - {fileID: 1860316556}
   - {fileID: 491009352}
+  - {fileID: 1182046164}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1101817268
@@ -4083,7 +4084,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &1101817270
 MonoBehaviour:
@@ -4097,6 +4098,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd12373cd55bb44d9aa1f1bb0be5097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundCheck: {fileID: 1182046164}
+  groundDistance: 0.4
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 256
   spaceJetStat: {fileID: 0}
   speed:
     baseValue: 0
@@ -4169,6 +4175,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 543450652924089928}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1182046163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1182046164}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1182046164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182046163}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -60, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1101817267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1225837803
 GameObject:
   m_ObjectHideFlags: 0
@@ -4211,6 +4248,10 @@ MonoBehaviour:
   junctionTrackObj: {fileID: 8942379376641926916, guid: a2012e049f96d6c4bac49a256eb92605, type: 3}
   archTrackObj: {fileID: 5327402514300937725, guid: 8e1dfa1f630c7f246bff344fa6ecf6db, type: 3}
   checkpointObj: {fileID: 679806092176451267, guid: 19a01f91abf2dd04fac6b3d137b51a33, type: 3}
+  diagonalForwardObj: {fileID: 2952912900581788949, guid: f11842aa098c37b41bb6ace6057a5c6c, type: 3}
+  diagonalLeftObj: {fileID: 5790846087120965958, guid: 395d12fae76fe4c4996063986d3d7e15, type: 3}
+  diagonalRightObj: {fileID: 1681034436355413371, guid: f303dbbd7ab502f4e8a4636646cfe25b, type: 3}
+  angleShifterObj: {fileID: 8689594078820487808, guid: f1d4942de4d58c645ab80de8d139bfc5, type: 3}
   boosterObj: {fileID: 8363658589030094893, guid: 3c6fe119a25a4d14da5e4ef02de25281, type: 3}
   portalObj: {fileID: 4587124611266113223, guid: 2587db753eb33034291e6c87e3a9c0ce, type: 3}
   trafficLightObj: {fileID: 7624565907419748646, guid: f74c1b683d22e6c4e93216fd7a61652f, type: 3}
@@ -4416,8 +4457,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.3192272, y: 0.8052554, z: 4.3745627}
-  m_Center: {x: -0.09350495, y: 0, z: 0}
+  m_Size: {x: 2.3192272, y: 20.80526, z: 4.3745627}
+  m_Center: {x: -0.09350495, y: -10, z: 0}
 --- !u!23 &1349792451
 MeshRenderer:
   m_ObjectHideFlags: 0

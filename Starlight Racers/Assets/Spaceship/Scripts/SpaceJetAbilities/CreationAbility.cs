@@ -40,6 +40,7 @@ public class CreationAbility : SpecialAbility
         var playerPos = player.transform.position;
 
         var spawnPos = new Vector3(playerPos.x, playerPos.y + 2, playerPos.z);
+        var bombSpawnPos = new Vector3(playerPos.x, playerPos.y, playerPos.z - (20 + (bomb.transform.localScale.x / 30 )) );
         
         switch (randIndex)
         {
@@ -48,14 +49,16 @@ public class CreationAbility : SpecialAbility
             {
                 var shieldObj = Instantiate(shieldEffect, spawnPos, Quaternion.Euler(90, 0, 0));
                 shieldObj.transform.SetParent(player.transform);
-                StartCoroutine(StartTimer(shieldObj));
+                StartCoroutine(StartTimer(shieldObj, 1));
                 break;
             }
 
             //Generate bomb
             case 1:
             {
-                StartCoroutine(BombDrops());
+                var bombObj = Instantiate(bomb, bombSpawnPos, Quaternion.Euler(90, 0, 0));
+                //StartCoroutine(BombDrops());
+                StartCoroutine(StartTimer(bombObj, 3));
                 break;
             }
         }
@@ -66,25 +69,25 @@ public class CreationAbility : SpecialAbility
         AbilityEffect();
     }
 
-    IEnumerator StartTimer(GameObject obj)
+    IEnumerator StartTimer(GameObject obj, float rate)
     {
-        yield return new WaitForSeconds(cooldownTimer);
+        yield return new WaitForSeconds(cooldownTimer / rate);
         Destroy(obj);
     }
 
-    IEnumerator BombDrops()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            var player = GameObject.FindGameObjectWithTag("PlayerRacer");
-            var playerPos = player.transform.position;
-            var bombSpawnPos = new Vector3(playerPos.x, playerPos.y, playerPos.z - (20 + (bomb.transform.localScale.x / 30 )) );
-            var bombObj = Instantiate(bomb, bombSpawnPos, Quaternion.Euler(90, 0, 0));
-            yield return new WaitForSeconds(cooldownTimer / 3);
-            Destroy(bombObj);
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
+    // IEnumerator BombDrops()
+    // {
+    //     for (int i = 0; i < 3; i++)
+    //     {
+    //         var player = GameObject.FindGameObjectWithTag("PlayerRacer");
+    //         var playerPos = player.transform.position;
+    //         var bombSpawnPos = new Vector3(playerPos.x, playerPos.y, playerPos.z - (20 + (bomb.transform.localScale.x / 30 )) );
+    //         var bombObj = Instantiate(bomb, bombSpawnPos, Quaternion.Euler(90, 0, 0));
+    //         yield return new WaitForSeconds(cooldownTimer / 3);
+    //         Destroy(bombObj);
+    //         yield return new WaitForSeconds(0.2f);
+    //     }
+    // }
     
     
 }

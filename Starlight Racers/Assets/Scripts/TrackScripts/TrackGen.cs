@@ -24,7 +24,10 @@ public class TrackGen : MonoBehaviour
         BoosterTrack = 9,
         FinishTrack = 10,
         ArchTrack = 11,
-        Checkpoint = 12,
+        DiagonalForward = 12,
+        DiagonalLeft = 13,
+        DiagonalRight = 14,
+        Checkpoint = 15,
     }
 
     #region objectdeclaration
@@ -42,6 +45,11 @@ public class TrackGen : MonoBehaviour
     public GameObject junctionTrackObj;
     public GameObject archTrackObj;
     public GameObject checkpointObj;
+    public GameObject diagonalForwardObj;
+    public GameObject diagonalLeftObj;
+    public GameObject diagonalRightObj;
+    public GameObject angleShifterObj; //An object that will be used to shift the angle of our player
+    
 
     //Unique Obj
     public GameObject boosterObj;
@@ -88,7 +96,7 @@ public class TrackGen : MonoBehaviour
 
     private bool junctionTrackCheck = false;
 
-    private int archChance = 3; // probability that the arch track will be generated. Currently it is at 3 which means 33%
+    private int archChance = 4; // probability that the arch track will be generated. Currently it is at 3 which means 33%
     
     private void Awake()
     {
@@ -107,6 +115,7 @@ public class TrackGen : MonoBehaviour
         boosterObj.transform.localScale = new Vector3(scale, scale, scale);
         portalObj.transform.localScale = new Vector3(scale * 15, scale * 15, scale * 15);
         trafficLightObj.transform.localScale = new Vector3(scale * 66.66f, scale * 66.66f, scale * 66.66f);
+        angleShifterObj.transform.localScale = new Vector3(scale, scale, scale); 
         meshSurface = GetComponent<NavMeshSurface>();
     }
 
@@ -188,7 +197,7 @@ public class TrackGen : MonoBehaviour
         {
             case TrackType.StraightForward:
             {
-                upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, archTrackObj, junctionTrackObj, finishTrackObj};
+                upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, archTrackObj, diagonalForwardObj, junctionTrackObj, finishTrackObj};
                 
                 //upNeighbours = new GameObject[] {straightForwardTrackObj, upCurvedLeftTrackObj, upCurvedRightTrackObj, finishTrackObj};
                 
@@ -203,6 +212,8 @@ public class TrackGen : MonoBehaviour
 
                 var upCurvedPosL = new Vector3(scale * 16f, 0, scale * 16.44f);
                 var upCurvedPosR = new Vector3(scale * 0.356f, 0, scale * 1.24f);
+                
+                var diagonalPos = new Vector3((scale * -0.014f), (scale * -4.273f), (scale * 16.31f));
                 
                 initialPosition = new Vector3(0, 0, scaleFactor);
                 
@@ -229,6 +240,12 @@ public class TrackGen : MonoBehaviour
                     newPosition.y + trafficPos.y,
                     newPosition.z + trafficPos.z
                 );
+
+                var newDiagonalPos = new Vector3(
+                    prevPosition.x + diagonalPos.x,
+                    prevPosition.y + diagonalPos.y,
+                    prevPosition.z + diagonalPos.z
+                );  
 
                 randIndex = Random.Range(0, 3);
 
@@ -290,8 +307,6 @@ public class TrackGen : MonoBehaviour
                         }
                        
                         GenerateNeighbours(TrackType.StraightForward, newPosition);
-                        
-                        
                         break;
                     }
 
@@ -324,17 +339,22 @@ public class TrackGen : MonoBehaviour
                     //Special Track Generation (Finish/Arch/Junction)
                     case 3:
                     {
-                        if (archIndex % archChance == 1 || archIndex % archChance == 2) 
+                        // if (archIndex % archChance == 1 ) 
+                        // {
+                        //     newPosition = new Vector3(
+                        //         (prevPosition.x + initialPosition.x),
+                        //         prevPosition.y + initialPosition.y, 
+                        //         (prevPosition.z + 2 * initialPosition.z)
+                        //     );
+                        //
+                        //     Instantiate(upNeighbours[3], newPosition + initialPosition, Quaternion.identity, transform);
+                        //     GenerateNeighbours(TrackType.ArchTrack, newPosition + initialPosition);
+                        //     //Debug.Log("Generated Arch");
+                        // }
+                        if(archIndex % archChance == 1 || archIndex % archChance == 2)
                         {
-                            newPosition = new Vector3(
-                                (prevPosition.x + initialPosition.x),
-                                prevPosition.y + initialPosition.y, 
-                                (prevPosition.z + 2 * initialPosition.z)
-                            );
-                        
-                            Instantiate(upNeighbours[3], newPosition + initialPosition, Quaternion.identity, transform);
-                            GenerateNeighbours(TrackType.ArchTrack, newPosition + initialPosition);
-                            //Debug.Log("Generated Arch");
+                            Instantiate(upNeighbours[4], newDiagonalPos, Quaternion.identity, transform);
+                            GenerateNeighbours(TrackType.DiagonalForward, newDiagonalPos);
                         }
                         else if (junctionTrackCheck && shouldFinish == false )
                         {
@@ -345,15 +365,15 @@ public class TrackGen : MonoBehaviour
                             );
                         
                             junctionTrackCount++;
-                            Instantiate(upNeighbours[4], newPosition, Quaternion.identity, transform);
+                            Instantiate(upNeighbours[5], newPosition, Quaternion.identity, transform);
                             GenerateNeighbours(TrackType.JunctionTrack, newPosition);
                             
                         }
                         else if(shouldFinish)
                         {
                             //Finish Track
-                            Instantiate(upNeighbours[5], newPosition, Quaternion.identity, transform);
-                            finishPos = upNeighbours[5].transform.position;
+                            Instantiate(upNeighbours[6], newPosition, Quaternion.identity, transform);
+                            finishPos = upNeighbours[6].transform.position;
                             //GenerateNavMesh();
                             
                             //Generate checkpoints list to be used for race positioning
@@ -368,7 +388,6 @@ public class TrackGen : MonoBehaviour
                             Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
                             GenerateNeighbours(TrackType.StraightForward, newPosition);
                         }
-                      
                         
                         break;
                         
@@ -810,7 +829,7 @@ public class TrackGen : MonoBehaviour
 
                 //Generate the two portal objects
                 //Instantiate(portalObj, newLeftPos + (initialLeftPos / 2) * 9, Quaternion.Euler(0, 180, 0));
-                Instantiate(portalObj, newRightPos  + (initialRightPos / 2) * 9, Quaternion.Euler(0, 180, 0));
+                Instantiate(portalObj, newRightPos  + (initialRightPos / 2) * 9, Quaternion.Euler(0, 180, 0), transform);
                 
                 break;
                 
@@ -830,6 +849,40 @@ public class TrackGen : MonoBehaviour
                 Instantiate(upNeighbours[0], newPos + initialPosition * 1.55f, Quaternion.identity, transform);
                 GenerateNeighbours(TrackType.StraightForward, newPos + initialPosition * 1.55f);
                 
+                break;
+            }
+
+            case TrackType.DiagonalForward:
+            {
+                var randomIndex = Random.Range(0, 4);
+                upNeighbours = new GameObject[] { straightForwardTrackObj };
+                initialPosition = new Vector3((scale * -0.014f), (scale * -4.273f), (scale * 16.31f));
+                var straightPosD = new Vector3(0.008f * scale, -6.726f * scale, 6.71f * scale);
+                var straightPosF = new Vector3(0f * scale, -3.44f * scale, 8.04f * scale);
+
+                for (int i = 1; i <= randomIndex+1; i++)
+                {
+                    Instantiate(upNeighbours[0],  prevPosition + ((straightPosD) * i), Quaternion.Euler(45, 0, 0), transform);
+                }
+
+                var newPos = (prevPosition + ((straightPosD) * (randomIndex + 1)));
+                Instantiate(upNeighbours[0],  newPos + straightPosF, Quaternion.identity, transform);
+                Instantiate(angleShifterObj, newPos + straightPosF, Quaternion.identity, transform);
+                GenerateNeighbours(TrackType.StraightForward, newPos + straightPosF);
+                break;
+            }
+            
+            case TrackType.DiagonalLeft:
+            {
+                leftNeighbours = new GameObject[] { straightLeftTrackObj };
+                initialPosition = new Vector3((scale * 16.31f), (scale * -4.273f), (scale * 0.014f));
+                break;
+            }
+            
+            case TrackType.DiagonalRight:
+            {
+                rightNeighbours = new GameObject[]{ straightRightTrackObj };
+                initialPosition = new Vector3((scale * 16.31f), (scale * -4.273f), (scale * -0.014f));
                 break;
             }
         }

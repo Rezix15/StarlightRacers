@@ -7,6 +7,13 @@ using UnityEngine.InputSystem;
 
 public class Spacejet : MonoBehaviour
 {
+    # region grounded
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    private bool isGrounded;
+    public LayerMask groundMask;
+    # endregion
+    
     private Stat thrust;
     private float grip;
     // private float spaceJetSpeed;
@@ -197,8 +204,25 @@ public class Spacejet : MonoBehaviour
         takeDamage = false;
     }
 
+    // void UpdateGravity()
+    // {
+    //     isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+    //
+    //     var gravity = -3000f;
+    //
+    //     if (isGrounded && rb.velocity.y < 0)
+    //     {
+    //         var velocity = rb.velocity;
+    //         velocity = new Vector3(velocity.x, -2f, velocity.z);
+    //         rb.velocity = velocity;
+    //     }
+    //
+    //     rb.velocity += Vector3.up * (gravity * Time.deltaTime);
+    // }
     void Update()
     {
+        //UpdateGravity();
+        
         if (abilityGauge < 100)
         {
             abilityGauge++;
@@ -249,6 +273,12 @@ public class Spacejet : MonoBehaviour
         }
     }
 
+    // void Gravity()
+    // {
+    //     var mass = rb.mass;
+    //     rb.AddForce(Physics.gravity * (mass * mass));
+    // }
+
     void HandleInput()
     {
         if (!canMove)
@@ -271,6 +301,8 @@ public class Spacejet : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        //Gravity();
+        
         HandleInput();
         //If the jet is currently accelerating then allow user movement and update each second.
         if (isAccelerating && forwardInput > 0)
@@ -304,6 +336,12 @@ public class Spacejet : MonoBehaviour
         
         ShieldBoost();
         
+    }
+    
+    //Function to switch the angle of the player
+    private void ShiftAngle(float angleVal)
+    {
+        transform.rotation = Quaternion.Euler(angleVal, 0, 0);
     }
 
     //Function that sacrifices the shield gauge to increase speed. If user shield expires when boosting, destroy player
@@ -448,6 +486,16 @@ public class Spacejet : MonoBehaviour
                 checkpointCount++;
             }
             
+        }
+        
+        if (other.gameObject.CompareTag("DownTrack"))
+        {
+            ShiftAngle(45);
+        }
+        
+        if (other.gameObject.CompareTag("ForwardTrack"))
+        {
+            ShiftAngle(0);
         }
 
         //If user makes contact with a laser, it should take a certain amount of damage

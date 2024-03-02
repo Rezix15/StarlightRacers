@@ -30,7 +30,7 @@ public class Portal : MonoBehaviour
         while (true)
         {
             var position = transform.position;
-            var trainPos = new Vector3(position.x, MenuManager.scaleLevel * 5, position.z - 5);
+            var trainPos = new Vector3(position.x, MenuManager.scaleLevel * 5 + position.y, position.z - 5);
             var train = Instantiate(trainObj, trainPos, Quaternion.Euler(0, 90, 0));
             yield return new WaitForSeconds(10);
             Destroy(train);

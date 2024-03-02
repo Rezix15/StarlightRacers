@@ -17,6 +17,8 @@ TagManager:
   - MainUI
   - BuffIcon
   - currentBoostIcon
+  - DownTrack
+  - ForwardTrack
   layers:
   - Default
   - TransparentFX
