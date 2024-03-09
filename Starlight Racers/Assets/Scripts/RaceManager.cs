@@ -44,6 +44,8 @@ public class RaceManager : MonoBehaviour
 
     private int RaceCount;
 
+    private int playerCount;
+
     public static List<GameObject> checkpoints;
     private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
@@ -104,6 +106,7 @@ public class RaceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerCount = GameObject.FindObjectsOfType<Spacejet>().Length;
         Debug.Log("Current Vehicle: " + MenuManager.currentSpaceJet.name);
         gameStart = false;
         
@@ -222,32 +225,55 @@ public class RaceManager : MonoBehaviour
 
     IEnumerator Countdown()
     {
-        
-        yield return new WaitForSeconds(2);
-        countdownTextP1.text = "3";
-        countdownTextP2.text = "3";
-        yield return new WaitForSeconds(0.5f);
-        countdownTextP1.text = "";
-        countdownTextP2.text = "";
-        yield return new WaitForSeconds(0.5f);
-        countdownTextP1.text = "2";
-        countdownTextP2.text = "2";
-        yield return new WaitForSeconds(0.5f);
-        countdownTextP1.text = "";
-        countdownTextP2.text = "";
-        yield return new WaitForSeconds(0.5f);
-        countdownTextP1.text = "1";
-        countdownTextP2.text = "1";
-        yield return new WaitForSeconds(0.5f);
-        countdownTextP1.text = "";
-        countdownTextP2.text = "";
-        yield return new WaitForSeconds(0.5f);
-        countdownTextP1.text = "GO!";
-        countdownTextP2.text = "GO!";
-        yield return new WaitForSeconds(0.4f);
-        GameStarted?.Invoke();
-        countdownTextP1.gameObject.SetActive(false);
-        countdownTextP2.gameObject.SetActive(false);
+
+        if (playerCount > 1)
+        {
+            yield return new WaitForSeconds(2);
+            countdownTextP1.text = "3";
+            countdownTextP2.text = "3";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "";
+            countdownTextP2.text = "";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "2";
+            countdownTextP2.text = "2";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "";
+            countdownTextP2.text = "";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "1";
+            countdownTextP2.text = "1";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "";
+            countdownTextP2.text = "";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "GO!";
+            countdownTextP2.text = "GO!";
+            yield return new WaitForSeconds(0.4f);
+            GameStarted?.Invoke();
+            countdownTextP1.gameObject.SetActive(false);
+            countdownTextP2.gameObject.SetActive(false);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2);
+            countdownTextP1.text = "3";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "2";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "1";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "";
+            yield return new WaitForSeconds(0.5f);
+            countdownTextP1.text = "GO!";
+            yield return new WaitForSeconds(0.4f);
+            GameStarted?.Invoke();
+            countdownTextP1.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame

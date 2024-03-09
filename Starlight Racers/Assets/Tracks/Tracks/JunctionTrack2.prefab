@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: d969c931a56a00f4da0fbe9c7b02f7d8, type: 2}
+    - target: {fileID: -7219107683795821406, guid: 7aa5a37c43e5a654784521ceb480b17a, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: -7029948723529949830, guid: 7aa5a37c43e5a654784521ceb480b17a, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -76,6 +80,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d969c931a56a00f4da0fbe9c7b02f7d8, type: 2}
+    - target: {fileID: -4030156440676903116, guid: 7aa5a37c43e5a654784521ceb480b17a, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: -1660384031183063813, guid: 7aa5a37c43e5a654784521ceb480b17a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -83,6 +91,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7aa5a37c43e5a654784521ceb480b17a, type: 3}
       propertyPath: m_Name
       value: JunctionTrack2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833320608294359335, guid: 7aa5a37c43e5a654784521ceb480b17a, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055114701110989259, guid: 7aa5a37c43e5a654784521ceb480b17a, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8755637015503247416, guid: 7aa5a37c43e5a654784521ceb480b17a, type: 3}
       propertyPath: m_Materials.Array.data[0]

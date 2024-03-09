@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Train_Beta
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 724460c38aa8e80418d33390602aef0a, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -61,7 +61,14 @@ public class TrackGen : MonoBehaviour
     private Vector3 trafficPos;
 
     #endregion
-   
+
+    //Enemy Objs
+    #region enemies
+
+    public GameObject enemyRobot1;
+    public GameObject enemyRobot2;
+
+    #endregion
     
     //Generate the Start positions
     private Vector3 startPos;
@@ -119,8 +126,9 @@ public class TrackGen : MonoBehaviour
         portalObj.transform.localScale = new Vector3(scale * 15, scale * 15, scale * 15);
         trafficLightObj.transform.localScale = new Vector3(scale * 66.66f, scale * 66.66f, scale * 66.66f);
         angleShifterObj.transform.localScale = new Vector3(scale, scale, scale); 
-        enemySpawnerObj.transform.localScale = new Vector3(scale, scale, scale); 
-        //meshSurface = GetComponent<NavMeshSurface>();
+        enemySpawnerObj.transform.localScale = new Vector3(scale, scale, scale);
+        enemyRobot2.transform.localScale = new Vector3(scale, scale, scale);
+        meshSurface = GetComponent<NavMeshSurface>();
         # endregion
         
         //Seed Generation
@@ -324,9 +332,10 @@ public class TrackGen : MonoBehaviour
                             Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
                         }
                         
-                        if ((trackCount > 0 && trackCount % 6 == 0) )
+                        if ((trackCount > 0 && trackCount % 7 == 0) )
                         {
-                            Instantiate(enemySpawnerObj, newPosition, Quaternion.identity, transform);
+                            var enemyPos = new Vector3(newPosition.x, newPosition.y + 40f, newPosition.z);
+                            Instantiate(enemyRobot2, enemyPos, Quaternion.identity);
                         }
 
                        
@@ -398,7 +407,6 @@ public class TrackGen : MonoBehaviour
                             //Finish Track
                             Instantiate(upNeighbours[6], newPosition, Quaternion.identity, transform);
                             finishPos = upNeighbours[6].transform.position;
-                            //GenerateNavMesh();
                             
                             //Generate checkpoints list to be used for race positioning
                             checkpoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
@@ -461,6 +469,8 @@ public class TrackGen : MonoBehaviour
                 var downCurvedPosR = new Vector3(scale * 26.6f, 0, scale * 16f);
                 
                 GenerateTrack(TrackType.Checkpoint, newPosition, Quaternion.Euler(0,90,0));
+                
+                
                 switch (randIndex)
                 {
                     case 0:
@@ -745,6 +755,13 @@ public class TrackGen : MonoBehaviour
                 
            
                 Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                
+                if ((trackCount > 0 && trackCount % 7 == 0) )
+                {
+                    var enemyPos = new Vector3(newPosition.x, newPosition.y + 40f, newPosition.z);
+                    Instantiate(enemyRobot2, enemyPos, Quaternion.identity);
+                }
+                
                 GenerateNeighbours(TrackType.StraightForward, newPosition);
                 break;
             }
@@ -800,6 +817,13 @@ public class TrackGen : MonoBehaviour
                 
              
                 Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                
+                if ((trackCount > 0 && trackCount % 7 == 0) )
+                {
+                    var enemyPos = new Vector3(newPosition.x, newPosition.y + 40f, newPosition.z);
+                    Instantiate(enemyRobot2, enemyPos, Quaternion.identity);
+                }
+                
                 GenerateNeighbours(TrackType.StraightForward, newPosition);
                 break;
                 
@@ -854,7 +878,7 @@ public class TrackGen : MonoBehaviour
                 //Generate the two portal objects
                 //Instantiate(portalObj, newLeftPos + (initialLeftPos / 2) * 9, Quaternion.Euler(0, 180, 0));
                 Instantiate(portalObj, newRightPos  + (initialRightPos / 2) * 9, Quaternion.Euler(0, 180, 0), transform);
-                
+                GenerateNavMesh();
                 break;
                 
             }

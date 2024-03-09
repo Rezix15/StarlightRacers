@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6816093888203729603, guid: c344944b80b0a464dbd7b9f8cf255ffb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -3585123729216325407, guid: c344944b80b0a464dbd7b9f8cf255ffb, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
@@ -77,6 +81,10 @@ PrefabInstance:
       value: Boosters
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c344944b80b0a464dbd7b9f8cf255ffb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c344944b80b0a464dbd7b9f8cf255ffb, type: 3}
       propertyPath: m_TagString
       value: Booster
       objectReference: {fileID: 0}
@@ -84,6 +92,18 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 766d9b1d6c3be4d4b9e358d6dc3d204b, type: 2}
+    - target: {fileID: 4696546215373437832, guid: c344944b80b0a464dbd7b9f8cf255ffb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7100144740888436939, guid: c344944b80b0a464dbd7b9f8cf255ffb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676063848024439315, guid: c344944b80b0a464dbd7b9f8cf255ffb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

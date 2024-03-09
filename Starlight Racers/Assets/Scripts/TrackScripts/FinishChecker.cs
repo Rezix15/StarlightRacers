@@ -30,12 +30,22 @@ public class FinishChecker : MonoBehaviour
     {
         //player = player.GetComponent<Spacejet>();
         var countdownObj = GameObject.FindGameObjectsWithTag("Countdown");
-        countdownText = countdownObj[1].GetComponent<TextMeshProUGUI>();
-        countdownTextP2 = countdownObj[0].GetComponent<TextMeshProUGUI>();
-
         var finishTimerObj = GameObject.FindGameObjectsWithTag("FinishTimer");
-        finishTimer = finishTimerObj[1].GetComponent<TextMeshProUGUI>();
-        finishTimerP2 = finishTimerObj[0].GetComponent<TextMeshProUGUI>();
+
+        if (countdownObj.Length > 1)
+        {
+            countdownText = countdownObj[0].GetComponent<TextMeshProUGUI>();
+            countdownTextP2 = countdownObj[1].GetComponent<TextMeshProUGUI>();
+            
+            finishTimer = finishTimerObj[0].GetComponent<TextMeshProUGUI>();
+            finishTimerP2 = finishTimerObj[1].GetComponent<TextMeshProUGUI>();
+        }
+        else
+        {
+            countdownText = countdownObj[0].GetComponent<TextMeshProUGUI>();
+            finishTimer = finishTimerObj[0].GetComponent<TextMeshProUGUI>();
+        }
+        
         hasFinished = false;
 
         playerCount = GameObject.FindGameObjectsWithTag("PlayerRacer").Length;
@@ -68,8 +78,8 @@ public class FinishChecker : MonoBehaviour
         }
         else if(other.CompareTag("Player") && hasFinished == false)
         {
-            StartCoroutine(PlayerFinished(player.isPlayer2));
             player = other.gameObject.GetComponentInParent<Spacejet>();
+            StartCoroutine(PlayerFinished(player.isPlayer2));
             Debug.Log("Player: " + player);
             playerFinishTime = player.ReturnFinishTime();
             playerFinishTimeText = FormatTimer(playerFinishTime);

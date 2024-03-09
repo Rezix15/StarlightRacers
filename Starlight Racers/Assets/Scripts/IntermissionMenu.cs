@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,9 +7,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Button = UnityEngine.UIElements.Button;
+using Random = UnityEngine.Random;
 
 public class IntermissionMenu : MonoBehaviour
 {
+    public int cardSeed = 0;
     public GameObject upgradeComp; //Going to be the first component Selected
     public static ComponentObj currentComponent;
 
@@ -42,9 +45,17 @@ public class IntermissionMenu : MonoBehaviour
     
     private string dialogue1;
     
+    public bool generateRandomSeed = true;
+
+    private void Awake()
+    {
+        GenerateCardSeed();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        
         if (MenuManager.RaceCount > 1)
         {
             EventSystem.current.SetSelectedGameObject(upgradeComp);
@@ -58,6 +69,17 @@ public class IntermissionMenu : MonoBehaviour
         dialogue1 = "Thanks for your purchase. I hope I can be of benefit to you and good luck on your race";
         //Debug.Log("CurrentSelectedObj: " + EventSystem.current.currentSelectedGameObject.name);
     }
+    
+    private void GenerateCardSeed()
+    {
+        if (generateRandomSeed)
+        {
+            cardSeed = (int)System.DateTime.Now.Ticks;
+        }
+        
+        Random.InitState(cardSeed);
+    }
+
 
     private void ComponentDisplay(int index)
     {

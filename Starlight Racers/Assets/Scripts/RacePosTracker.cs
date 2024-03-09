@@ -20,10 +20,13 @@ public class RacePosTracker : MonoBehaviour
     private List<GameObject> racers;
     //private TextMeshProUGUI[] racerTextPosition;
 
+    [SerializeField]
     private string[] racePosTexts;
     private Vector3 finishPos;
     private int racer1CheckpointCount;
     private int racer2CheckpointCount;
+    
+    [SerializeField]
     private TextMeshProUGUI[] racerText;
 
     public TextMeshProUGUI playerPosText;
@@ -41,7 +44,6 @@ public class RacePosTracker : MonoBehaviour
         racers = new List<GameObject>();
         
         //racerTextPosition = new TextMeshProUGUI[racers.Count];
-        
         
         foreach (var spacejetPlayer in SpaceJetPlayers)
         {
@@ -62,25 +64,33 @@ public class RacePosTracker : MonoBehaviour
 
         //If i = 0 (If the player), set the textbox to be a specific one, otherwise borrow from the text found within
         //the children.
-
-        racerText[0] = playerPosText;
-        racerText[1] = playerPosTextP2;
         
-        for (int i = 0; i < racers.Count; i++)
+        Debug.Log("SpaceJetPlayers.Length: " + SpaceJetPlayers.Length);
+
+        if (SpaceJetPlayers.Length > 1)
         {
-            racerText[i].text = racePosTexts[i];
-            
-            // if (i == 0)
-            // {
-            //     racerText[i] = playerPosText;
-            // }
-            // else
-            // {
-            //     racerText[i] = racers[i].GetComponentInChildren<TextMeshProUGUI>();
-            //     racerText[i].text = racePosTexts[i];
-            // }
-            
+            racerText[0] = playerPosText;
+            racerText[1] = playerPosTextP2;
         }
+        else
+        {
+            for (int i = 0; i < racers.Count; i++)
+            {
+                if (i == 0)
+                {
+                    racerText[i] = playerPosText;
+                }
+                else
+                {
+                    racerText[i] = racers[i].GetComponentInChildren<TextMeshProUGUI>();
+                    racerText[i].text = racePosTexts[i];
+                }
+                
+                racerText[i].text = racePosTexts[i];
+            
+            }
+        }
+        
     }
 
     void SetRaceText()

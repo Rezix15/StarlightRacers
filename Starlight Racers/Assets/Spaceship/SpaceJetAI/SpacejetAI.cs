@@ -37,9 +37,11 @@ public class SpacejetAI : MonoBehaviour
     private bool canStart;
     [SerializeField] private float laserSpeed = 20f;
 
-    public float responsiveness = 15f;
-
-    private float responsiveFactor;
+    // public float responsiveness = 15f;
+    //
+    // private float responsiveFactor;
+    
+    private int boosterPadSpeed;
 
     [SerializeField] private int laserAmmoMax;
     private int laserAmmo;
@@ -85,6 +87,7 @@ public class SpacejetAI : MonoBehaviour
     private int turnAmount;
     RaycastHit raycastHit;
 
+    private bool hasShiftAngle;
 
     private void Awake()
     {
@@ -114,13 +117,10 @@ public class SpacejetAI : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         
         //Initialize the currentCheckpoint to be the first checkpoint in the array
-        currentCheckpoint = TrackGen.checkpoints[0];
+        //currentCheckpoint = TrackGen.checkpoints[0];
 
         finishObj = GameObject.FindGameObjectWithTag("Finish");
         finishPos = finishObj.transform.position;
-        
-
-
     }
     
     private void InitializeStats()
@@ -131,6 +131,7 @@ public class SpacejetAI : MonoBehaviour
         shieldMax = new Stat(MenuManager.enemySpaceJet.shield);
         shieldRate = new Stat(MenuManager.enemySpaceJet.shieldRate);
         laserDamage = new Stat(MenuManager.enemySpaceJet.laserDamage);
+        Debug.Log("Name of vehicle: " + MenuManager.enemySpaceJet.name);
     }
 
     void OnGameStarted()
@@ -143,7 +144,7 @@ public class SpacejetAI : MonoBehaviour
         //spaceJetAgent.enabled = true;
         //spaceJetAgent.updateUpAxis = false;
     }
-
+    
     void FixedUpdate()
     {
         
@@ -161,7 +162,7 @@ public class SpacejetAI : MonoBehaviour
             var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
             Movement(currentCheckpoint.transform.position);
             
-            Debug.Log("HorizontalInput: " + horizontalInput);
+            //Debug.Log("HorizontalInput: " + horizontalInput);
             
             //add in banking
             //banking_angle = rb.angularVelocity.z;
@@ -180,36 +181,15 @@ public class SpacejetAI : MonoBehaviour
         if (hasFinished == false)
         {
             finishTime += Time.deltaTime;
-
-            // Ypos = transform.position.y;
-            //
-            // if (index < currentTrackCheckpoints.Count)
-            // {
-            //     var position = currentTrackCheckpoints[index].transform.position;
-            //     
-            //     var destination = new Vector3(position.x, Ypos, position.z);
-            //     Debug.Log("Destination Path: " + destination);
-            //     spaceJetAgent.SetDestination(destination);
-            //     
-            //     ammoRefillTimer += Time.deltaTime;
-            //     
-            //     AmmoRefill(ammoRefillTimer);
-            //
-            //     if (ammoRefillTimer >= 10f)
-            //     {
-            //         ammoRefillTimer = 0;
-            //     }
-            //
-            //     if (Vector3.Distance(transform.position, destination) <= 10f)
-            //     {
-            //         index++;
-            //     }
-            // }
-            // else
-            // {
-            //     var finishDestination = new Vector3(finishPos.x, Ypos, finishPos.z);
-            //     spaceJetAgent.SetDestination(finishDestination);
-            // }
+            
+            ammoRefillTimer += Time.deltaTime;
+            
+            AmmoRefill(ammoRefillTimer);
+            
+            if (ammoRefillTimer >= 10f)
+            {
+                ammoRefillTimer = 0;
+            }
         }
     }
     
@@ -219,103 +199,98 @@ public class SpacejetAI : MonoBehaviour
     //Inspired by https://dawn-studio.de/tutorials/boids/
     private void Movement(Vector3 targetPos)
     {
-        
+        var initialTargetPos = new Vector3(targetPos.x, Ypos, targetPos.z);
+        var nextCheckpoint = TrackGen.checkpoints[checkpointCount + 1].transform;
         var newTargetPos = TrackGen.checkpoints[checkpointCount+1].transform.position;
         
-        if (Vector3.Distance(transform.position, targetPos) < 0.1f)
+        if (Vector3.Distance(transform.position, initialTargetPos) < 0.1f)
         {
             currentCheckpoint = TrackGen.checkpoints[checkpointCount];
-            newTargetPos = TrackGen.checkpoints[checkpointCount+1].transform.position;
+            newTargetPos = nextCheckpoint.position;
         }
         
         if (checkpointCount < TrackGen.checkpoints.Count - 1)
         {
             targetPos = new Vector3(newTargetPos.x, Ypos, newTargetPos.z);
             
-            var detectPosition = new Vector3(transform.position.x, 
-                transform.position.y,
-                transform.position.z + 30f
-            );
-            //transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * 1);
-
+            var detectPositionF = transform.position + transform.forward * 40f;
             
-            if (Physics.Raycast(detectPosition, transform.forward, out raycastHit, MenuManager.scaleLevel * 10,
+            if (Physics.Raycast(detectPositionF, transform.forward, out raycastHit, MenuManager.scaleLevel * 10,
                     LayerMask.GetMask("Wall")))
             {
                 Debug.Log("Raycast Hit at: " + raycastHit);
                 
-
-                // Debug.Log("transform.position.x - targetPos.x: " + (transform.position.x - targetPos.x));
-                //
-                // Debug.Log("Mathf ver:  " + Mathf.Abs(transform.position.x - targetPos.x));
-                // horizontalInput = (Vector3.Distance(raycastHit.point, transform.position));
-                // Debug.Log("horizontalInput: " + horizontalInput);
-
-                // var transformRotation = transform.rotation;
-                // var dir = 0;
-                //
-                // if (targetPos.x < 0)
-                // {
-                //     dir = -1;
-                // }
-                // else
-                // {
-                //     dir = 1;
-                // }
-                //
-                // Debug.Log("dir: " + dir);
-                //
-                // var desiredAngle = transformRotation.y * dir + 0.1f;
-                //var desiredTargetAngle = 90 * dir;
-                //
-                // Debug.Log("DesiredAngle: " + desiredAngle);
-                // Debug.Log("desiredTargetAngle: " + desiredTargetAngle);
-
-
-                // if (Mathf.Abs(transform.position.x - targetPos.x) > 100)
-                // {
-                //     if ((dir > 0 && transform.eulerAngles.y < desiredTargetAngle - 60 || dir < 0 && transform.eulerAngles.y < 360 - Mathf.Abs(desiredTargetAngle) - 60))
-                //     {
-                //         horizontalInput += 2 * targetPos.normalized.x;
-                //         horizontalInput = Mathf.Clamp(horizontalInput, -1, 1);
-                //         
-                //         rb.AddTorque(transform.up * (grip * horizontalInput), ForceMode.Acceleration);
-                //         
-                //     }
-                //     else
-                //     {
-                //         horizontalInput = 0;
-                //         transform.eulerAngles = new Vector3(0, desiredTargetAngle, 0);
-                //     }
-                // }
-                // else
-                // {
-                //     Debug.Log("This..");
-                //     horizontalInput = 0;
-                // }
-
-                if (turnAmount < 40)
-                {
-                    var toTarget = (targetPos - transform.position).normalized;
-                    
-                    horizontalInput += 2 * Mathf.Sign(Vector3.Dot(toTarget, transform.right));
-                    horizontalInput = Mathf.Clamp(horizontalInput, -1, 1);
-                    rb.AddTorque(transform.up * (grip * horizontalInput), ForceMode.Acceleration);
-                    turnAmount++;
-                }
-                else
-                {
-                    horizontalInput = 0;
-                }
+                var nextCheckpointRotation = nextCheckpoint.rotation;
+                var rotationDif = nextCheckpointRotation.eulerAngles.y - transform.rotation.eulerAngles.y;
+                horizontalInput += 2 * Mathf.Sign(rotationDif);
+                horizontalInput = Mathf.Clamp(horizontalInput, -1, 1);
                 
+                rb.AddTorque(transform.up * (grip * horizontalInput), ForceMode.Acceleration);
+                
+                // transform.LookAt(TrackGen.checkpoints[checkpointCount+1].transform);
+                //
+                // //Check if the object matches direction of rotation of the next checkpoint
+                // if ((transform.rotation.y > 0 && TrackGen.checkpoints[checkpointCount+1].transform.rotation.y > 0) &&
+                //     (TrackGen.checkpoints[checkpointCount+1].transform.rotation.y - transform.rotation.y >= 5f || 
+                //      TrackGen.checkpoints[checkpointCount+1].transform.rotation.y - transform.rotation.y <= -5f))
+                // {
+                //     var toTarget = (targetPos - transform.position).normalized;
+                //     
+                //     horizontalInput += 2 * Mathf.Sign(Vector3.Dot(toTarget, transform.right));
+                //     horizontalInput = Mathf.Clamp(horizontalInput, -1, 1);
+                //     rb.AddTorque(transform.up * (grip * horizontalInput), ForceMode.Acceleration);
+                //
+                //     // if (TrackGen.checkpoints[checkpointCount + 1].transform.position.x - transform.position.x >= 30 || 
+                //     //     TrackGen.checkpoints[checkpointCount + 1].transform.position.x - transform.position.x <= -30)
+                //     // {
+                //     //     transform.position += new Vector3(-grip * 20, 0, 0);
+                //     // }
+                // }
+                // else if ((transform.rotation.y < 0 &&
+                //           TrackGen.checkpoints[checkpointCount + 1].transform.rotation.y < 0) &&
+                //          (TrackGen.checkpoints[checkpointCount + 1].transform.rotation.y - transform.rotation.y <= 5f ||
+                //           TrackGen.checkpoints[checkpointCount + 1].transform.rotation.y - transform.rotation.y >= -5f))
+                // {
+                //     var toTarget = (targetPos - transform.position).normalized;
+                //
+                //     horizontalInput += 2 * Mathf.Sign(Vector3.Dot(toTarget, transform.right));
+                //     horizontalInput = Mathf.Clamp(horizontalInput, -1, 1);
+                //     rb.AddTorque(transform.up * (grip * horizontalInput), ForceMode.Acceleration);
+                //
+                //     // if (TrackGen.checkpoints[checkpointCount + 1].transform.position.x - transform.position.x >= 30 || 
+                //     //     TrackGen.checkpoints[checkpointCount + 1].transform.position.x - transform.position.x <= -30)
+                //     // {
+                //     //     transform.position += new Vector3(grip * 20, 0, 0);
+                //     // }
+                //     // }
+                // }
+            }
+            else
+            {
+                    horizontalInput = 0;
             }
             
+            
+        }
+    }
+    
+    private void ShiftAngle(float angleVal)
+    {
+        
+        if (angleVal > 0 || angleVal < 0)
+        {
+            rb.constraints = RigidbodyConstraints.None;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX;
+            rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+        }
+        else if(angleVal == 0)
+        {
+            transform.position = new Vector3(transform.position.x, Ypos, transform.position.z);
+            rb.constraints = RigidbodyConstraints.FreezePositionY;
         }
         
-
-
-
-
+        transform.rotation = Quaternion.Euler(angleVal, 0, 0);
+        
     }
     
     private void AmmoRefill(float ammoTimer)
@@ -383,6 +358,16 @@ public class SpacejetAI : MonoBehaviour
         if (other.CompareTag("Finish"))
         {
             hasFinished = true;
+        }
+        
+        if (other.gameObject.CompareTag("DownTrack"))
+        {
+            ShiftAngle(45);
+        }
+        
+        if (other.gameObject.CompareTag("ForwardTrack"))
+        {
+            ShiftAngle(0);
         }
     }
 
