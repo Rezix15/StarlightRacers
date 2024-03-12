@@ -21,6 +21,7 @@ TagManager:
   - ForwardTrack
   - RobotEnemy
   - EnemyLaser
+  - BossLaser
   layers:
   - Default
   - TransparentFX

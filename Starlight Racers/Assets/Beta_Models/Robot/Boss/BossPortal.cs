@@ -12,7 +12,8 @@ public class BossPortal : MonoBehaviour
     {
         randIndex = Random.Range(0, ghostCannons.Length);
         var position = transform.position;
-        var spawnPos = new Vector3(position.x - 20, position.y, position.z - 20);
+        //var xFactor = position.x / Mathf.Abs(position.x);
+        var spawnPos = new Vector3(position.x , position.y, position.z - 20);
         var ghost = Instantiate(ghostCannons[randIndex], spawnPos, Quaternion.identity);
         StartCoroutine(DestroyObj(ghost));
     }
@@ -25,7 +26,7 @@ public class BossPortal : MonoBehaviour
 
     IEnumerator DestroyObj(GameObject obj)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         Destroy(obj);
         yield return new WaitForSeconds(0.3f);
         Destroy(gameObject);
