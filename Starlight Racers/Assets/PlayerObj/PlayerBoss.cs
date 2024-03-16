@@ -218,6 +218,7 @@ public class PlayerBoss : MonoBehaviour
         boosterPadSpeed = 25000;
         currentShieldStat = shieldMax.trueValue; //set the HP value to the max value
         takeDamage = false;
+        abilityGauge = 100;
         
         // if(isPlayer2)
         // {
@@ -676,6 +677,7 @@ public class PlayerBoss : MonoBehaviour
             }
             else
             {
+                Debug.Log("Player has been eliminated from the race");
                 Destroy(gameObject);
             }
             

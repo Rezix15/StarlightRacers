@@ -539,8 +539,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03b40a35b7c1cf4181c8f8cc041c532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerUpObj: {fileID: 4740187741603711687, guid: 34328017c8b47864f8bd46715fa9e928, type: 3}
   trackSpeed: 450
   trackDirection: 0
+  randIndex: 0
 --- !u!1001 &344887125529295774
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -33,7 +33,7 @@ public class BossTrackScript : MonoBehaviour
 
     IEnumerator SpawnTrack(GameObject track)
     {
-        while (true)
+        while (BossCanvas.GameOver == false)
         {
             for (int i = 0; i < 5; i++)
             {

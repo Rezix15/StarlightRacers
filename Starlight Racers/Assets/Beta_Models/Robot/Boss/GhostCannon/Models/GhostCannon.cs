@@ -11,12 +11,18 @@ public class GhostCannon : MonoBehaviour
     {
         var position = transform.position;
         var spawnPos = new Vector3(position.x, position.y, position.z - 20);
-        Instantiate(laserPrefab, spawnPos, Quaternion.identity, transform);
+        StartCoroutine(SpawnLaser(spawnPos));
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    IEnumerator SpawnLaser(Vector3 spawnPos)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Instantiate(laserPrefab, spawnPos, Quaternion.identity, transform);
     }
 }

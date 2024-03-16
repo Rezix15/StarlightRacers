@@ -22,6 +22,7 @@ TagManager:
   - RobotEnemy
   - EnemyLaser
   - BossLaser
+  - Boss
   layers:
   - Default
   - TransparentFX

@@ -26,7 +26,7 @@ public class BossPortal : MonoBehaviour
 
     IEnumerator DestroyObj(GameObject obj)
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
         Destroy(obj);
         yield return new WaitForSeconds(0.3f);
         Destroy(gameObject);

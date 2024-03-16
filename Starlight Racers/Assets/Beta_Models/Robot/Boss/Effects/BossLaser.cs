@@ -31,10 +31,8 @@ public class BossLaser : MonoBehaviour
 
     IEnumerator DestroyObj()
     {
-        Debug.Log("Time to destroy..");
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         Destroy(laserBeam);
         Destroy(gameObject);
-        Debug.Log("Destroy all");
     }
 }

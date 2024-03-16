@@ -17,17 +17,26 @@ public class BossCanvas : MonoBehaviour
     private float timer;
     public TextMeshProUGUI currentShieldText;
     public PlayerBoss player;
+
+    public GameObject mainUI;
+    public GameObject gameOverUI;
+
+    public static bool GameOver;
     
     // Start is called before the first frame update
     void Start()
     {
+        GameOver = false;
         player = player.GetComponent<PlayerBoss>();
         timerText.text = "";
         laserAmmoText.text = "MAX";
         playerShieldStatMax = player.shieldMax.trueValue;
         shieldBar.maxValue = playerShieldStatMax;
-        
+        mainUI.SetActive(true);
+        gameOverUI.SetActive(false);
         timer = 300; //Set boss to 5 minutes
+        
+        
     }
 
     // Update is called once per frame
@@ -40,26 +49,36 @@ public class BossCanvas : MonoBehaviour
     void UpdateUI()
     {
         //Display Timer onto Canvas
-        if (!player.hasFinished)
+        if (player != null)
         {
-            int seconds = Mathf.FloorToInt(timer % 60); //calculates seconds.
-            int minutes = Mathf.FloorToInt(timer / 60); //calculates minutes.
-            int milliseconds = Mathf.FloorToInt(timer * 1000) % 1000; //calculates milliseconds.
+            if (!player.hasFinished)
+            {
+                int seconds = Mathf.FloorToInt(timer % 60); //calculates seconds.
+                int minutes = Mathf.FloorToInt(timer / 60); //calculates minutes.
+                int milliseconds = Mathf.FloorToInt(timer * 1000) % 1000; //calculates milliseconds.
         
-            string timedString = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
+                string timedString = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
 
-            timerText.text = timedString;
+                timerText.text = timedString;
+            }
+        
+            playerShieldStat = player.GetCurrentShieldStat();
+
+            shieldBar.value = playerShieldStat;
+
+            var shieldAsInt = (int)playerShieldStat;
+
+            currentShieldText.text = shieldAsInt.ToString();
+        
+            UpdateShieldUI();
         }
-        
-        playerShieldStat = player.GetCurrentShieldStat();
-
-        shieldBar.value = playerShieldStat;
-
-        var shieldAsInt = (int)playerShieldStat;
-
-        currentShieldText.text = shieldAsInt.ToString();
-        
-        UpdateShieldUI();
+        else
+        {
+            GameOver = true;
+            mainUI.SetActive(false);
+            gameOverUI.SetActive(true);
+        }
+       
         
         //UpdateBoosterUI();
     }
@@ -77,7 +96,7 @@ public class BossCanvas : MonoBehaviour
         {
             shieldBarFillImg.color = Color.cyan;
         }
-        else if(shieldPercentage < 0.5f && shieldPercentage >= 0.2f)
+        else if (shieldPercentage < 0.5f && shieldPercentage >= 0.2f)
         {
             shieldBarFillImg.color = Color.yellow;
         }
@@ -87,7 +106,7 @@ public class BossCanvas : MonoBehaviour
         }
         else
         {
-            shieldBarFill.SetActive(false);
+            currentShieldText.text = 0.ToString();
         }
     }
 }
