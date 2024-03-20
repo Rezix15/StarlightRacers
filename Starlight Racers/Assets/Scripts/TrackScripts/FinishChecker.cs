@@ -92,8 +92,8 @@ public class FinishChecker : MonoBehaviour
                 finishedPlayers++;
             }
             
-            if (MenuManager.RaceCount < 3 )
-            {
+            // if (MenuManager.RaceCount < 3 )
+            // {
                 MenuManager.RaceCount++;
                 MenuManager.totalFinishTime += playerFinishTime;
                 CoinManager.coinCount += 500;
@@ -103,14 +103,14 @@ public class FinishChecker : MonoBehaviour
                     SceneManager.LoadScene("IntermissionScene");   
                 }
                 
-            }
-            else
-            {
-                playerFinishTimeText = FormatTimer(MenuManager.totalFinishTime);
-                finishTimer.text = "Finish Time: " + playerFinishTimeText;
-            }
+            //}
+            // else
+            // {
+            //     playerFinishTimeText = FormatTimer(MenuManager.totalFinishTime);
+            //     finishTimer.text = "Finish Time: " + playerFinishTimeText;
+            // }
             
-            StartCoroutine(FinishTimeCountdown(player.isPlayer2));
+            //StartCoroutine(FinishTimeCountdown(player.isPlayer2));
         }
     }
 

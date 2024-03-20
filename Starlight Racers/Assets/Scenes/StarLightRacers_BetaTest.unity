@@ -726,7 +726,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &479727588
 Transform:
   m_ObjectHideFlags: 0
@@ -1939,7 +1939,7 @@ MonoBehaviour:
   trackSeed: 0
   startTrackObj: {fileID: 1393370057757823438, guid: 8dd6a4612d5df664482ea94f371ea461, type: 3}
   finishTrackObj: {fileID: 6568056068367628586, guid: 9624e858266140d43a1212728e0ffddb, type: 3}
-  straightForwardTrackObj: {fileID: 8143200395637452275, guid: a8ee680bdef344c46a64b07a1ac3a571, type: 3}
+  straightForwardTrackObj: {fileID: 8143200395637452275, guid: e0ad20ab4316e8c47bf7166e6421fa7e, type: 3}
   straightLeftTrackObj: {fileID: 4206869128042376907, guid: 7c048ff374afe4643928f79d41713fc2, type: 3}
   straightRightTrackObj: {fileID: 5664122191950308730, guid: 070357ed79f50de4986bfffe0351f48e, type: 3}
   upCurvedLeftTrackObj: {fileID: 4847280205126028791, guid: 226ab7f2beb747048b8d4be84c599b5a, type: 3}
@@ -5085,7 +5085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 94169628061752398, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 94169628061752398, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_TagString
@@ -5141,11 +5141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3944159284181345728, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_Size.x
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3944159284181345728, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_Size.y
-      value: 25
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 3944159284181345728, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_Size.z
@@ -5161,7 +5161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3944159284181345728, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_Center.y
-      value: -10
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 3944159284181345728, guid: 689512fe65d04ec43ba026449bdab123, type: 3}
       propertyPath: m_Center.z
@@ -5315,8 +5315,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10, y: 25, z: 10}
-  m_Center: {x: 0, y: -10, z: 1}
+  m_Size: {x: 5, y: 65, z: 10}
+  m_Center: {x: 0, y: -30, z: 1}
 --- !u!4 &3252843795837273814
 Transform:
   m_ObjectHideFlags: 0

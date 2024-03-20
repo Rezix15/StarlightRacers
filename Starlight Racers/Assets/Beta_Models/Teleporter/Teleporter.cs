@@ -8,6 +8,7 @@ using UnityEngine;
 public class Teleporter : MonoBehaviour
 {
     public GameObject teleporterEffect;
+    public GameObject teleporterEffect2;
 
     private bool teleportActive;
 
@@ -38,20 +39,30 @@ public class Teleporter : MonoBehaviour
         {
             var position = transform.position;
             var spawnPos = new Vector3(position.x, position.y + 1, position.z);
+            var effect = new GameObject();
             
             List<GameObject> teleporterEffects = new List<GameObject>();
 
             for (int i = 0; i < 5; i++)
             {
                 var rotation = Quaternion.Euler(90, 0, 0);
-                var effect = Instantiate(teleporterEffect, spawnPos, rotation);
+
+                if (MenuManager.RaceCount > 3)
+                {
+                    effect = Instantiate(teleporterEffect2, spawnPos, rotation);
+                }
+                else
+                {
+                    effect = Instantiate(teleporterEffect, spawnPos, rotation);
+                }
+                
                 teleporterEffects.Add(effect);
                 yield return new WaitForSeconds(0.2f);
             }
 
-            foreach (var effect in teleporterEffects)
+            foreach (var effects in teleporterEffects)
             {
-                Destroy(effect);
+                Destroy(effects);
                 yield return new WaitForSeconds(0.2f);
             }
         }
@@ -65,8 +76,28 @@ public class Teleporter : MonoBehaviour
 
             if (inTeleport)
             {
-                DialogueManager.inDialogue = true;
-                DialogueManager.currentDialogue = new Dialogue("Teleporter", teleporterDialogue, Dialogue.DialogueType.Question);
+                if (MenuManager.RaceCount < 3)
+                {
+                    DialogueManager.inDialogue = true;
+                    DialogueManager.id = 0;
+                    DialogueManager.currentDialogue = new Dialogue("Teleporter", teleporterDialogue, Dialogue.DialogueType.Question);
+                }
+                else if(MenuManager.RaceCount == 3)
+                {
+                    teleporterDialogue = "Are you ready to begin the final race?";
+                    DialogueManager.inDialogue = true;
+                    DialogueManager.id = 0;
+                    DialogueManager.currentDialogue = new Dialogue("Teleporter", teleporterDialogue, Dialogue.DialogueType.Question);
+                }
+                else
+                {
+                    teleporterDialogue = "Are you ready to defeat the boss?";
+                    DialogueManager.inDialogue = true;
+                    DialogueManager.id = 1;
+                    DialogueManager.currentDialogue = new Dialogue("Teleporter", teleporterDialogue, Dialogue.DialogueType.Question);
+                    BossCanvas.GameOver = false;
+                }
+                
             }
             
         }

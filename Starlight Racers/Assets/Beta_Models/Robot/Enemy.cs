@@ -45,15 +45,15 @@ public class Enemy : MonoBehaviour
         var scaleFactor = 100;
         currentHealth = maxHealth;
         lasers.transform.localScale = new Vector3(0.05f * scaleFactor, 0.1f * scaleFactor, 0.05f * scaleFactor);
-        enemyAgent = gameObject.GetComponent<NavMeshAgent>();
+        //enemyAgent = gameObject.GetComponent<NavMeshAgent>();
         RaceManager.GameStarted += OnGameStarted;
     }
 
     void OnGameStarted()
     {
-        enemyAgent.enabled = true;
-        CheckNearestCheckpoint();
-        GeneratePath();
+        //enemyAgent.enabled = true;
+        // CheckNearestCheckpoint();
+        // GeneratePath();
     }
     
     
@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        //Movement();
         CheckHealth();
         ShootLaser();
     }
@@ -70,6 +70,7 @@ public class Enemy : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
+            CoinManager.coinCount += 50;
             Destroy(gameObject);
         }
     }
@@ -131,32 +132,32 @@ public class Enemy : MonoBehaviour
         
     }
 
-    private void GeneratePath()
-    {
-        currentCheckpoints = new List<GameObject>(TrackGen.checkpoints);
-        //int currentIndex = 0;
-        var addCheckpoints = false;
-        var trackCount = 0;
-
-        foreach (var currentCheckpoint in currentCheckpoints)
-        {
-            //currentIndex++;
-            
-            if (nearestCheckpoint == currentCheckpoint)
-            {
-                addCheckpoints = true;
-            }
-
-            if (addCheckpoints && trackCount < 3)
-            {
-                path.Add(currentCheckpoint);
-                trackCount++;
-            }
-            
-            Debug.Log("Path Count: " + path.Count);
-            Debug.Log("Path Nearest Checkpoint: " + nearestCheckpoint);
-        }
-    }
+    // private void GeneratePath()
+    // {
+    //     currentCheckpoints = new List<GameObject>(TrackGen.checkpoints);
+    //     //int currentIndex = 0;
+    //     var addCheckpoints = false;
+    //     var trackCount = 0;
+    //
+    //     foreach (var currentCheckpoint in currentCheckpoints)
+    //     {
+    //         //currentIndex++;
+    //         
+    //         if (nearestCheckpoint == currentCheckpoint)
+    //         {
+    //             addCheckpoints = true;
+    //         }
+    //
+    //         if (addCheckpoints && trackCount < 3)
+    //         {
+    //             path.Add(currentCheckpoint);
+    //             trackCount++;
+    //         }
+    //         
+    //         Debug.Log("Path Count: " + path.Count);
+    //         Debug.Log("Path Nearest Checkpoint: " + nearestCheckpoint);
+    //     }
+    // }
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("Laser"))

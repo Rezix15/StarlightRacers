@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BossCanvas : MonoBehaviour
@@ -77,6 +78,7 @@ public class BossCanvas : MonoBehaviour
             GameOver = true;
             mainUI.SetActive(false);
             gameOverUI.SetActive(true);
+            StartCoroutine(SendUserBackToIntermission());
         }
        
         
@@ -108,5 +110,11 @@ public class BossCanvas : MonoBehaviour
         {
             currentShieldText.text = 0.ToString();
         }
+    }
+
+    IEnumerator SendUserBackToIntermission()
+    {
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene("IntermissionScene");
     }
 }

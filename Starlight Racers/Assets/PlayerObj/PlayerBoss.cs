@@ -98,16 +98,19 @@ public class PlayerBoss : MonoBehaviour
     public bool isPlayer1;
     public bool isPlayer2;
 
+    public GameObject absorberObj;
+    public GameObject spacejetObj;
+
     public SpaceJetObj spaceJetObj;
     private void Awake()
     {
         Controller = new PlayerController();
         InitializeStats();
         
-        // if (IntermissionMenu.currentComponent != null)
-        // {
-        //     UpgradeComponents();
-        // }
+        if (IntermissionMenu.currentComponent != null)
+        {
+            UpgradeComponents();
+        }
 
         if (isPlayer1)
         {
@@ -178,31 +181,24 @@ public class PlayerBoss : MonoBehaviour
     //Initialize the stats of the spaceJet using the current vehicle that was chosen in the menu.
     private void InitializeStats()
     {
-        // if(isPlayer2)
-        // {
-        //     thrust = new Stat(MenuManager.enemySpaceJet.thrust);
-        //     grip = MenuManager.enemySpaceJet.grip;
-        //     speed = new Stat(MenuManager.enemySpaceJet.speed);
-        //     shieldMax = new Stat(MenuManager.enemySpaceJet.shield);
-        //     shieldRate = new Stat(MenuManager.enemySpaceJet.shieldRate);
-        //     laserDamage = new Stat(MenuManager.enemySpaceJet.laserDamage);
-        // }
-        // else
-        // {
-        //     thrust = new Stat(MenuManager.currentSpaceJet.thrust);
-        //     grip = MenuManager.currentSpaceJet.grip;
-        //     speed = new Stat(MenuManager.currentSpaceJet.speed);
-        //     shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
-        //     shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
-        //     laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
-        // }
-        
-        thrust = new Stat(spaceJetObj.thrust);
-        grip = spaceJetObj.grip;
-        speed = new Stat(spaceJetObj.speed);
-        shieldMax = new Stat(spaceJetObj.shield);
-        shieldRate = new Stat(spaceJetObj.shieldRate);
-        laserDamage = new Stat(spaceJetObj.laserDamage);
+        if(isPlayer2)
+        {
+            thrust = new Stat(MenuManager.enemySpaceJet.thrust);
+            grip = MenuManager.enemySpaceJet.grip;
+            speed = new Stat(MenuManager.enemySpaceJet.speed);
+            shieldMax = new Stat(MenuManager.enemySpaceJet.shield);
+            shieldRate = new Stat(MenuManager.enemySpaceJet.shieldRate);
+            laserDamage = new Stat(MenuManager.enemySpaceJet.laserDamage);
+        }
+        else
+        {
+            thrust = new Stat(MenuManager.currentSpaceJet.thrust);
+            grip = MenuManager.currentSpaceJet.grip;
+            speed = new Stat(MenuManager.currentSpaceJet.speed);
+            shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
+            shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
+            laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
+        }
         
     }
     
@@ -220,65 +216,79 @@ public class PlayerBoss : MonoBehaviour
         takeDamage = false;
         abilityGauge = 100;
         
-        // if(isPlayer2)
-        // {
-        //     switch (MenuManager.enemySpaceJet.name)
-        //     {
-        //         case "Absorber":
-        //         {
-        //             creationAbility = gameObject.AddComponent<CreationAbility>();
-        //         
-        //             creationAbility.Initialize("Transmogrifier", 30f, 
-        //                 SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
-        //             break;
-        //         }
-        //     
-        //         case "UFO": 
-        //         {
-        //             break;
-        //         }
-        //     
-        //         case "Bolt Glider": 
-        //         {
-        //             break;
-        //         }
-        //     
-        //         case "Ghost Rider": 
-        //         {
-        //             break;
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        switch (spaceJetObj.name)
+        if(isPlayer2)
         {
-            case "Absorber":
+            switch (MenuManager.enemySpaceJet.name)
             {
-                creationAbility = gameObject.AddComponent<CreationAbility>();
+                case "Absorber":
+                {
+                    absorberObj.SetActive(true);
+                    spacejetObj.SetActive(false);
+                    creationAbility = gameObject.AddComponent<CreationAbility>();
+                    
+                    creationAbility.Initialize("Transmogrifier", 30f, 
+                        SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
+                    break;
+                }
             
-                creationAbility.Initialize("Transmogrifier", 30f, 
-                    SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
-                break;
-            }
-        
-            case "UFO": 
-            {
-                break;
-            }
-        
-            case "Bolt Glider": 
-            {
-                break;
-            }
-        
-            case "Ghost Rider": 
-            {
-                break;
+                case "UFO": 
+                {
+                    absorberObj.SetActive(false);
+                    spacejetObj.SetActive(true);
+                    break;
+                }
+            
+                case "Bolt Glider": 
+                {
+                    absorberObj.SetActive(false);
+                    spacejetObj.SetActive(true);
+                    break;
+                }
+            
+                case "Ghost Rider": 
+                {
+                    absorberObj.SetActive(false);
+                    spacejetObj.SetActive(true);
+                    break;
+                }
             }
         }
-        // }
-        //
+        else
+        {
+            switch (MenuManager.currentSpaceJet.name)
+            {
+                case "Absorber":
+                {
+                    absorberObj.SetActive(true);
+                    spacejetObj.SetActive(false);
+                    creationAbility = gameObject.AddComponent<CreationAbility>();
+                    creationAbility.Initialize("Transmogrifier", 30f, 
+                        SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
+                    break;
+                }
+            
+                case "UFO": 
+                {
+                    absorberObj.SetActive(false);
+                    spacejetObj.SetActive(true);
+                    break;
+                }
+            
+                case "Bolt Glider": 
+                {
+                    absorberObj.SetActive(false);
+                    spacejetObj.SetActive(true);
+                    break;
+                }
+            
+                case "Ghost Rider": 
+                {
+                    absorberObj.SetActive(false);
+                    spacejetObj.SetActive(true);
+                    break;
+                }
+            }
+        }
     }
 
     // void OnGameStart()
@@ -315,13 +325,6 @@ public class PlayerBoss : MonoBehaviour
         //     Debug.Log("P2: HorizontalInput" + horizontalInput);
         // }
         Movement();
-        
-        if (abilityGauge < 100)
-        {
-            abilityGauge++;
-        }
-        
-        AddShieldPowerUp();
 
         //if the player has not finished the race, start timer
         if (hasFinished == false && canMove)
@@ -362,6 +365,8 @@ public class PlayerBoss : MonoBehaviour
     private void Movement()
     {
         transform.position += new Vector3((speed.trueValue / 100) * Time.deltaTime * horizontalInput, 0, 0);
+        
+        AddShieldPowerUp();
     }
 
     public float ReturnPlayerSpeed()
@@ -409,6 +414,11 @@ public class PlayerBoss : MonoBehaviour
     void FixedUpdate()
     {
         //Gravity();
+        
+        if (abilityGauge < 100)
+        {
+            abilityGauge++;
+        }
         
         HandleInput();
         
@@ -465,65 +475,65 @@ public class PlayerBoss : MonoBehaviour
         }
     }
 
-    // private void UpgradeComponents()
-    // {
-    //     if (MenuManager.componentBoosts != null)
-    //     {
-    //         foreach (var componentBoost in MenuManager.componentBoosts)
-    //         {
-    //             componentModifier = new Modifier(componentBoost.statModifierVal);
-    //             
-    //             // Debug.Log("Components Count: " + MenuManager.componentBoosts.Count);
-    //             // Debug.Log("Component Name: " + componentBoost.name);
-    //             // Debug.Log("Component TargetedStat: " + componentBoost.targetStat);
-    //             // Debug.Log("Components ModifierVal: " + componentBoost.statModifierVal);
-    //             
-    //             switch (componentBoost.targetStat)
-    //             {
-    //                 case ComponentObj.StatSkillType.Speed:
-    //                 {
-    //                     speed.AddModifier(componentModifier);
-    //                     break;
-    //                 }
-    //
-    //                 case ComponentObj.StatSkillType.ShieldRate:
-    //                 {
-    //                     shieldRate.AddModifier(componentModifier);
-    //                     break;
-    //                 }
-    //         
-    //                 case ComponentObj.StatSkillType.Shield:
-    //                 {
-    //                     shieldMax.AddModifier(componentModifier);
-    //                     break;
-    //                 }
-    //
-    //                 case ComponentObj.StatSkillType.Grip:
-    //                 {
-    //                     break;
-    //                 }
-    //
-    //                 case ComponentObj.StatSkillType.Thrust:
-    //                 {
-    //                     thrust.AddModifier(componentModifier);
-    //                     break;
-    //                 }
-    //
-    //                 case ComponentObj.StatSkillType.LaserDamage:
-    //                 {
-    //                     laserDamage.AddModifier(componentModifier);
-    //                     break;
-    //                 }
-    //         
-    //
-    //                 default:
-    //                 {
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+    private void UpgradeComponents()
+    {
+        if (MenuManager.componentBoosts != null)
+        {
+            foreach (var componentBoost in MenuManager.componentBoosts)
+            {
+                componentModifier = new Modifier(componentBoost.statModifierVal);
+                
+                // Debug.Log("Components Count: " + MenuManager.componentBoosts.Count);
+                // Debug.Log("Component Name: " + componentBoost.name);
+                // Debug.Log("Component TargetedStat: " + componentBoost.targetStat);
+                // Debug.Log("Components ModifierVal: " + componentBoost.statModifierVal);
+                
+                switch (componentBoost.targetStat)
+                {
+                    case ComponentObj.StatSkillType.Speed:
+                    {
+                        speed.AddModifier(componentModifier);
+                        break;
+                    }
+    
+                    case ComponentObj.StatSkillType.ShieldRate:
+                    {
+                        shieldRate.AddModifier(componentModifier);
+                        break;
+                    }
+            
+                    case ComponentObj.StatSkillType.Shield:
+                    {
+                        shieldMax.AddModifier(componentModifier);
+                        break;
+                    }
+    
+                    case ComponentObj.StatSkillType.Grip:
+                    {
+                        break;
+                    }
+    
+                    case ComponentObj.StatSkillType.Thrust:
+                    {
+                        thrust.AddModifier(componentModifier);
+                        break;
+                    }
+    
+                    case ComponentObj.StatSkillType.LaserDamage:
+                    {
+                        laserDamage.AddModifier(componentModifier);
+                        break;
+                    }
+            
+    
+                    default:
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
     
     //Function to shoot Laser when q is pressed
     private void FireLaserLeft()

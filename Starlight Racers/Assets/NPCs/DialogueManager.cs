@@ -19,6 +19,8 @@ public class DialogueManager : MonoBehaviour
     public static Dialogue currentDialogue;
 
     private bool firstEntry;
+
+    public static int id;
     
     //private PlayerController Controller;
     
@@ -89,7 +91,22 @@ public class DialogueManager : MonoBehaviour
         firstEntry = true;
         inDialogue = false;
         currentDialogue = null;
-        SceneManager.LoadScene("StarLightRacers_BetaTest");
+
+        switch (id)
+        {
+            case 0:
+            {
+                SceneManager.LoadScene("StarLightRacers_BetaTest");
+                break;
+            }
+
+            case 1:
+            {
+                SceneManager.LoadScene("BossScene");
+                break;
+            }
+        }
+        //SceneManager.LoadScene("DesertRoad_BetaTest");
         //SceneManager.LoadScene("StarLightRacers_BetaTest(Multiplayer)");
     }
 

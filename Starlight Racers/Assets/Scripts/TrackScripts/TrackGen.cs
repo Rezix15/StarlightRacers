@@ -10,6 +10,8 @@ using Random = UnityEngine.Random;
 public class TrackGen : MonoBehaviour
 {
     public int trackSeed = 0;
+    public static int buildingSeed = buildingSeed = (int)System.DateTime.Now.Ticks;
+    
     private NavMeshSurface meshSurface;
     public enum TrackType
     {
@@ -127,7 +129,7 @@ public class TrackGen : MonoBehaviour
         trafficLightObj.transform.localScale = new Vector3(scale * 66.66f, scale * 66.66f, scale * 66.66f);
         angleShifterObj.transform.localScale = new Vector3(scale, scale, scale); 
         enemySpawnerObj.transform.localScale = new Vector3(scale, scale, scale);
-        enemyRobot2.transform.localScale = new Vector3(scale, scale, scale);
+        enemyRobot2.transform.localScale = new Vector3(scale / 2f, scale / 2f, scale / 2f);
         meshSurface = GetComponent<NavMeshSurface>();
         # endregion
         
@@ -878,7 +880,7 @@ public class TrackGen : MonoBehaviour
                 //Generate the two portal objects
                 //Instantiate(portalObj, newLeftPos + (initialLeftPos / 2) * 9, Quaternion.Euler(0, 180, 0));
                 Instantiate(portalObj, newRightPos  + (initialRightPos / 2) * 9, Quaternion.Euler(0, 180, 0), transform);
-                GenerateNavMesh();
+                //GenerateNavMesh();
                 break;
                 
             }

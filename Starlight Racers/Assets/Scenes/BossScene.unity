@@ -1248,7 +1248,9 @@ MonoBehaviour:
   bomb: {fileID: 7213344583081241230, guid: aff7e6c43eb5fc642b9f6560b018245c, type: 3}
   isPlayer1: 0
   isPlayer2: 0
-  spaceJetObj: {fileID: 11400000, guid: 0df18e4173e18d149b66b08eae260e54, type: 2}
+  absorberObj: {fileID: 4399776229451781822}
+  spacejetObj: {fileID: 3167492221481447866}
+  spaceJetObj: {fileID: 0}
 --- !u!1 &1352021075
 GameObject:
   m_ObjectHideFlags: 0
@@ -5321,7 +5323,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &4496966630809064567
 BoxCollider:
   m_ObjectHideFlags: 0
