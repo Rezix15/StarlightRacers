@@ -23,6 +23,7 @@ public class RaceManager : MonoBehaviour
     private List<GameObject> racers;
     public Material spaceJetColor;
     public Material spaceJetGlow;
+    public Material spaceJetGlow2;
     private Color[] absorberColors;
     private Color[] boltColors;
     private Color[] ufoColors;
@@ -38,9 +39,11 @@ public class RaceManager : MonoBehaviour
 
     public GameObject player1AbsorberPrefab;
     public GameObject player1SpaceJetBeta;
+    public GameObject player1GhostRiderPrefab;
     
     public GameObject player2AbsorberPrefab;
     public GameObject player2SpaceJetBeta;
+    public GameObject player2GhostRiderPrefab;
 
     private int RaceCount;
 
@@ -61,6 +64,7 @@ public class RaceManager : MonoBehaviour
             new Color(1, (191/255f), 0, 255), //orange
             Color.yellow,
             Color.green,
+            new Color(0f, 1, 0.7f),
             Color.cyan,
             Color.blue,
             Color.magenta,
@@ -89,8 +93,16 @@ public class RaceManager : MonoBehaviour
         
         ghostColors = new[]
         {
-            Color.white,
-            Color.gray
+            Color.red,
+            new Color(1, (191/255f), 0, 255), //orange
+            Color.yellow,
+            Color.green,
+            new Color(0f, 1, 0.7f),
+            Color.cyan,
+            Color.blue,
+            Color.magenta,
+            new Color((127/255f), 0, 1), //violet
+            Color.white
         };
         //
         // racers = new List<GameObject> { SpaceJetPlayer.gameObject };
@@ -118,6 +130,7 @@ public class RaceManager : MonoBehaviour
             {
                 player1AbsorberPrefab.SetActive(true);
                 player1SpaceJetBeta.SetActive(false);
+                player1GhostRiderPrefab.SetActive(false);
                 var randomColor = Random.Range(0, absorberColors.Length);
                 // absorberRenderer = absorberPrefab.GetComponent<Renderer>();
                 spaceJetGlow.SetColor(EmissionColor, absorberColors[randomColor]);
@@ -128,6 +141,7 @@ public class RaceManager : MonoBehaviour
             {
                 player1AbsorberPrefab.SetActive(false);
                 player1SpaceJetBeta.SetActive(true);
+                player1GhostRiderPrefab.SetActive(false);
                 var randomColor = Random.Range(0, boltColors.Length);
                 // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
                 spaceJetColor.color = boltColors[randomColor];
@@ -138,6 +152,7 @@ public class RaceManager : MonoBehaviour
             {
                 player1AbsorberPrefab.SetActive(false);
                 player1SpaceJetBeta.SetActive(true);
+                player1GhostRiderPrefab.SetActive(false);
                 // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
                 var randomColor = Random.Range(0, ufoColors.Length);
                 spaceJetColor.color = ufoColors[randomColor];
@@ -147,10 +162,11 @@ public class RaceManager : MonoBehaviour
             case "Ghost Rider":
             {
                 player1AbsorberPrefab.SetActive(false);
-                player1SpaceJetBeta.SetActive(true);
+                player1SpaceJetBeta.SetActive(false);
+                player1GhostRiderPrefab.SetActive(true);
                 // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
                 var randomColor = Random.Range(0, ghostColors.Length);
-                spaceJetColor.color = ghostColors[randomColor];
+                spaceJetGlow.SetColor(EmissionColor, ghostColors[randomColor]);
                 break;
             }
         }
@@ -161,6 +177,7 @@ public class RaceManager : MonoBehaviour
             {
                 player2AbsorberPrefab.SetActive(true);
                 player2SpaceJetBeta.SetActive(false);
+                player2GhostRiderPrefab.SetActive(false);
                 var randomColor = Random.Range(0, absorberColors.Length);
                 // absorberRenderer = absorberPrefab.GetComponent<Renderer>();
                 spaceJetGlow.SetColor(EmissionColor, absorberColors[randomColor]);
@@ -171,6 +188,7 @@ public class RaceManager : MonoBehaviour
             {
                 player2AbsorberPrefab.SetActive(false);
                 player2SpaceJetBeta.SetActive(true);
+                player2GhostRiderPrefab.SetActive(false);
                 var randomColor = Random.Range(0, boltColors.Length);
                 // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
                 spaceJetColor.color = boltColors[randomColor];
@@ -181,6 +199,7 @@ public class RaceManager : MonoBehaviour
             {
                 player2AbsorberPrefab.SetActive(false);
                 player2SpaceJetBeta.SetActive(true);
+                player2GhostRiderPrefab.SetActive(false);
                 // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
                 var randomColor = Random.Range(0, ufoColors.Length);
                 spaceJetColor.color = ufoColors[randomColor];
@@ -190,10 +209,11 @@ public class RaceManager : MonoBehaviour
             case "Ghost Rider":
             {
                 player2AbsorberPrefab.SetActive(false);
-                player2SpaceJetBeta.SetActive(true);
+                player2SpaceJetBeta.SetActive(false);
+                player2GhostRiderPrefab.SetActive(true);
                 // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
                 var randomColor = Random.Range(0, ghostColors.Length);
-                spaceJetColor.color = ghostColors[randomColor];
+                //spaceJetColor.color = ghostColors[randomColor];
                 break;
             }
         }
