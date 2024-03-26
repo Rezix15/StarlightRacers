@@ -46,7 +46,7 @@ public class PlayerBoss : MonoBehaviour
     // public float responsiveness = 15f;
     // private float responsiveFactor;
 
-    float timer;
+    public float timer;
     [SerializeField] private int laserAmmoMax;
 
     private bool isBoosting = false;
@@ -100,6 +100,7 @@ public class PlayerBoss : MonoBehaviour
 
     public GameObject absorberObj;
     public GameObject spacejetObj;
+    public GameObject ghostRiderObj;
 
     public SpaceJetObj spaceJetObj;
     private void Awake()
@@ -224,6 +225,7 @@ public class PlayerBoss : MonoBehaviour
                 {
                     absorberObj.SetActive(true);
                     spacejetObj.SetActive(false);
+                    ghostRiderObj.SetActive(false);
                     creationAbility = gameObject.AddComponent<CreationAbility>();
                     
                     creationAbility.Initialize("Transmogrifier", 30f, 
@@ -235,6 +237,7 @@ public class PlayerBoss : MonoBehaviour
                 {
                     absorberObj.SetActive(false);
                     spacejetObj.SetActive(true);
+                    ghostRiderObj.SetActive(false);
                     break;
                 }
             
@@ -242,13 +245,15 @@ public class PlayerBoss : MonoBehaviour
                 {
                     absorberObj.SetActive(false);
                     spacejetObj.SetActive(true);
+                    ghostRiderObj.SetActive(false);
                     break;
                 }
             
                 case "Ghost Rider": 
                 {
                     absorberObj.SetActive(false);
-                    spacejetObj.SetActive(true);
+                    spacejetObj.SetActive(false);
+                    ghostRiderObj.SetActive(true);
                     break;
                 }
             }
@@ -261,6 +266,7 @@ public class PlayerBoss : MonoBehaviour
                 {
                     absorberObj.SetActive(true);
                     spacejetObj.SetActive(false);
+                    ghostRiderObj.SetActive(false);
                     creationAbility = gameObject.AddComponent<CreationAbility>();
                     creationAbility.Initialize("Transmogrifier", 30f, 
                         SpecialAbility.AbilityTypes.Effect, shieldEffect, bomb);
@@ -271,6 +277,7 @@ public class PlayerBoss : MonoBehaviour
                 {
                     absorberObj.SetActive(false);
                     spacejetObj.SetActive(true);
+                    ghostRiderObj.SetActive(false);
                     break;
                 }
             
@@ -278,13 +285,15 @@ public class PlayerBoss : MonoBehaviour
                 {
                     absorberObj.SetActive(false);
                     spacejetObj.SetActive(true);
+                    ghostRiderObj.SetActive(false);
                     break;
                 }
             
                 case "Ghost Rider": 
                 {
                     absorberObj.SetActive(false);
-                    spacejetObj.SetActive(true);
+                    spacejetObj.SetActive(false);
+                    ghostRiderObj.SetActive(true);
                     break;
                 }
             }
@@ -325,6 +334,11 @@ public class PlayerBoss : MonoBehaviour
         //     Debug.Log("P2: HorizontalInput" + horizontalInput);
         // }
         Movement();
+
+        if (Boss.currentHealth <= 0)
+        {
+            hasFinished = true;
+        }
 
         //if the player has not finished the race, start timer
         if (hasFinished == false && canMove)
@@ -414,11 +428,8 @@ public class PlayerBoss : MonoBehaviour
     void FixedUpdate()
     {
         //Gravity();
-        
-        if (abilityGauge < 100)
-        {
-            abilityGauge++;
-        }
+
+        abilityGauge++;
         
         HandleInput();
         
@@ -610,11 +621,6 @@ public class PlayerBoss : MonoBehaviour
             takeDamage = true;
             StartCoroutine(Damaged());
         }
-
-        if (other.CompareTag("Finish"))
-        {
-            hasFinished = true;
-        }
     }
 
     //if user collides with the wall
@@ -669,6 +675,7 @@ public class PlayerBoss : MonoBehaviour
     {
         return currentCheckpoint;
     }
+    
 
     public float ReturnFinishTime()
     {

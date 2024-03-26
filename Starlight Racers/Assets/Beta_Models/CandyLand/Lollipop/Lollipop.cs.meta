@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: c6b683c129375eb40aacfc0e73e46844
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - appleFlavor: {fileID: 2100000, guid: fa2101e58b0a0204d95209d384a9c0c1, type: 2}
+  - orangeFlavor: {instanceID: 0}
+  - lemonFlavor: {instanceID: 0}
+  - grapeFlavor: {instanceID: 0}
+  - strawberryFlavor: {instanceID: 0}
+  - cherryFlavor: {instanceID: 0}
+  - appleFlavorShade: {instanceID: 0}
+  - orangeFlavorShade: {instanceID: 0}
+  - lemonFlavorShade: {instanceID: 0}
+  - grapeFlavorShade: {instanceID: 0}
+  - strawberryFlavorShade: {instanceID: 0}
+  - cherryFlavorShade: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -15,6 +15,17 @@ public class Teleporter : MonoBehaviour
     private string teleporterDialogue;
 
     private bool inTeleport;
+    
+    // public enum CurrentStage
+    // {
+    //     Starlight = 0,
+    //     CandyLand = 1,
+    // }
+    //
+    // public CurrentStage selectedStage;
+    //
+    // public static CurrentStage currentSelectedStage;
+    
     // Start is called before the first frame update
     void Start()
     {

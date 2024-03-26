@@ -82,6 +82,8 @@ public class DialogueManager : MonoBehaviour
                 }
                 break;
             }
+            
+            
         }
     }
     
@@ -96,13 +98,41 @@ public class DialogueManager : MonoBehaviour
         {
             case 0:
             {
-                SceneManager.LoadScene("StarLightRacers_BetaTest");
+                switch (MenuManager.currentStageId)
+                {
+                    case 0:
+                    {
+                        SceneManager.LoadScene("StarLightRacers_BetaTest");
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        SceneManager.LoadScene("CandyLand_BetaTest");
+                        break;
+                    }
+                }
                 break;
             }
 
             case 1:
             {
-                SceneManager.LoadScene("BossScene");
+                switch (MenuManager.currentStageId)
+                {
+                    case 0:
+                    {
+                        SceneManager.LoadScene("BossScene");
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        SceneManager.LoadScene("BossScene(CandyLand)");
+                        break;
+                    }
+                }
+
+               
                 break;
             }
         }

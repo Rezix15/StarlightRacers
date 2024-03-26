@@ -100,7 +100,21 @@ public class FinishChecker : MonoBehaviour
 
                 if (playerCount < 2 || (playerCount >= 2 && finishedPlayers >=2))
                 {
-                    SceneManager.LoadScene("IntermissionScene");   
+                    switch (MenuManager.currentStageId)
+                    {
+                        case 0:
+                        {
+                            SceneManager.LoadScene("IntermissionScene");   
+                            break;
+                        }
+
+                        case 1:
+                        {
+                            SceneManager.LoadScene("IntermissionScene(CandyLand)");   
+                            break;
+                        }
+                    }
+                    
                 }
                 
             //}

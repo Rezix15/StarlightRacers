@@ -49,8 +49,10 @@ public class TrackGen : MonoBehaviour
     public GameObject archTrackObj;
     public GameObject checkpointObj;
     public GameObject diagonalForwardObj;
+    public GameObject diagonalStraightObj;
     public GameObject diagonalLeftObj;
     public GameObject diagonalRightObj;
+    
     public GameObject angleShifterObj; //An object that will be used to shift the angle of our player
     public GameObject enemySpawnerObj;
 
@@ -129,6 +131,7 @@ public class TrackGen : MonoBehaviour
         trafficLightObj.transform.localScale = new Vector3(scale * 66.66f, scale * 66.66f, scale * 66.66f);
         angleShifterObj.transform.localScale = new Vector3(scale, scale, scale); 
         enemySpawnerObj.transform.localScale = new Vector3(scale, scale, scale);
+        diagonalStraightObj.transform.localScale = new Vector3(scale, scale, scale);
         enemyRobot2.transform.localScale = new Vector3(scale / 2f, scale / 2f, scale / 2f);
         meshSurface = GetComponent<NavMeshSurface>();
         # endregion
@@ -905,7 +908,7 @@ public class TrackGen : MonoBehaviour
             case TrackType.DiagonalForward:
             {
                 var randomIndex = Random.Range(0, 4);
-                upNeighbours = new GameObject[] { straightForwardTrackObj };
+                upNeighbours = new GameObject[] { diagonalStraightObj, straightForwardTrackObj };
                 initialPosition = new Vector3((scale * -0.014f), (scale * -4.273f), (scale * 16.31f));
                 var straightPosD = new Vector3(0.008f * scale, -6.726f * scale, 6.71f * scale);
                 var straightPosF = new Vector3(0f * scale, -3.44f * scale, 8.04f * scale);
@@ -916,7 +919,7 @@ public class TrackGen : MonoBehaviour
                 }
 
                 var newPos = (prevPosition + ((straightPosD) * (randomIndex + 1)));
-                Instantiate(upNeighbours[0],  newPos + straightPosF, Quaternion.identity, transform);
+                Instantiate(upNeighbours[1],  newPos + straightPosF, Quaternion.identity, transform);
                 Instantiate(angleShifterObj, newPos + straightPosF, Quaternion.identity, transform);
                 GenerateNeighbours(TrackType.StraightForward, newPos + straightPosF);
                 break;

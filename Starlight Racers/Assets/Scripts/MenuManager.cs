@@ -42,6 +42,9 @@ public class MenuManager : MonoBehaviour
     
     public static List<ComponentObj> componentBoosts;
     
+    
+    # region SpaceJetMenu
+    
     public GameObject speedStat;
     public GameObject shieldStat;
     public GameObject shieldRateStat;
@@ -55,7 +58,7 @@ public class MenuManager : MonoBehaviour
     private Image[] gripStatImg;
     private Image[] thrustStatImg;
     private Image[] laserStatImg;
-
+    
     //Indicator to show what slide is current on
     private int currentId = 0;
 
@@ -65,6 +68,17 @@ public class MenuManager : MonoBehaviour
     public GameObject prefabSpaceJetHolder;
 
     private GameObject[] prefabSpaceJets;
+    
+    # endregion
+    
+    
+    # region
+    public GameObject level1;
+    public GameObject level2;
+    public GameObject level1Indicator;
+    public GameObject level2Indicator;
+    # endregion
+    
 
     private RaceManager RaceManager;
 
@@ -103,6 +117,15 @@ public class MenuManager : MonoBehaviour
     private bool wasKeyboard;
 
     public GameObject selectVehicleIndicator;
+
+    // public enum Level
+    // {
+    //     Starlight = 0,
+    //     CandyLand = 1
+    // }
+
+    public static int currentStageId;
+    
     private void Awake()
     {
         Controller = new PlayerController();
@@ -393,8 +416,22 @@ public class MenuManager : MonoBehaviour
         var randIndex = Random.Range(0, availableSpaceJets.Count);
 
         enemySpaceJet = availableSpaceJets[randIndex];
+
+        switch (currentStageId)
+        {
+            case 0:
+            {
+                SceneManager.LoadScene("IntermissionScene");
+                break;
+            }
+
+            case 1:
+            {
+                SceneManager.LoadScene("IntermissionScene(CandyLand)");
+                break;
+            }
+        }
         
-        SceneManager.LoadScene("IntermissionScene");
     }
 
     //Function to set the difficulty level of the game
@@ -405,21 +442,21 @@ public class MenuManager : MonoBehaviour
             //Easy
             case 0:
             {
-                reachLimit = 30000;  
+                reachLimit = 22500;  
                 break;
             }
 
             //Medium
             case 1:
             {
-                reachLimit = 35000;
+                reachLimit = 26000;
                 break;
             }
 
             //Hard
             case 2:
             {
-                reachLimit = 40000;
+                reachLimit = 30000;
                 break;
             }
 
@@ -431,7 +468,7 @@ public class MenuManager : MonoBehaviour
         }
         
         difficultyLevel = difficultyVar;
-        ToggleMenu(2);
+        ToggleMenu(3);
         
         rButton.SetActive(true);
         
@@ -610,6 +647,33 @@ public class MenuManager : MonoBehaviour
             menus[i].gameObject.SetActive(i == position);
         }
     }
+
+    public void ToggleLevelMenu(int position)
+    {
+        switch (position)
+        {
+            case 0:
+            {
+                level1Indicator.SetActive(true);
+                level2Indicator.SetActive(false);
+                break;
+            }
+
+            case 1:
+            {
+                level1Indicator.SetActive(false);
+                level2Indicator.SetActive(true);
+                break;
+            }
+
+            default:
+            {
+                level1Indicator.SetActive(false);
+                level2Indicator.SetActive(false);
+                break;
+            }
+        }
+    }
     
     //Function to toggle between specific menus
     void ToggleStartMenu(int position)
@@ -651,6 +715,14 @@ public class MenuManager : MonoBehaviour
         //     EventSystem.current.SetSelectedGameObject(difMenuOptions[1].gameObject);
         // }
         
+        EventSystem.current.SetSelectedGameObject(level1);
+        
+    }
+
+    public void OnLevelClicked(int id)
+    {
+        currentStageId = id;
+        ToggleMenu(2);
         EventSystem.current.SetSelectedGameObject(difMenuOptions[1].gameObject);
     }
 

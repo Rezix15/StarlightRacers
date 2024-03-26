@@ -23,6 +23,8 @@ public class BossCanvas : MonoBehaviour
     public GameObject gameOverUI;
 
     public static bool GameOver;
+
+    public GameObject successObj;
     
     // Start is called before the first frame update
     void Start()
@@ -36,7 +38,8 @@ public class BossCanvas : MonoBehaviour
         mainUI.SetActive(true);
         gameOverUI.SetActive(false);
         timer = 300; //Set boss to 5 minutes
-        
+        StartCoroutine(StartTimer());
+        successObj.SetActive(false);
         
     }
 
@@ -52,17 +55,6 @@ public class BossCanvas : MonoBehaviour
         //Display Timer onto Canvas
         if (player != null)
         {
-            if (!player.hasFinished)
-            {
-                int seconds = Mathf.FloorToInt(timer % 60); //calculates seconds.
-                int minutes = Mathf.FloorToInt(timer / 60); //calculates minutes.
-                int milliseconds = Mathf.FloorToInt(timer * 1000) % 1000; //calculates milliseconds.
-        
-                string timedString = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
-
-                timerText.text = timedString;
-            }
-        
             playerShieldStat = player.GetCurrentShieldStat();
 
             shieldBar.value = playerShieldStat;
@@ -80,9 +72,30 @@ public class BossCanvas : MonoBehaviour
             gameOverUI.SetActive(true);
             StartCoroutine(SendUserBackToIntermission());
         }
+
+        if (player.hasFinished)
+        {
+            successObj.SetActive(true);
+        }
        
         
         //UpdateBoosterUI();
+    }
+
+    IEnumerator StartTimer()
+    {
+        while (player != null && !player.hasFinished)
+        {
+            int seconds = Mathf.FloorToInt(timer % 60); //calculates seconds.
+            int minutes = Mathf.FloorToInt(timer / 60); //calculates minutes.
+            int milliseconds = Mathf.FloorToInt(timer * 1000) % 1000; //calculates milliseconds.
+        
+            string timedString = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
+
+            timerText.text = timedString;
+
+            yield return new WaitForSeconds(0f);
+        }
     }
 
     void UpdateShieldUI()
@@ -117,4 +130,5 @@ public class BossCanvas : MonoBehaviour
         yield return new WaitForSeconds(5f);
         SceneManager.LoadScene("IntermissionScene");
     }
+    
 }

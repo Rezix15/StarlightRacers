@@ -426,11 +426,13 @@ public class Boss : MonoBehaviour
                 {
                     if (desperationMode)
                     {
-                        currentHealth -= playerLaserDamage * (1 - ((shieldBonus * 1.4f) / 10));
+                        // currentHealth -= playerLaserDamage * (1 - ((shieldBonus * 1.4f) / 10));
+                        currentHealth -= (playerLaserDamage * 0.7f * (shieldBonus - 1.4f));
                     }
                     else
                     {
-                        currentHealth -= playerLaserDamage * (1 - (shieldBonus / 10));
+                        // currentHealth -= playerLaserDamage * (1 - (shieldBonus / 10));
+                        currentHealth -= (playerLaserDamage * 0.7f * shieldBonus);
                     }
                     
                 }
@@ -441,7 +443,7 @@ public class Boss : MonoBehaviour
                 //currentHealth -= MenuManager.currentSpaceJet.laserDamage;
                 if (desperationIndex > 1)
                 {
-                    currentHealth -= playerLaserDamage;
+                    currentHealth -= (playerLaserDamage * 0.7f);
                 }
                 
             }
