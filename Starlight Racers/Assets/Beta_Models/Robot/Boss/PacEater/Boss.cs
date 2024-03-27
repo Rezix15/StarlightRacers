@@ -52,7 +52,7 @@ public class Boss : MonoBehaviour
     {
         desperationIndex = 3;
         isShielded = false;
-        maxHealth = 3000;
+        SetHealth();
         shieldRate.baseValue = 50;
         normalObj.SetActive(true);
         index = 1;
@@ -71,6 +71,36 @@ public class Boss : MonoBehaviour
         // transform.position = new Vector3(position.x, position.y, position.z + (500 * Time.deltaTime));
         bossHpSlider.value = currentHealth;
         SpawnCannon();
+    }
+    
+    void SetHealth()
+    {
+        switch (MenuManager.difficultyLevel)
+        {
+            case 0:
+            {
+                maxHealth = 4000;
+                break;
+            }
+
+            case 1:
+            {
+                maxHealth = 6000;
+                break;
+            }
+
+            case 2:
+            {
+                maxHealth = 9000;
+                break;
+            }
+
+            default:
+            {
+                maxHealth = 6000;
+                break;
+            }
+        }
     }
 
     //Transition between the states (Happy and Angry)

@@ -2064,6 +2064,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b683c129375eb40aacfc0e73e46844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  appleFlavor: {fileID: 1818434617630848862, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavor: {fileID: 2100000, guid: 4a88f7e58cc85ca428437482e3ef97b6, type: 2}
+  lemonFlavor: {fileID: 2100000, guid: 45d7c68af68b2fc4bb14cc98535c3ab8, type: 2}
+  grapeFlavor: {fileID: 2100000, guid: 07f77dd14f71a264586e82f22ad97bac, type: 2}
+  strawberryFlavor: {fileID: 2100000, guid: 346b6ee13d1b8ba42841b68cc2740880, type: 2}
+  cherryFlavor: {fileID: 2100000, guid: fa2101e58b0a0204d95209d384a9c0c1, type: 2}
+  appleFlavorShade: {fileID: -9134699460453439026, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavorShade: {fileID: 2100000, guid: a0d61f213a9a31744aa5ab723efd0ee3, type: 2}
+  lemonFlavorShade: {fileID: 2100000, guid: 630d047ad2e13ba448f01b2f8ee4c34f, type: 2}
+  grapeFlavorShade: {fileID: 2100000, guid: 3797671e1db7afe4bb09b7f420bb4ea6, type: 2}
+  strawberryFlavorShade: {fileID: 2100000, guid: 50c9ede9e5fd21f4086b3663a872ed37, type: 2}
+  cherryFlavorShade: {fileID: 2100000, guid: 19cd5a1a9426fce488a08bdcf534fb93, type: 2}
 --- !u!1001 &2165924053200509400
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2157,6 +2169,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b683c129375eb40aacfc0e73e46844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  appleFlavor: {fileID: 1818434617630848862, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavor: {fileID: 2100000, guid: 4a88f7e58cc85ca428437482e3ef97b6, type: 2}
+  lemonFlavor: {fileID: 2100000, guid: 45d7c68af68b2fc4bb14cc98535c3ab8, type: 2}
+  grapeFlavor: {fileID: 2100000, guid: 07f77dd14f71a264586e82f22ad97bac, type: 2}
+  strawberryFlavor: {fileID: 2100000, guid: 346b6ee13d1b8ba42841b68cc2740880, type: 2}
+  cherryFlavor: {fileID: 2100000, guid: fa2101e58b0a0204d95209d384a9c0c1, type: 2}
+  appleFlavorShade: {fileID: -9134699460453439026, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavorShade: {fileID: 2100000, guid: a0d61f213a9a31744aa5ab723efd0ee3, type: 2}
+  lemonFlavorShade: {fileID: 2100000, guid: 630d047ad2e13ba448f01b2f8ee4c34f, type: 2}
+  grapeFlavorShade: {fileID: 2100000, guid: 3797671e1db7afe4bb09b7f420bb4ea6, type: 2}
+  strawberryFlavorShade: {fileID: 2100000, guid: 50c9ede9e5fd21f4086b3663a872ed37, type: 2}
+  cherryFlavorShade: {fileID: 2100000, guid: 19cd5a1a9426fce488a08bdcf534fb93, type: 2}
 --- !u!4 &1838683668843920947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
@@ -2260,6 +2284,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b683c129375eb40aacfc0e73e46844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  appleFlavor: {fileID: 1818434617630848862, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavor: {fileID: 2100000, guid: 4a88f7e58cc85ca428437482e3ef97b6, type: 2}
+  lemonFlavor: {fileID: 2100000, guid: 45d7c68af68b2fc4bb14cc98535c3ab8, type: 2}
+  grapeFlavor: {fileID: 2100000, guid: 07f77dd14f71a264586e82f22ad97bac, type: 2}
+  strawberryFlavor: {fileID: 2100000, guid: 346b6ee13d1b8ba42841b68cc2740880, type: 2}
+  cherryFlavor: {fileID: 2100000, guid: fa2101e58b0a0204d95209d384a9c0c1, type: 2}
+  appleFlavorShade: {fileID: -9134699460453439026, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavorShade: {fileID: 2100000, guid: a0d61f213a9a31744aa5ab723efd0ee3, type: 2}
+  lemonFlavorShade: {fileID: 2100000, guid: 630d047ad2e13ba448f01b2f8ee4c34f, type: 2}
+  grapeFlavorShade: {fileID: 2100000, guid: 3797671e1db7afe4bb09b7f420bb4ea6, type: 2}
+  strawberryFlavorShade: {fileID: 2100000, guid: 50c9ede9e5fd21f4086b3663a872ed37, type: 2}
+  cherryFlavorShade: {fileID: 2100000, guid: 19cd5a1a9426fce488a08bdcf534fb93, type: 2}
 --- !u!1001 &4220427856947280203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2353,6 +2389,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b683c129375eb40aacfc0e73e46844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  appleFlavor: {fileID: 1818434617630848862, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavor: {fileID: 2100000, guid: 4a88f7e58cc85ca428437482e3ef97b6, type: 2}
+  lemonFlavor: {fileID: 2100000, guid: 45d7c68af68b2fc4bb14cc98535c3ab8, type: 2}
+  grapeFlavor: {fileID: 2100000, guid: 07f77dd14f71a264586e82f22ad97bac, type: 2}
+  strawberryFlavor: {fileID: 2100000, guid: 346b6ee13d1b8ba42841b68cc2740880, type: 2}
+  cherryFlavor: {fileID: 2100000, guid: fa2101e58b0a0204d95209d384a9c0c1, type: 2}
+  appleFlavorShade: {fileID: -9134699460453439026, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavorShade: {fileID: 2100000, guid: a0d61f213a9a31744aa5ab723efd0ee3, type: 2}
+  lemonFlavorShade: {fileID: 2100000, guid: 630d047ad2e13ba448f01b2f8ee4c34f, type: 2}
+  grapeFlavorShade: {fileID: 2100000, guid: 3797671e1db7afe4bb09b7f420bb4ea6, type: 2}
+  strawberryFlavorShade: {fileID: 2100000, guid: 50c9ede9e5fd21f4086b3663a872ed37, type: 2}
+  cherryFlavorShade: {fileID: 2100000, guid: 19cd5a1a9426fce488a08bdcf534fb93, type: 2}
 --- !u!4 &4403185332422188704 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
@@ -2451,6 +2499,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b683c129375eb40aacfc0e73e46844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  appleFlavor: {fileID: 1818434617630848862, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavor: {fileID: 2100000, guid: 4a88f7e58cc85ca428437482e3ef97b6, type: 2}
+  lemonFlavor: {fileID: 2100000, guid: 45d7c68af68b2fc4bb14cc98535c3ab8, type: 2}
+  grapeFlavor: {fileID: 2100000, guid: 07f77dd14f71a264586e82f22ad97bac, type: 2}
+  strawberryFlavor: {fileID: 2100000, guid: 346b6ee13d1b8ba42841b68cc2740880, type: 2}
+  cherryFlavor: {fileID: 2100000, guid: fa2101e58b0a0204d95209d384a9c0c1, type: 2}
+  appleFlavorShade: {fileID: -9134699460453439026, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavorShade: {fileID: 2100000, guid: a0d61f213a9a31744aa5ab723efd0ee3, type: 2}
+  lemonFlavorShade: {fileID: 2100000, guid: 630d047ad2e13ba448f01b2f8ee4c34f, type: 2}
+  grapeFlavorShade: {fileID: 2100000, guid: 3797671e1db7afe4bb09b7f420bb4ea6, type: 2}
+  strawberryFlavorShade: {fileID: 2100000, guid: 50c9ede9e5fd21f4086b3663a872ed37, type: 2}
+  cherryFlavorShade: {fileID: 2100000, guid: 19cd5a1a9426fce488a08bdcf534fb93, type: 2}
 --- !u!4 &4342269279714039541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
@@ -2554,6 +2614,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b683c129375eb40aacfc0e73e46844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  appleFlavor: {fileID: 1818434617630848862, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavor: {fileID: 2100000, guid: 4a88f7e58cc85ca428437482e3ef97b6, type: 2}
+  lemonFlavor: {fileID: 2100000, guid: 45d7c68af68b2fc4bb14cc98535c3ab8, type: 2}
+  grapeFlavor: {fileID: 2100000, guid: 07f77dd14f71a264586e82f22ad97bac, type: 2}
+  strawberryFlavor: {fileID: 2100000, guid: 346b6ee13d1b8ba42841b68cc2740880, type: 2}
+  cherryFlavor: {fileID: 2100000, guid: fa2101e58b0a0204d95209d384a9c0c1, type: 2}
+  appleFlavorShade: {fileID: -9134699460453439026, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavorShade: {fileID: 2100000, guid: a0d61f213a9a31744aa5ab723efd0ee3, type: 2}
+  lemonFlavorShade: {fileID: 2100000, guid: 630d047ad2e13ba448f01b2f8ee4c34f, type: 2}
+  grapeFlavorShade: {fileID: 2100000, guid: 3797671e1db7afe4bb09b7f420bb4ea6, type: 2}
+  strawberryFlavorShade: {fileID: 2100000, guid: 50c9ede9e5fd21f4086b3663a872ed37, type: 2}
+  cherryFlavorShade: {fileID: 2100000, guid: 19cd5a1a9426fce488a08bdcf534fb93, type: 2}
 --- !u!1001 &7707006613862334106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2647,6 +2719,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b683c129375eb40aacfc0e73e46844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  appleFlavor: {fileID: 1818434617630848862, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavor: {fileID: 2100000, guid: 4a88f7e58cc85ca428437482e3ef97b6, type: 2}
+  lemonFlavor: {fileID: 2100000, guid: 45d7c68af68b2fc4bb14cc98535c3ab8, type: 2}
+  grapeFlavor: {fileID: 2100000, guid: 07f77dd14f71a264586e82f22ad97bac, type: 2}
+  strawberryFlavor: {fileID: 2100000, guid: 346b6ee13d1b8ba42841b68cc2740880, type: 2}
+  cherryFlavor: {fileID: 2100000, guid: fa2101e58b0a0204d95209d384a9c0c1, type: 2}
+  appleFlavorShade: {fileID: -9134699460453439026, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavorShade: {fileID: 2100000, guid: a0d61f213a9a31744aa5ab723efd0ee3, type: 2}
+  lemonFlavorShade: {fileID: 2100000, guid: 630d047ad2e13ba448f01b2f8ee4c34f, type: 2}
+  grapeFlavorShade: {fileID: 2100000, guid: 3797671e1db7afe4bb09b7f420bb4ea6, type: 2}
+  strawberryFlavorShade: {fileID: 2100000, guid: 50c9ede9e5fd21f4086b3663a872ed37, type: 2}
+  cherryFlavorShade: {fileID: 2100000, guid: 19cd5a1a9426fce488a08bdcf534fb93, type: 2}
 --- !u!4 &7889867652806793585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
@@ -2750,3 +2834,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b683c129375eb40aacfc0e73e46844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  appleFlavor: {fileID: 1818434617630848862, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavor: {fileID: 2100000, guid: 4a88f7e58cc85ca428437482e3ef97b6, type: 2}
+  lemonFlavor: {fileID: 2100000, guid: 45d7c68af68b2fc4bb14cc98535c3ab8, type: 2}
+  grapeFlavor: {fileID: 2100000, guid: 07f77dd14f71a264586e82f22ad97bac, type: 2}
+  strawberryFlavor: {fileID: 2100000, guid: 346b6ee13d1b8ba42841b68cc2740880, type: 2}
+  cherryFlavor: {fileID: 2100000, guid: fa2101e58b0a0204d95209d384a9c0c1, type: 2}
+  appleFlavorShade: {fileID: -9134699460453439026, guid: 84d4c11e6b7296447abfd1f92e15e1d4, type: 3}
+  orangeFlavorShade: {fileID: 2100000, guid: a0d61f213a9a31744aa5ab723efd0ee3, type: 2}
+  lemonFlavorShade: {fileID: 2100000, guid: 630d047ad2e13ba448f01b2f8ee4c34f, type: 2}
+  grapeFlavorShade: {fileID: 2100000, guid: 3797671e1db7afe4bb09b7f420bb4ea6, type: 2}
+  strawberryFlavorShade: {fileID: 2100000, guid: 50c9ede9e5fd21f4086b3663a872ed37, type: 2}
+  cherryFlavorShade: {fileID: 2100000, guid: 19cd5a1a9426fce488a08bdcf534fb93, type: 2}
