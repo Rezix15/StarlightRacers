@@ -135,7 +135,10 @@ public class Spacejet : MonoBehaviour
             Controller.Player1.Boost.canceled += _ => shieldBoostPressed = false;
         
             Controller.Player1.SpecialAbility.performed += _ => UseAbility();
-            Controller.Player1.SpecialAbility.canceled += _ => UseAbility(); 
+            Controller.Player1.SpecialAbility.canceled += _ => UseAbility();
+
+            Controller.Player.Pause.performed += _ => CanvasManager.gamePaused = true;
+            
         }
         else if(isPlayer2)
         {
@@ -170,6 +173,8 @@ public class Spacejet : MonoBehaviour
         
             Controller.Player.SpecialAbility.performed += _ => UseAbility();
             Controller.Player.SpecialAbility.canceled += _ => UseAbility();
+            
+            Controller.Player.Pause.performed += _ => PauseGame();
         }
         
 
@@ -178,6 +183,11 @@ public class Spacejet : MonoBehaviour
     private void OnEnable()
     {
         Controller.Enable();
+    }
+
+    private void PauseGame()
+    {
+        CanvasManager.gamePaused = !CanvasManager.gamePaused;
     }
 
     private void OnDisable()
@@ -290,6 +300,8 @@ public class Spacejet : MonoBehaviour
         currentShieldStat = shieldMax.trueValue; //set the HP value to the max value
         takeDamage = false;
     }
+
+    
 
     // void UpdateGravity()
     // {
@@ -415,39 +427,43 @@ public class Spacejet : MonoBehaviour
     void FixedUpdate()
     {
         //Gravity();
-        
-        HandleInput();
-        //If the jet is currently accelerating then allow user movement and update each second.
-        if (isAccelerating && forwardInput > 0)
-        {
-            rb.AddForce(Vector3.Lerp(Vector3.zero,(transform.forward * speed.trueValue), Time.deltaTime * thrust.trueValue));
-        }
-        
-        //If the user is still pressing the acceleration button but also holding the stick in the negative direction, reverse:
-        else if (isAccelerating && forwardInput < 0)
-        {
-            rb.AddForce(Vector3.Lerp(Vector3.zero,(-transform.forward * speed.trueValue), Time.deltaTime * thrust.trueValue));
-        }
-        
-        //var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
-        rb.AddTorque(transform.up * (grip * horizontalInput ), ForceMode.Acceleration);
-            
-        //If the user turns either left or right, the gameobject should tilt 45 degrees to the corresponding direction
-        /*
-         *  # Implement Banking as described:
-        # https://www.cs.toronto.edu/~dt/siggraph97-course/cwr87/
-        var temp_up = global_transform.basis.y.lerp(Vector3.UP + (acceleration * banking), delta * 5.0)
-        look_at(global_transform.origin - vel.normalized(), temp_up)
-         */
 
-        //add in banking
-        //banking_angle = rb.angularVelocity.z;
-        //Vector3 tempUp = Vector3.Lerp(transform.up, Vector3.up + (acceleration * banking_angle), Time.deltaTime * 5.0f);
-        //transform.LookAt(transform.position - rb.velocity.normalized,tempUp);
-            
-        prevVelocity = rb.velocity; //update our previous velocity
+        if (!CanvasManager.gamePaused)
+        {
+            HandleInput();
+            //If the jet is currently accelerating then allow user movement and update each second.
+            if (isAccelerating && forwardInput > 0)
+            {
+                rb.AddForce(Vector3.Lerp(Vector3.zero,(transform.forward * speed.trueValue), Time.deltaTime * thrust.trueValue));
+            }
         
-        ShieldBoost();
+            //If the user is still pressing the acceleration button but also holding the stick in the negative direction, reverse:
+            else if (isAccelerating && forwardInput < 0 )
+            {
+                rb.AddForce(Vector3.Lerp(Vector3.zero,(-transform.forward * speed.trueValue), Time.deltaTime * thrust.trueValue));
+            }
+        
+            //var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
+            rb.AddTorque(transform.up * (grip * horizontalInput ), ForceMode.Acceleration);
+            
+            //If the user turns either left or right, the gameobject should tilt 45 degrees to the corresponding direction
+            /*
+             *  # Implement Banking as described:
+            # https://www.cs.toronto.edu/~dt/siggraph97-course/cwr87/
+            var temp_up = global_transform.basis.y.lerp(Vector3.UP + (acceleration * banking), delta * 5.0)
+            look_at(global_transform.origin - vel.normalized(), temp_up)
+             */
+
+            //add in banking
+            //banking_angle = rb.angularVelocity.z;
+            //Vector3 tempUp = Vector3.Lerp(transform.up, Vector3.up + (acceleration * banking_angle), Time.deltaTime * 5.0f);
+            //transform.LookAt(transform.position - rb.velocity.normalized,tempUp);
+            
+            prevVelocity = rb.velocity; //update our previous velocity
+        
+            ShieldBoost();
+        }
+        
         
     }
     
@@ -545,7 +561,7 @@ public class Spacejet : MonoBehaviour
     //Function to shoot Laser when q is pressed
     private void FireLaserLeft()
     {
-        if (laserAmmo != 0)
+        if (laserAmmo != 0 && !CanvasManager.gamePaused)
         {
             var offset = new Vector3(0, 0, 10);
             GameObject laser1 = Instantiate(lasersPrefab, laserGun1.transform.position + offset, laserGun1.transform.rotation);
@@ -557,7 +573,7 @@ public class Spacejet : MonoBehaviour
 
     private void FireLaserRight()
     {
-        if (laserAmmo != 0)
+        if (laserAmmo != 0 && !CanvasManager.gamePaused)
         {
             var offset = new Vector3(0, 0, 10);
             GameObject laser2 = Instantiate(lasersPrefab, laserGun2.transform.position + offset, laserGun2.transform.rotation);
@@ -571,13 +587,17 @@ public class Spacejet : MonoBehaviour
     //on the tracks
     IEnumerator ApplyBoost()
     {
-        isBoosting = true;
+        if (!CanvasManager.gamePaused)
+        {
+            isBoosting = true;
         
-        rb.AddForce(transform.forward * (1.5f * boosterPadSpeed), ForceMode.Impulse);
+            rb.AddForce(transform.forward * (1.5f * boosterPadSpeed), ForceMode.Impulse);
         
-        yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(2f);
         
-        isBoosting = false;
+            isBoosting = false;
+        }
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -663,14 +683,14 @@ public class Spacejet : MonoBehaviour
 
     private void UseAbility()
     {
-        if (abilityGauge >= 100 && creationAbility != null && abilityActive == false)
+        if (abilityGauge >= 100 && creationAbility != null && abilityActive == false && !CanvasManager.gamePaused)
         {
             abilityActive = true;
             creationAbility.UseAbility();
             abilityActive = false;
             abilityGauge = 0;
         }
-        else if(abilityGauge < 100 && creationAbility != null)
+        else if(abilityGauge < 100 && creationAbility != null && !CanvasManager.gamePaused)
         {
             Debug.Log("Ability is not ready time remaining: " + abilityGauge);
         }

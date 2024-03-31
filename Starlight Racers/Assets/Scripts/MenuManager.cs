@@ -41,6 +41,12 @@ public class MenuManager : MonoBehaviour
     public static int RaceCount;
     
     public static List<ComponentObj> componentBoosts;
+
+    [SerializeField]
+    private int difficultyMenuIndex;
+
+    public GameObject diffButton;
+    
     
     
     # region SpaceJetMenu
@@ -84,7 +90,7 @@ public class MenuManager : MonoBehaviour
 
     public Image[] indicators;
 
-    public Image[] difficultyMenuIndicators;
+    //public Image[] difficultyMenuIndicators;
 
     public Button[] menuOptions;
 
@@ -116,7 +122,17 @@ public class MenuManager : MonoBehaviour
 
     private bool wasKeyboard;
 
+    public TextMeshProUGUI bossNameText;
+
     public GameObject selectVehicleIndicator;
+
+    public TextMeshProUGUI difficultyTimerText;
+
+    public static float timelimitVal;
+
+    private string[] difDescText = new string[3];
+      
+ 
 
     // public enum Level
     // {
@@ -141,7 +157,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnDisable()
     {
-        Controller.Disable();
+        Controller.Enable();
     }
     // Start is called before the first frame update
 
@@ -157,6 +173,8 @@ public class MenuManager : MonoBehaviour
         ToggleStartMenu(0);
         scaleLevel = 45;
         wasKeyboard = false;
+        
+        
 
         // speedStatImg = new Image[10];
         // shieldStatImg = new Image[10];
@@ -181,8 +199,16 @@ public class MenuManager : MonoBehaviour
         difficultyLevel = 1; //Set the difficulty level to be at 1, which is normal mode
         
 
+        
         //The lists that stores the amount of component boosts that the player has
         componentBoosts = new List<ComponentObj>();
+        
+        //Descriptive texts for the difficulty menu
+        difDescText[0] = "Great for new beginners, who are unfamiliar with the mechanics. ";
+
+        difDescText[1] = "Great for players who are not looking for an easy challenge but also not a difficult one.";
+            
+        difDescText[2] = "For players who seek a great challenge and experience the true thrill of racing. ";
         
 
         for (int i = 0; i < childCount; i++)
@@ -200,6 +226,7 @@ public class MenuManager : MonoBehaviour
         }
 
         availableSpaceJets = new List<SpaceJetObj>(spaceJets);
+        difDescriptiveText.text = difDescText[0];
     }
 
     // Update is called once per frame
@@ -208,10 +235,10 @@ public class MenuManager : MonoBehaviour
         // Debug.Log("wasKeyboard: " + wasKeyboard);
         UpdateUserInputDisplay();
         ToggleThroughMenu();
-        ToggleThroughDifficultyMenu();
+        //ToggleThroughDifficultyMenu();
         
     }
-
+    
     public void StartGame()
     {
         //ToggleMenu(1);
@@ -279,29 +306,68 @@ public class MenuManager : MonoBehaviour
         
     }
 
-    private void ToggleThroughDifficultyMenu()
+    public void ToggleThroughDifficultyMenu(int type)
     {
-        GameObject selectedOpt = EventSystem.current.currentSelectedGameObject;
         
-        // if (isGamepad)
+        //GameObject selectedOpt = EventSystem.current.currentSelectedGameObject;
+        //
+        // // if (isGamepad)
+        // // {
+        // //     for (int i = 0; i < difMenuOptions.Length; i++)
+        // //     {
+        // //         difficultyMenuIndicators[i].gameObject.SetActive(difMenuOptions[i].gameObject == selectedOpt);
+        // //     }
+        // // }
+        // // else
+        // // {
+        // //     for (int i = 0; i < difMenuOptions.Length; i++)
+        // //     {
+        // //         difficultyMenuIndicators[i].gameObject.SetActive(false);
+        // //     }
+        // // }
+        //
+        // for (int i = 0; i < difMenuOptions.Length; i++)
         // {
-        //     for (int i = 0; i < difMenuOptions.Length; i++)
-        //     {
-        //         difficultyMenuIndicators[i].gameObject.SetActive(difMenuOptions[i].gameObject == selectedOpt);
-        //     }
-        // }
-        // else
-        // {
-        //     for (int i = 0; i < difMenuOptions.Length; i++)
-        //     {
-        //         difficultyMenuIndicators[i].gameObject.SetActive(false);
-        //     }
+        //     difficultyMenuIndicators[i].gameObject.SetActive(difMenuOptions[i].gameObject == selectedOpt);
         // }
         
+        //Add or subtract depending on the position of the button (-1 for left and + 1 for right)
+        difficultyMenuIndex+= type;
+        
+        difficultyMenuIndex = difficultyMenuIndex % difMenuOptions.Length;
+        
+        if (difficultyMenuIndex == -1)
+        {
+            difficultyMenuIndex = 2;
+        }
+
+        //Set the time limit based on the difficulty. Starting from 180 seconds or 3 minutes up to 5 minutes (300 seconds)
+        timelimitVal = (difficultyMenuIndex * 60) + 180;
+
         for (int i = 0; i < difMenuOptions.Length; i++)
         {
-            difficultyMenuIndicators[i].gameObject.SetActive(difMenuOptions[i].gameObject == selectedOpt);
+            difMenuOptions[i].gameObject.SetActive(i == difficultyMenuIndex);
         }
+        
+        //Set the descriptive text for the difficulty menu
+        difDescriptiveText.text = difDescText[difficultyMenuIndex];
+        
+        //Format the timer for pretty printing
+        FormatTimer(timelimitVal, difficultyTimerText);
+        
+        
+    }
+
+    //Function to format the timer for prettiness
+    private void FormatTimer(float timer, TextMeshProUGUI timerText)
+    {
+        int seconds = Mathf.FloorToInt(timer % 60); //calculates seconds.
+        int minutes = Mathf.FloorToInt(timer / 60); //calculates minutes.
+        int milliseconds = Mathf.FloorToInt(timer * 1000) % 1000; //calculates milliseconds.
+        
+        string timedString = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
+
+        timerText.text = timedString;
     }
     
     
@@ -328,27 +394,7 @@ public class MenuManager : MonoBehaviour
                 descriptiveText1.text = "Need to quit?";
                 break;
             }
-
-            case 5:
-            {
-                difDescriptiveText.text = 
-                    "Great for new beginners, who are unfamiliar with the mechanics. ";
-                break;
-            }
-
-            case 6:
-            {
-                difDescriptiveText.text =
-                    "Great for players who are not looking for an easy challenge but also not a difficult one.";
-                break;
-            }
-
-            case 7:
-            {
-                difDescriptiveText.text =
-                    "For players who seek a great challenge and experience the true thrill of racing. ";
-                break;
-            }
+            
 
             default:
             {
@@ -656,6 +702,7 @@ public class MenuManager : MonoBehaviour
             {
                 level1Indicator.SetActive(true);
                 level2Indicator.SetActive(false);
+                bossNameText.text = "Boss: Pac-Eater";
                 break;
             }
 
@@ -663,6 +710,7 @@ public class MenuManager : MonoBehaviour
             {
                 level1Indicator.SetActive(false);
                 level2Indicator.SetActive(true);
+                bossNameText.text = "Boss: Candy King";
                 break;
             }
 
@@ -670,6 +718,7 @@ public class MenuManager : MonoBehaviour
             {
                 level1Indicator.SetActive(false);
                 level2Indicator.SetActive(false);
+                bossNameText.text = "Boss: ???";
                 break;
             }
         }
@@ -723,7 +772,7 @@ public class MenuManager : MonoBehaviour
     {
         currentStageId = id;
         ToggleMenu(2);
-        EventSystem.current.SetSelectedGameObject(difMenuOptions[1].gameObject);
+        EventSystem.current.SetSelectedGameObject(diffButton);
     }
 
     private void ButtonInactivity()

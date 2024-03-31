@@ -13,6 +13,8 @@ public class BossCanvas : MonoBehaviour
     public GameObject shieldBarFill;
     public Image shieldBarFillImg;
     public Slider shieldBar;
+    public Slider abilityGaugeBar;
+    public TextMeshProUGUI currentAbilityGaugeText;
     private float playerShieldStat;
     private float playerShieldStatMax;
     private float timer;
@@ -35,6 +37,7 @@ public class BossCanvas : MonoBehaviour
         laserAmmoText.text = "MAX";
         playerShieldStatMax = player.shieldMax.trueValue;
         shieldBar.maxValue = playerShieldStatMax;
+        abilityGaugeBar.maxValue = player.abilityActivator;
         mainUI.SetActive(true);
         gameOverUI.SetActive(false);
         timer = 300; //Set boss to 5 minutes
@@ -58,10 +61,23 @@ public class BossCanvas : MonoBehaviour
             playerShieldStat = player.GetCurrentShieldStat();
 
             shieldBar.value = playerShieldStat;
+            abilityGaugeBar.value = player.ReturnPlayerGauge();
+            
 
             var shieldAsInt = (int)playerShieldStat;
+            var abilityAsInt = (int)player.ReturnPlayerGauge();
 
             currentShieldText.text = shieldAsInt.ToString();
+
+            if (abilityGaugeBar.value >= abilityGaugeBar.maxValue)
+            {
+                currentAbilityGaugeText.text = "READY!";
+            }
+            else
+            {
+                currentAbilityGaugeText.text = abilityAsInt.ToString();
+            }
+            
         
             UpdateShieldUI();
         }

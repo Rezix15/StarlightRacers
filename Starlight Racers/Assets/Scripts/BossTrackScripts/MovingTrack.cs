@@ -21,17 +21,34 @@ public class MovingTrack : MonoBehaviour
 
     private int randIndex;
 
+    public GameObject specialObj;
+
+    private int specialIndex;
+
     //private GameObject powerUps;
     // Start is called before the first frame update
     void Start()
     {
+        
+        if (specialObj != null)
+        {
+            specialObj.SetActive(false);
+            
+            if (BossTrackScript.spawnTrafficLights)
+            {
+                specialObj.SetActive(true);
+                BossTrackScript.spawnTrafficLights = false;
+            }
+        
+        }
         //powerUps = new GameObject();
         player = GameObject.FindGameObjectWithTag("PlayerRacer").GetComponent<PlayerBoss>();
 
         if (player != null)
         {
-            trackSpeed = player.ReturnPlayerSpeed() / 10;
+            trackSpeed = 25000f / 10;
         }
+        
         
         //SpawnPowerUp();
         

@@ -10,6 +10,7 @@ public class Portal : MonoBehaviour
 
     private void Awake()
     {
+        MenuManager.scaleLevel = 45;
         var trainScale = MenuManager.scaleLevel / 1.5f;
         trainObj.transform.localScale = new Vector3(trainScale, trainScale, trainScale);
     }

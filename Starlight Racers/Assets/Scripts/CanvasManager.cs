@@ -46,6 +46,8 @@ public class CanvasManager : MonoBehaviour
     public Sprite shieldRateIcon;
     public Sprite laserDmgIcon;
     public Sprite defaultIcon;
+
+    public static bool gamePaused = false;
     
     // Start is called before the first frame update
     void Start()
@@ -91,8 +93,12 @@ public class CanvasManager : MonoBehaviour
     {
         if(!canStart)
             return;
+
+        if (!gamePaused)
+        {
+            timer += Time.deltaTime;
+        }
         
-        timer += Time.deltaTime;
         
         UpdateUI();
     }

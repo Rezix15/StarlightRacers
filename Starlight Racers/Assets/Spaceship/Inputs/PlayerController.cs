@@ -89,6 +89,15 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""56aca0bd-449b-41d8-a9e3-9f7e3a2b049e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -333,6 +342,28 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""action"": ""SpecialAbility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41b3c5e2-fbe8-4ccc-bca6-0e678d03903b"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a9e7317-8a00-48d2-a8b2-524d076e10f8"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -398,6 +429,15 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""name"": ""SpecialAbility"",
                     ""type"": ""Button"",
                     ""id"": ""2710b4eb-d9fd-41c3-b2b9-9a72804b2526"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""f77f037c-265a-46c4-b3ed-9c991f9952d6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -646,6 +686,28 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""action"": ""SpecialAbility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""382a2ac8-7824-4c79-aef6-95169d3134ea"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1aec1a4-4300-4cb3-a052-1aa49654f566"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -711,6 +773,15 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""name"": ""SpecialAbility"",
                     ""type"": ""Button"",
                     ""id"": ""ca7255c5-b554-412c-be47-a39615fb3f0b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""2d038265-e073-44d0-8e89-1b8028b6889d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -836,6 +907,28 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""SpecialAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73dababe-e74f-419b-a9e2-cefa3e1923e6"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d07324a-4466-4ae8-8486-d4a28bafc7ed"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1280,6 +1373,226 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PauseMenu"",
+            ""id"": ""643b1fc3-2c0c-4ccf-8b51-b6b98627c159"",
+            ""actions"": [
+                {
+                    ""name"": ""Unpause"",
+                    ""type"": ""Button"",
+                    ""id"": ""cc5ec006-6686-4986-939b-5e56d17e0b20"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Vertical"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""9168b3ce-eb0e-4716-826e-b262cd32fef6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Horizontal"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""21189e61-8eff-480e-9649-1a58b0cf4255"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""04d062fa-eb0e-451f-8606-a2428a790b30"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""209c5101-2486-49ca-ab84-0c7c83eb82b2"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Unpause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6671524b-8cfc-47fe-b264-5db7e2efaaf8"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Unpause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""cdf19c67-a4c6-46af-ae0c-31a4d98694a4"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Vertical"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""43d885b3-30cd-4d40-90e8-1de37716aba6"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Vertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""c42585b0-7fba-420b-aa02-36439831e2d4"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Vertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""0d369874-fea7-4cfd-b1cc-662f2543c4c3"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Vertical"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""fabc5743-8710-41c2-886b-7f110f89e515"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Vertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""4905ffd9-ad59-4d91-86b8-e430d37712ca"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Vertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""84cc5119-dd1d-4792-bc5a-2b760868b297"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Horizontal"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""1690e626-dbee-44bd-89c2-ec4df19a3b07"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Horizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6b204811-d793-4e08-965a-36842d176478"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Horizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""4183f1ea-b01f-4109-a6b3-5deff63aa0ae"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Horizontal"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""1d0d8b41-9fa9-4ca2-aa80-1353f3a6a958"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Horizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""700721ab-4cb9-4f48-8c31-789587423871"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Horizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42d30793-93d9-4904-a3b2-0de66855f507"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""793e6564-46c6-49cf-9731-b06d7fcb6c5b"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1321,6 +1634,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         m_Player_ShootRight = m_Player.FindAction("ShootRight", throwIfNotFound: true);
         m_Player_Boost = m_Player.FindAction("Boost", throwIfNotFound: true);
         m_Player_SpecialAbility = m_Player.FindAction("SpecialAbility", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // Player1
         m_Player1 = asset.FindActionMap("Player1", throwIfNotFound: true);
         m_Player1_Accelerate = m_Player1.FindAction("Accelerate", throwIfNotFound: true);
@@ -1330,6 +1644,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         m_Player1_ShootRight = m_Player1.FindAction("ShootRight", throwIfNotFound: true);
         m_Player1_Boost = m_Player1.FindAction("Boost", throwIfNotFound: true);
         m_Player1_SpecialAbility = m_Player1.FindAction("SpecialAbility", throwIfNotFound: true);
+        m_Player1_Pause = m_Player1.FindAction("Pause", throwIfNotFound: true);
         // Player2
         m_Player2 = asset.FindActionMap("Player2", throwIfNotFound: true);
         m_Player2_Accelerate = m_Player2.FindAction("Accelerate", throwIfNotFound: true);
@@ -1339,6 +1654,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         m_Player2_ShootRight = m_Player2.FindAction("ShootRight", throwIfNotFound: true);
         m_Player2_Boost = m_Player2.FindAction("Boost", throwIfNotFound: true);
         m_Player2_SpecialAbility = m_Player2.FindAction("SpecialAbility", throwIfNotFound: true);
+        m_Player2_Pause = m_Player2.FindAction("Pause", throwIfNotFound: true);
         //  MainMenu
         m_MainMenu = asset.FindActionMap(" MainMenu", throwIfNotFound: true);
         m_MainMenu_Vertical = m_MainMenu.FindAction("Vertical", throwIfNotFound: true);
@@ -1351,6 +1667,12 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         m_IntermissionScene_Run = m_IntermissionScene.FindAction("Run", throwIfNotFound: true);
         m_IntermissionScene_Jump = m_IntermissionScene.FindAction("Jump", throwIfNotFound: true);
         m_IntermissionScene_Talk = m_IntermissionScene.FindAction("Talk", throwIfNotFound: true);
+        // PauseMenu
+        m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
+        m_PauseMenu_Unpause = m_PauseMenu.FindAction("Unpause", throwIfNotFound: true);
+        m_PauseMenu_Vertical = m_PauseMenu.FindAction("Vertical", throwIfNotFound: true);
+        m_PauseMenu_Horizontal = m_PauseMenu.FindAction("Horizontal", throwIfNotFound: true);
+        m_PauseMenu_Submit = m_PauseMenu.FindAction("Submit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1419,6 +1741,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ShootRight;
     private readonly InputAction m_Player_Boost;
     private readonly InputAction m_Player_SpecialAbility;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerController m_Wrapper;
@@ -1430,6 +1753,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         public InputAction @ShootRight => m_Wrapper.m_Player_ShootRight;
         public InputAction @Boost => m_Wrapper.m_Player_Boost;
         public InputAction @SpecialAbility => m_Wrapper.m_Player_SpecialAbility;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1460,6 +1784,9 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @SpecialAbility.started += instance.OnSpecialAbility;
             @SpecialAbility.performed += instance.OnSpecialAbility;
             @SpecialAbility.canceled += instance.OnSpecialAbility;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1485,6 +1812,9 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @SpecialAbility.started -= instance.OnSpecialAbility;
             @SpecialAbility.performed -= instance.OnSpecialAbility;
             @SpecialAbility.canceled -= instance.OnSpecialAbility;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1513,6 +1843,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player1_ShootRight;
     private readonly InputAction m_Player1_Boost;
     private readonly InputAction m_Player1_SpecialAbility;
+    private readonly InputAction m_Player1_Pause;
     public struct Player1Actions
     {
         private @PlayerController m_Wrapper;
@@ -1524,6 +1855,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         public InputAction @ShootRight => m_Wrapper.m_Player1_ShootRight;
         public InputAction @Boost => m_Wrapper.m_Player1_Boost;
         public InputAction @SpecialAbility => m_Wrapper.m_Player1_SpecialAbility;
+        public InputAction @Pause => m_Wrapper.m_Player1_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player1; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1554,6 +1886,9 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @SpecialAbility.started += instance.OnSpecialAbility;
             @SpecialAbility.performed += instance.OnSpecialAbility;
             @SpecialAbility.canceled += instance.OnSpecialAbility;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayer1Actions instance)
@@ -1579,6 +1914,9 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @SpecialAbility.started -= instance.OnSpecialAbility;
             @SpecialAbility.performed -= instance.OnSpecialAbility;
             @SpecialAbility.canceled -= instance.OnSpecialAbility;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayer1Actions instance)
@@ -1607,6 +1945,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player2_ShootRight;
     private readonly InputAction m_Player2_Boost;
     private readonly InputAction m_Player2_SpecialAbility;
+    private readonly InputAction m_Player2_Pause;
     public struct Player2Actions
     {
         private @PlayerController m_Wrapper;
@@ -1618,6 +1957,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         public InputAction @ShootRight => m_Wrapper.m_Player2_ShootRight;
         public InputAction @Boost => m_Wrapper.m_Player2_Boost;
         public InputAction @SpecialAbility => m_Wrapper.m_Player2_SpecialAbility;
+        public InputAction @Pause => m_Wrapper.m_Player2_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player2; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1648,6 +1988,9 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @SpecialAbility.started += instance.OnSpecialAbility;
             @SpecialAbility.performed += instance.OnSpecialAbility;
             @SpecialAbility.canceled += instance.OnSpecialAbility;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayer2Actions instance)
@@ -1673,6 +2016,9 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @SpecialAbility.started -= instance.OnSpecialAbility;
             @SpecialAbility.performed -= instance.OnSpecialAbility;
             @SpecialAbility.canceled -= instance.OnSpecialAbility;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayer2Actions instance)
@@ -1830,6 +2176,76 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         }
     }
     public IntermissionSceneActions @IntermissionScene => new IntermissionSceneActions(this);
+
+    // PauseMenu
+    private readonly InputActionMap m_PauseMenu;
+    private List<IPauseMenuActions> m_PauseMenuActionsCallbackInterfaces = new List<IPauseMenuActions>();
+    private readonly InputAction m_PauseMenu_Unpause;
+    private readonly InputAction m_PauseMenu_Vertical;
+    private readonly InputAction m_PauseMenu_Horizontal;
+    private readonly InputAction m_PauseMenu_Submit;
+    public struct PauseMenuActions
+    {
+        private @PlayerController m_Wrapper;
+        public PauseMenuActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Unpause => m_Wrapper.m_PauseMenu_Unpause;
+        public InputAction @Vertical => m_Wrapper.m_PauseMenu_Vertical;
+        public InputAction @Horizontal => m_Wrapper.m_PauseMenu_Horizontal;
+        public InputAction @Submit => m_Wrapper.m_PauseMenu_Submit;
+        public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PauseMenuActions set) { return set.Get(); }
+        public void AddCallbacks(IPauseMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Add(instance);
+            @Unpause.started += instance.OnUnpause;
+            @Unpause.performed += instance.OnUnpause;
+            @Unpause.canceled += instance.OnUnpause;
+            @Vertical.started += instance.OnVertical;
+            @Vertical.performed += instance.OnVertical;
+            @Vertical.canceled += instance.OnVertical;
+            @Horizontal.started += instance.OnHorizontal;
+            @Horizontal.performed += instance.OnHorizontal;
+            @Horizontal.canceled += instance.OnHorizontal;
+            @Submit.started += instance.OnSubmit;
+            @Submit.performed += instance.OnSubmit;
+            @Submit.canceled += instance.OnSubmit;
+        }
+
+        private void UnregisterCallbacks(IPauseMenuActions instance)
+        {
+            @Unpause.started -= instance.OnUnpause;
+            @Unpause.performed -= instance.OnUnpause;
+            @Unpause.canceled -= instance.OnUnpause;
+            @Vertical.started -= instance.OnVertical;
+            @Vertical.performed -= instance.OnVertical;
+            @Vertical.canceled -= instance.OnVertical;
+            @Horizontal.started -= instance.OnHorizontal;
+            @Horizontal.performed -= instance.OnHorizontal;
+            @Horizontal.canceled -= instance.OnHorizontal;
+            @Submit.started -= instance.OnSubmit;
+            @Submit.performed -= instance.OnSubmit;
+            @Submit.canceled -= instance.OnSubmit;
+        }
+
+        public void RemoveCallbacks(IPauseMenuActions instance)
+        {
+            if (m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPauseMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PauseMenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
     private int m_ControllerSchemeIndex = -1;
     public InputControlScheme ControllerScheme
     {
@@ -1857,6 +2273,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         void OnShootRight(InputAction.CallbackContext context);
         void OnBoost(InputAction.CallbackContext context);
         void OnSpecialAbility(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IPlayer1Actions
     {
@@ -1867,6 +2284,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         void OnShootRight(InputAction.CallbackContext context);
         void OnBoost(InputAction.CallbackContext context);
         void OnSpecialAbility(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IPlayer2Actions
     {
@@ -1877,6 +2295,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         void OnShootRight(InputAction.CallbackContext context);
         void OnBoost(InputAction.CallbackContext context);
         void OnSpecialAbility(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IMainMenuActions
     {
@@ -1891,5 +2310,12 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnTalk(InputAction.CallbackContext context);
+    }
+    public interface IPauseMenuActions
+    {
+        void OnUnpause(InputAction.CallbackContext context);
+        void OnVertical(InputAction.CallbackContext context);
+        void OnHorizontal(InputAction.CallbackContext context);
+        void OnSubmit(InputAction.CallbackContext context);
     }
 }

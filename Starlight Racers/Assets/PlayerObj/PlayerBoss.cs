@@ -13,6 +13,8 @@ public class PlayerBoss : MonoBehaviour
     // private float spaceJetLaserDmg;
 
     private int boosterPadSpeed;
+
+    public float abilityActivator;
     
     // = new Stat(0)
 
@@ -77,7 +79,7 @@ public class PlayerBoss : MonoBehaviour
     private Modifier componentModifier;
 
     //Ability gauge that is needed to use the special ability
-    private int abilityGauge = 0;
+    private float abilityGauge = 0;
 
     #region CreationAbilityRegion
     
@@ -102,7 +104,7 @@ public class PlayerBoss : MonoBehaviour
     public GameObject spacejetObj;
     public GameObject ghostRiderObj;
 
-    public SpaceJetObj spaceJetObj;
+    public SpaceJetObj[] spaceJetObjs;
     private void Awake()
     {
         Controller = new PlayerController();
@@ -193,13 +195,53 @@ public class PlayerBoss : MonoBehaviour
         }
         else
         {
-            thrust = new Stat(MenuManager.currentSpaceJet.thrust);
-            grip = MenuManager.currentSpaceJet.grip;
-            speed = new Stat(MenuManager.currentSpaceJet.speed);
-            shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
-            shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
-            laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
+            if (MenuManager.currentSpaceJet != null)
+            {
+                thrust = new Stat(MenuManager.currentSpaceJet.thrust);
+                grip = MenuManager.currentSpaceJet.grip;
+                speed = new Stat(MenuManager.currentSpaceJet.speed);
+                shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
+                shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
+                laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
+            }
+            else
+            {
+                var randIndex = Random.Range(0, 3);
+
+                randIndex = 0;
+                
+                switch (randIndex)
+                {
+                    case 0:
+                    {
+                        MenuManager.currentSpaceJet = spaceJetObjs[0];
+                        break;
+                    }
+                    
+                    case 1:
+                    {
+                        MenuManager.currentSpaceJet = spaceJetObjs[1];
+                        break;
+                    }
+                    
+                    case 2:
+                    {
+                        MenuManager.currentSpaceJet = spaceJetObjs[2];
+                        break;
+                    }
+                }
+                
+                thrust = new Stat(MenuManager.currentSpaceJet.thrust);
+                grip = MenuManager.currentSpaceJet.grip;
+                speed = new Stat(MenuManager.currentSpaceJet.speed);
+                shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
+                shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
+                laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
+              
+            }
+           
         }
+        
         
     }
     
@@ -215,7 +257,7 @@ public class PlayerBoss : MonoBehaviour
         boosterPadSpeed = 25000;
         currentShieldStat = shieldMax.trueValue; //set the HP value to the max value
         takeDamage = false;
-        abilityGauge = 100;
+        // abilityGauge = 100;
         
         if(isPlayer2)
         {
@@ -335,10 +377,14 @@ public class PlayerBoss : MonoBehaviour
         // }
         Movement();
 
-        if (Boss.currentHealth <= 0)
+        
+        if (Boss.currentHealth <= 0 && CookieBoss.currentHealth <= 0 )
         {
             hasFinished = true;
         }
+                
+        
+        
 
         //if the player has not finished the race, start timer
         if (hasFinished == false && canMove)
@@ -388,6 +434,11 @@ public class PlayerBoss : MonoBehaviour
         return speed.trueValue;
     }
 
+    public float ReturnPlayerGauge()
+    {
+        return abilityGauge;
+    }
+
     void HandleInput()
     {
         if (!canMove)
@@ -429,7 +480,11 @@ public class PlayerBoss : MonoBehaviour
     {
         //Gravity();
 
-        abilityGauge++;
+        if (!abilityActive)
+        {
+            abilityGauge+= 0.5f;
+        }
+        
         
         HandleInput();
         
@@ -656,11 +711,12 @@ public class PlayerBoss : MonoBehaviour
         if (abilityGauge >= 100 && creationAbility != null && abilityActive == false)
         {
             abilityActive = true;
+            abilityGauge = 0;
             creationAbility.UseAbility();
             abilityActive = false;
-            abilityGauge = 0;
+            
         }
-        else if(abilityGauge < 100 && creationAbility != null)
+        else if(abilityGauge < abilityActivator && creationAbility != null)
         {
             Debug.Log("Ability is not ready time remaining: " + abilityGauge);
         }

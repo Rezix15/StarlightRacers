@@ -1431,7 +1431,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 5.868481e-39, z: 9.1e-43, w: 1.598865e-37}
+  m_BoundingSphereOverride: {x: 0, y: 6e-44, z: 1.33e-43, w: 4.389e-41}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -1481,15 +1481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b87e84ca3afe6a439a861c1c3d81942, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shape2D: {fileID: 11400000, guid: 2de449521b77b65458f2fae068cbd700, type: 2}
-  edgeRingCount: 8
-  tTest: 0.297
-  controlPoints:
-  - {fileID: 503444265}
-  - {fileID: 293623915}
-  - {fileID: 1518394817}
-  - {fileID: 1310344858}
-  mesh: {fileID: 0}
 --- !u!33 &796139335
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2162,14 +2153,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1c3a54893f672458914dc78825e6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackSeed: 0
+  trackSeed: -1457536171
   startTrackObj: {fileID: 1393370057757823438, guid: 8dd6a4612d5df664482ea94f371ea461, type: 3}
   finishTrackObj: {fileID: 6568056068367628586, guid: 9624e858266140d43a1212728e0ffddb, type: 3}
   straightForwardTrackObj: {fileID: 8143200395637452275, guid: e0ad20ab4316e8c47bf7166e6421fa7e, type: 3}
   straightLeftTrackObj: {fileID: 4206869128042376907, guid: 7c048ff374afe4643928f79d41713fc2, type: 3}
   straightRightTrackObj: {fileID: 5664122191950308730, guid: 070357ed79f50de4986bfffe0351f48e, type: 3}
   upCurvedLeftTrackObj: {fileID: 4847280205126028791, guid: 226ab7f2beb747048b8d4be84c599b5a, type: 3}
-  upCurvedRightTrackObj: {fileID: 7687377626124402887, guid: 77bad3311e6eeee489f721c42584611b, type: 3}
+  upCurvedRightTrackObj: {fileID: 7687377626124402887, guid: 02a15d2a70e59e64982b758769ca9127, type: 3}
   downCurvedLeftTrackObj: {fileID: 7783534383035911550, guid: 60a5ee5e8b1442e4fba43a1019d06c2a, type: 3}
   downCurvedRightTrackObj: {fileID: 6860406213164093489, guid: ef7f02b4ef3c9b841b16c46b50258886, type: 3}
   junctionTrackObj: {fileID: 8942379376641926916, guid: a2012e049f96d6c4bac49a256eb92605, type: 3}
@@ -2179,13 +2170,22 @@ MonoBehaviour:
   diagonalStraightObj: {fileID: 8143200395637452275, guid: a78124d2343313645a28d08dd0e59b34, type: 3}
   diagonalLeftObj: {fileID: 5790846087120965958, guid: 395d12fae76fe4c4996063986d3d7e15, type: 3}
   diagonalRightObj: {fileID: 1681034436355413371, guid: f303dbbd7ab502f4e8a4636646cfe25b, type: 3}
+  undergroundStraightForwardTrackObj: {fileID: 8143200395637452275, guid: 766136011c79c154ea41c5d9cce18d2c, type: 3}
+  undergroundStraightLeftTrackObj: {fileID: 4206869128042376907, guid: 15780c35bb7efcd4b9c4b92d65abff97, type: 3}
+  undergroundStraightRightTrackObj: {fileID: 5664122191950308730, guid: 8a57ab3628347c2449b4461fb5a87bc4, type: 3}
+  undergroundUpCurvedLeftTrackObj: {fileID: 4847280205126028791, guid: 34a2252f856914d4a9597e81472f3a3d, type: 3}
+  undergroundUpCurvedRightTrackObj: {fileID: 7687377626124402887, guid: 77bad3311e6eeee489f721c42584611b, type: 3}
+  undergroundDownCurvedLeftTrackObj: {fileID: 7783534383035911550, guid: c082d4a51f765d846aaf916387cd5fdd, type: 3}
+  undergroundDownCurvedRightTrackObj: {fileID: 6860406213164093489, guid: 02590841a78d1074ca41958ee6c4b914, type: 3}
+  undergroundDiagonalForwardObj: {fileID: 2952912900581788949, guid: ed0217998359ef74c890822f90ac7674, type: 3}
   angleShifterObj: {fileID: 8689594078820487808, guid: f1d4942de4d58c645ab80de8d139bfc5, type: 3}
   enemySpawnerObj: {fileID: 6708633121154662552, guid: 6104cea6ddd71704f99bb154b18dd4c0, type: 3}
   boosterObj: {fileID: 8363658589030094893, guid: 3c6fe119a25a4d14da5e4ef02de25281, type: 3}
   portalObj: {fileID: 4587124611266113223, guid: 2587db753eb33034291e6c87e3a9c0ce, type: 3}
   trafficLightObj: {fileID: 7624565907419748646, guid: f74c1b683d22e6c4e93216fd7a61652f, type: 3}
+  robotPathObj: {fileID: 2263414897493587479, guid: bd572675878cd6844b096f9c4ddced87, type: 3}
   enemyRobot1: {fileID: 2620854681301262577, guid: 59d04046d37621f4489afdcbb1f1cd7d, type: 3}
-  enemyRobot2: {fileID: 4242937634811639548, guid: 925190649e9c3fb44912c970b2d3600d, type: 3}
+  enemyRobot2: {fileID: 489177515841909123, guid: 925190649e9c3fb44912c970b2d3600d, type: 3}
   junctionTrackCountLimit: 1
   generateRandomSeed: 1
 --- !u!4 &1225837805

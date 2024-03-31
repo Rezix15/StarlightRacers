@@ -80,24 +80,28 @@ public class Boss : MonoBehaviour
             case 0:
             {
                 maxHealth = 4000;
+                currentHealth = maxHealth;
                 break;
             }
 
             case 1:
             {
                 maxHealth = 6000;
+                currentHealth = maxHealth;
                 break;
             }
 
             case 2:
             {
                 maxHealth = 9000;
+                currentHealth = maxHealth;
                 break;
             }
 
             default:
             {
                 maxHealth = 6000;
+                currentHealth = maxHealth;
                 break;
             }
         }

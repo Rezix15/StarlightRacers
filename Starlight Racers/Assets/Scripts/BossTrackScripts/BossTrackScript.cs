@@ -10,6 +10,8 @@ public class BossTrackScript : MonoBehaviour
     private PlayerBoss player;
 
     private float trackSpeed;
+
+    public static bool spawnTrafficLights;
     
     // Start is called before the first frame update
     void Start()
@@ -17,7 +19,12 @@ public class BossTrackScript : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("PlayerRacer").GetComponent<PlayerBoss>();
 
         
-        trackSpeed = player.ReturnPlayerSpeed() / 10;
+        trackSpeed = 25000f / 10;
+
+        if (trackSpeed == 0)
+        {
+            trackSpeed = 250;
+        }
         
         
         currentTracks = new List<GameObject>();
@@ -37,7 +44,13 @@ public class BossTrackScript : MonoBehaviour
         {
             for (int i = 0; i < 5; i++)
             {
+                if (i % 5 == 4)
+                {
+                    spawnTrafficLights = true;
+                }
+                
                 var currentTrack = Instantiate(track, transform.position, Quaternion.identity);
+                
                 currentTracks.Add(currentTrack);
                 yield return new WaitForSeconds(1 / (trackSpeed/450));
                 

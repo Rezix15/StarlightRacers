@@ -23,6 +23,7 @@ TagManager:
   - EnemyLaser
   - BossLaser
   - Boss
+  - RobotPath
   layers:
   - Default
   - TransparentFX
