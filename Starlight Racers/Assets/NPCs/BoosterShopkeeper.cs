@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BoosterShopkeeper : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class BoosterShopkeeper : MonoBehaviour
     private PlayerController Controller;
 
     private bool isTalking;
+
+    public GameObject upgrade1;
+    public static int prevRaceCount;
 
     private void Awake()
     {
@@ -53,12 +57,12 @@ public class BoosterShopkeeper : MonoBehaviour
     {
         //Set the visibility of the objects depending on specific factors
         boosterCardMenu.SetActive(ActivateBoosterMenu); 
-
-        teleporter.SetActive(successfulAttempts > 0);
+        
+        teleporter.SetActive(successfulAttempts > 0 || (prevRaceCount > 0 && prevRaceCount == GameDataManager.RaceCount));
 
         CinemachineBrain.enabled = !ActivateBoosterMenu;
 
-        if (DialogueManager.inDialogue && isTalking && successfulAttempts == 0)
+        if (DialogueManager.inDialogue && isTalking && successfulAttempts == 0 && CoinShopKeeper.ActivateCoinMenu == false)
         {
             ActivateBoosterMenu = true;
         }
@@ -66,10 +70,11 @@ public class BoosterShopkeeper : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && successfulAttempts == 0)
+        if (other.CompareTag("Player") && successfulAttempts == 0 && prevRaceCount != GameDataManager.RaceCount)
         {
             DialogueManager.inDialogue = true;
             DialogueManager.currentDialogue = new Dialogue("Cleric1", dialogue1, Dialogue.DialogueType.Text);
+            EventSystem.current.SetSelectedGameObject(upgrade1);
         }
     }
 

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour
@@ -12,8 +14,8 @@ public class CanvasManager : MonoBehaviour
     private int laserAmmoAmount;
     private float playerShieldStat;
     private float playerShieldStatMax;
-    
-    private float timer;
+
+    [SerializeField] private float timer;
 
     private bool canStart;
 
@@ -56,13 +58,13 @@ public class CanvasManager : MonoBehaviour
         spacejet = spacejet.GetComponent<Spacejet>();
         RaceManager.GameStarted += StartTimer;
 
-        timerText.text = "";
+        // timerText.text = "";
         laserAmmoText.text = "";
         
         playerShieldStatMax = spacejet.shieldMax.trueValue;
         shieldBar.maxValue = playerShieldStatMax;
         
-        raceCountText.text = MenuManager.RaceCount.ToString() + " / 3";
+        raceCountText.text = GameDataManager.RaceCount.ToString() + " / 3";
 
         boostStatusIcon = new Image[boosterDisplays.Length];
         currentBoosterIcon = new Image[boosterDisplays.Length];
@@ -77,8 +79,49 @@ public class CanvasManager : MonoBehaviour
             currentBoosterIcon[i] = currentBoosterObj[i].GetComponent<Image>();
         }
         
+        
         UpdateBoosterUI();
     }
+
+    private void Awake()
+    {
+        timer = 180 + (MenuManager.difficultyLevel * 60) + GameDataManager.timerVal;
+        
+        // switch (MenuManager.difficultyLevel)
+        // {
+        //     case 0:
+        //     {
+        //         timer = 180;
+        //         break;
+        //     }
+        //
+        //     case 1:
+        //     {
+        //         timer = 240;
+        //         break;
+        //     }
+        //
+        //     case 2:
+        //     {
+        //         timer = 300;
+        //         break;
+        //     }
+        // }
+        FormatTimer(timer, timerText);
+    }
+    
+    //Function to format the timer for prettiness
+    private void FormatTimer(float timelimit, TextMeshProUGUI timelimitText)
+    {
+        int seconds = Mathf.FloorToInt(timelimit % 60); //calculates seconds.
+        int minutes = Mathf.FloorToInt(timelimit / 60); //calculates minutes.
+        int milliseconds = Mathf.FloorToInt(timelimit * 1000) % 1000; //calculates milliseconds.
+        
+        string timedString = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
+
+        timelimitText.text = timedString;
+    }
+
 
 
     void StartTimer()
@@ -94,10 +137,11 @@ public class CanvasManager : MonoBehaviour
         if(!canStart)
             return;
 
-        if (!gamePaused)
+        if (!gamePaused && timer > 0)
         {
-            timer += Time.deltaTime;
+            timer -= Time.deltaTime;
         }
+        
         
         
         UpdateUI();
@@ -106,18 +150,12 @@ public class CanvasManager : MonoBehaviour
     void UpdateUI()
     {
         //Display Timer onto Canvas
-        if (!spacejet.hasFinished)
+        if (!spacejet.hasFinished && timer > 0)
         {
-            int seconds = Mathf.FloorToInt(timer % 60); //calculates seconds.
-            int minutes = Mathf.FloorToInt(timer / 60); //calculates minutes.
-            int milliseconds = Mathf.FloorToInt(timer * 1000) % 1000; //calculates milliseconds.
-        
-            string timedString = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
-
-            timerText.text = timedString;
+            FormatTimer(timer, timerText);
         }
         
-        laserAmmoAmount = spacejet.GetLaserAmmoCount();
+        laserAmmoAmount = (int)spacejet.GetLaserAmmoCount();
 
         laserAmmoText.text = laserAmmoAmount.ToString();
 

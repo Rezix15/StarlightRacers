@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Spacejet : MonoBehaviour
 {
@@ -58,8 +60,8 @@ public class Spacejet : MonoBehaviour
     // private float responsiveFactor;
 
     float timer;
-    [SerializeField] private int laserAmmoMax;
-    private int laserAmmo;
+    private float shieldTimer;
+    private float laserAmmo;
 
     private bool isBoosting = false;
 
@@ -69,6 +71,7 @@ public class Spacejet : MonoBehaviour
     
     private GameObject currentCheckpoint;
     public float currentRacerDistance;
+    public GameObject[] pauseOptions;
     
     //This is the HP stat of the spaceJet
     [SerializeField]
@@ -137,7 +140,9 @@ public class Spacejet : MonoBehaviour
             Controller.Player1.SpecialAbility.performed += _ => UseAbility();
             Controller.Player1.SpecialAbility.canceled += _ => UseAbility();
 
-            Controller.Player.Pause.performed += _ => CanvasManager.gamePaused = true;
+            Controller.Player.Pause.performed += _ => PauseGame();
+            Controller.Player.Pause.canceled += _ => PauseGame();
+            
             
         }
         else if(isPlayer2)
@@ -188,6 +193,20 @@ public class Spacejet : MonoBehaviour
     private void PauseGame()
     {
         CanvasManager.gamePaused = !CanvasManager.gamePaused;
+        switch (CanvasManager.gamePaused)
+        {
+            case true:
+            {
+                Time.timeScale = 0;
+                EventSystem.current.SetSelectedGameObject(pauseOptions[0]);
+                break;
+            }
+            case false:
+            {
+                Time.timeScale = 1;
+                break;
+            }
+        }
     }
 
     private void OnDisable()
@@ -296,7 +315,7 @@ public class Spacejet : MonoBehaviour
     void OnGameStart()
     {
         canMove = true;
-        laserAmmo = laserAmmoMax; //set laserAmmo to the max value
+        laserAmmo = GameDataManager.laserAmmoMax; //set laserAmmo to the max value
         currentShieldStat = shieldMax.trueValue; //set the HP value to the max value
         takeDamage = false;
     }
@@ -331,23 +350,36 @@ public class Spacejet : MonoBehaviour
         //     Debug.Log("P2: HorizontalInput" + horizontalInput);
         // }
         
-        if (abilityGauge < 100)
+        if (abilityGauge < GameDataManager.abilityGaugeMax)
         {
             abilityGauge++;
         }
         
         //If the current Laser Ammo is below the max, start a timer for every 10 seconds to refill ammo
-        if (laserAmmo < laserAmmoMax)
+        if (laserAmmo < GameDataManager.laserAmmoMax)
         {
             timer += Time.deltaTime;
             
             AmmoRefill(timer);
 
-            if (timer >= 10f)
+            if (timer >= GameDataManager.refillSeconds)
             {
                 timer = 0;
             }
 
+        }
+        
+        
+        if (currentShieldStat < shieldMax.trueValue && !shieldBoostPressed)
+        {
+            shieldTimer += Time.deltaTime;
+            
+            ShieldRefill(shieldTimer);
+
+            if (shieldTimer >= GameDataManager.refillSeconds * 3)
+            {
+                shieldTimer = 0;
+            }
         }
         
         AddShieldPowerUp();
@@ -356,6 +388,30 @@ public class Spacejet : MonoBehaviour
         if (hasFinished == false && canMove)
         {
             finishTime += Time.deltaTime;
+            
+            // if (timer >= MenuManager.timelimitVal)
+            // {
+            //     switch (MenuManager.currentStageId)
+            //     {
+            //         case 0:
+            //         {
+            //             SceneManager.LoadScene("IntermissionScene");
+            //             break;
+            //         }
+            //
+            //         case 1:
+            //         {
+            //             SceneManager.LoadScene("IntermissionScene(CandyLand)");
+            //             break;
+            //         }
+            //
+            //         default:
+            //         {
+            //             SceneManager.LoadScene("IntermissionScene");
+            //             break;
+            //         }
+            //     }
+            // }
         }
         
     }
@@ -567,7 +623,14 @@ public class Spacejet : MonoBehaviour
             GameObject laser1 = Instantiate(lasersPrefab, laserGun1.transform.position + offset, laserGun1.transform.rotation);
             laser1.gameObject.GetComponent<Rigidbody>().velocity += laserGun1.transform.forward * laserSpeed  + rb.velocity;
 
-            laserAmmo--;
+            if (GameDataManager.halfTime)
+            {
+                laserAmmo -= 0.5f;
+            }
+            else
+            {
+                laserAmmo--;
+            }
         }
     }
 
@@ -578,8 +641,15 @@ public class Spacejet : MonoBehaviour
             var offset = new Vector3(0, 0, 10);
             GameObject laser2 = Instantiate(lasersPrefab, laserGun2.transform.position + offset, laserGun2.transform.rotation);
             laser2.gameObject.GetComponent<Rigidbody>().velocity += laserGun2.transform.forward * laserSpeed  + rb.velocity;
-
-            laserAmmo--;
+            
+            if (GameDataManager.halfTime)
+            {
+                laserAmmo -= 0.5f;
+            }
+            else
+            {
+                laserAmmo--;
+            }
         }
     }
 
@@ -654,6 +724,11 @@ public class Spacejet : MonoBehaviour
             currentShieldStat -= 0.4f * (1 - Mathf.Clamp(shieldRate.trueValue / 100, 0f, 0.8f));
         }
 
+        if (other.gameObject.CompareTag("Gate"))
+        {
+            currentShieldStat -= (0.4f * (1 - Mathf.Clamp(shieldRate.trueValue / 100, 0f, 0.8f)) * 10);
+        }
+
         if (other.gameObject.CompareTag("RobotEnemy"))
         {
             currentShieldStat -= 0.4f * (5 - Mathf.Clamp(shieldRate.trueValue / 100, 0f, 0.8f));
@@ -663,15 +738,30 @@ public class Spacejet : MonoBehaviour
     //Auto refills the lasers amount by 1 when a specific amount of time has passed
     private void AmmoRefill(float ammoTimer)
     {
-        if(laserAmmo < laserAmmoMax && ammoTimer >= 10f)
+        if(laserAmmo < GameDataManager.laserAmmoMax && ammoTimer >= GameDataManager.refillSeconds)
         {
             laserAmmo++;
+
+            if (laserAmmo > GameDataManager.laserAmmoMax)
+            {
+                laserAmmo = GameDataManager.laserAmmoMax;
+            }
+        }
+    }
+
+    private void ShieldRefill(float ammoTimer)
+    {
+
+        if (currentShieldStat < shieldMax.trueValue && ammoTimer >= (GameDataManager.refillSeconds * 3) &&
+            GameDataManager.restoreShield)
+        {
+            currentShieldStat += (shieldMax.trueValue * 0.05f);
         }
     }
 
     //Return the current ammo count 
     //Return the current ammo count 
-    public int GetLaserAmmoCount()
+    public float GetLaserAmmoCount()
     {
         return laserAmmo;
     }
@@ -683,14 +773,14 @@ public class Spacejet : MonoBehaviour
 
     private void UseAbility()
     {
-        if (abilityGauge >= 100 && creationAbility != null && abilityActive == false && !CanvasManager.gamePaused)
+        if (abilityGauge >= GameDataManager.abilityGaugeMax && creationAbility != null && abilityActive == false && !CanvasManager.gamePaused)
         {
             abilityActive = true;
             creationAbility.UseAbility();
             abilityActive = false;
             abilityGauge = 0;
         }
-        else if(abilityGauge < 100 && creationAbility != null && !CanvasManager.gamePaused)
+        else if(abilityGauge < GameDataManager.abilityGaugeMax && creationAbility != null && !CanvasManager.gamePaused)
         {
             Debug.Log("Ability is not ready time remaining: " + abilityGauge);
         }

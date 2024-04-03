@@ -38,7 +38,7 @@ public class MenuManager : MonoBehaviour
 
     public TextMeshProUGUI spaceJetNameText;
 
-    public static int RaceCount;
+    
     
     public static List<ComponentObj> componentBoosts;
 
@@ -46,6 +46,11 @@ public class MenuManager : MonoBehaviour
     private int difficultyMenuIndex;
 
     public GameObject diffButton;
+
+    public GameObject diffOptionIndicator;
+
+    //public static int score;
+    
     
     
     
@@ -128,7 +133,7 @@ public class MenuManager : MonoBehaviour
 
     public TextMeshProUGUI difficultyTimerText;
 
-    public static float timelimitVal;
+    private float timelimitVal;
 
     private string[] difDescText = new string[3];
       
@@ -394,6 +399,18 @@ public class MenuManager : MonoBehaviour
                 descriptiveText1.text = "Need to quit?";
                 break;
             }
+
+            case 5:
+            {
+                diffOptionIndicator.SetActive(true);
+                break;
+            }
+
+            case 6:
+            {
+                diffOptionIndicator.SetActive(false);
+                break;
+            }
             
 
             default:
@@ -455,7 +472,6 @@ public class MenuManager : MonoBehaviour
     public void OnSelectVehicle()
     {
         //ToggleMenu(3);
-        RaceCount = 1;
 
         availableSpaceJets.Remove(currentSpaceJet); //Remove current spaceJet
 
@@ -772,7 +788,7 @@ public class MenuManager : MonoBehaviour
     {
         currentStageId = id;
         ToggleMenu(2);
-        EventSystem.current.SetSelectedGameObject(diffButton);
+        EventSystem.current.SetSelectedGameObject(difMenuOptions[0].gameObject);
     }
 
     private void ButtonInactivity()

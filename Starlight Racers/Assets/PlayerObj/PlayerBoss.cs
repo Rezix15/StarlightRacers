@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerBoss : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class PlayerBoss : MonoBehaviour
     private int boosterPadSpeed;
 
     public float abilityActivator;
+    
+    public GameObject[] pauseOptions;
     
     // = new Stat(0)
 
@@ -131,6 +134,8 @@ public class PlayerBoss : MonoBehaviour
         
             Controller.Player1.SpecialAbility.performed += _ => UseAbility();
             Controller.Player1.SpecialAbility.canceled += _ => UseAbility(); 
+            
+            Controller.Player1.Pause.performed += _ => PauseGame();
         }
         else if(isPlayer2)
         {
@@ -148,6 +153,8 @@ public class PlayerBoss : MonoBehaviour
         
             Controller.Player2.SpecialAbility.performed += _ => UseAbility();
             Controller.Player2.SpecialAbility.canceled += _ => UseAbility();
+            
+            Controller.Player2.Pause.performed += _ => PauseGame();
         }
         else
         {
@@ -165,6 +172,7 @@ public class PlayerBoss : MonoBehaviour
         
             Controller.Player.SpecialAbility.performed += _ => UseAbility();
             Controller.Player.SpecialAbility.canceled += _ => UseAbility();
+            Controller.Player.Pause.performed += _ => PauseGame();
         }
         
 
@@ -180,6 +188,25 @@ public class PlayerBoss : MonoBehaviour
         Controller.Disable();
     }
     // Start is called before the first frame update
+    
+    private void PauseGame()
+    {
+        CanvasManager.gamePaused = !CanvasManager.gamePaused;
+        switch (CanvasManager.gamePaused)
+        {
+            case true:
+            {
+                Time.timeScale = 0;
+                EventSystem.current.SetSelectedGameObject(pauseOptions[0]);
+                break;
+            }
+            case false:
+            {
+                Time.timeScale = 1;
+                break;
+            }
+        }
+    }
 
     //Initialize the stats of the spaceJet using the current vehicle that was chosen in the menu.
     private void InitializeStats()
@@ -506,7 +533,7 @@ public class PlayerBoss : MonoBehaviour
             
         prevVelocity = rb.velocity; //update our previous velocity
         
-        ShieldBoost();
+        //ShieldBoost();
         
     }
     
@@ -655,6 +682,7 @@ public class PlayerBoss : MonoBehaviour
         if (other.gameObject.CompareTag("DownTrack"))
         {
             ShiftAngle(45);
+            StartCoroutine(ApplyBoost());
         }
         
         if (other.gameObject.CompareTag("ForwardTrack"))
@@ -672,7 +700,7 @@ public class PlayerBoss : MonoBehaviour
 
         if (other.gameObject.CompareTag("BossLaser") && takeDamage == false)
         {
-            currentShieldStat -= 60 * (1 - (shieldRate.trueValue / 100));
+            currentShieldStat -= ((60 * (1 - (shieldRate.trueValue / 100))) + (MenuManager.difficultyLevel * 10));
             takeDamage = true;
             StartCoroutine(Damaged());
         }

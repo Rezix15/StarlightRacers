@@ -102,6 +102,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 5ef63ae8fd164d54caac0afa2344ce77, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9b0bdee6e8263c44d91b7967c0e0492e, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 5ef63ae8fd164d54caac0afa2344ce77, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: a88e83e1c98417d4eab5b6e1fbcc5098, type: 2}
@@ -188,6 +192,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: a88e83e1c98417d4eab5b6e1fbcc5098, type: 2}
     - target: {fileID: -7918335002988649766, guid: 2fb74df7a8ff4e9498d1876fece54e62, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9b0bdee6e8263c44d91b7967c0e0492e, type: 2}
+    - target: {fileID: -7918335002988649766, guid: 2fb74df7a8ff4e9498d1876fece54e62, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: a88e83e1c98417d4eab5b6e1fbcc5098, type: 2}
@@ -202,7 +210,7 @@ PrefabInstance:
     - target: {fileID: -1764979087186032581, guid: 2fb74df7a8ff4e9498d1876fece54e62, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1e62bd43b7efdc64ea268b5ddffb40e4, type: 2}
+      objectReference: {fileID: 2100000, guid: 9b0bdee6e8263c44d91b7967c0e0492e, type: 2}
     - target: {fileID: -1218137696374503230, guid: 2fb74df7a8ff4e9498d1876fece54e62, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -222,7 +230,7 @@ PrefabInstance:
     - target: {fileID: 8367591991405414467, guid: 2fb74df7a8ff4e9498d1876fece54e62, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1e62bd43b7efdc64ea268b5ddffb40e4, type: 2}
+      objectReference: {fileID: 2100000, guid: 9b0bdee6e8263c44d91b7967c0e0492e, type: 2}
     - target: {fileID: 8889953946785377030, guid: 2fb74df7a8ff4e9498d1876fece54e62, type: 3}
       propertyPath: m_Layer
       value: 7

@@ -46,6 +46,9 @@ public class Boss : MonoBehaviour
     public Slider bossHpSlider;
 
     private int desperationIndex;
+
+    private bool hasShifted;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -61,6 +64,7 @@ public class Boss : MonoBehaviour
         var player = GameObject.FindGameObjectWithTag("PlayerRacer");
         playerLaserDamage = player.GetComponent<PlayerBoss>().GetCurrentLaserDamage();
         bossHpSlider.maxValue = maxHealth;
+        var position = transform.position;
 
     }
 
@@ -374,6 +378,12 @@ public class Boss : MonoBehaviour
         
     }
     
+    private void ShiftAngle(float angleVal)
+    {
+        transform.rotation = Quaternion.Euler(angleVal, 0, 0);
+    }
+
+    
     
     private void LookAtPlayer()
     {
@@ -502,10 +512,24 @@ public class Boss : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        
+        if (other.gameObject.CompareTag("DownTrack"))
+        {
+            ShiftAngle(45);
+            hasShifted = true;
+        }
+        
+        if (other.gameObject.CompareTag("ForwardTrack"))
+        {
+            ShiftAngle(0);
+            hasShifted = false;
+        }
     }
 
     public float ReturnHealthRatio()
     {
         return currentHealth / maxHealth;
     }
+    
+    
 }

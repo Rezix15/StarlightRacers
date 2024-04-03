@@ -93,6 +93,7 @@ public class DialogueManager : MonoBehaviour
         firstEntry = true;
         inDialogue = false;
         currentDialogue = null;
+        
 
         switch (id)
         {

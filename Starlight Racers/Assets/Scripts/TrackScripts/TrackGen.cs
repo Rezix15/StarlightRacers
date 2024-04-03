@@ -157,7 +157,7 @@ public class TrackGen : MonoBehaviour
         angleShifterObj.transform.localScale = new Vector3(scale, scale, scale); 
         enemySpawnerObj.transform.localScale = new Vector3(scale, scale, scale);
         diagonalStraightObj.transform.localScale = new Vector3(scale, scale, scale);
-        enemyRobot2.transform.localScale = new Vector3(scale / 2f, scale / 2f, scale / 2f);
+        enemyRobot2.transform.localScale = new Vector3(scale / 1.4f, scale / 1.4f, scale / 1.4f);
 
         
         //Underground sections

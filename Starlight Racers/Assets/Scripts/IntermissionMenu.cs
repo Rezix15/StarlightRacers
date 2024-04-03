@@ -56,7 +56,7 @@ public class IntermissionMenu : MonoBehaviour
     void Start()
     {
         
-        if (MenuManager.RaceCount > 1)
+        if (GameDataManager.RaceCount > 1)
         {
             EventSystem.current.SetSelectedGameObject(upgradeComp);
         }
@@ -93,15 +93,15 @@ public class IntermissionMenu : MonoBehaviour
     // {
     //     continueText = continueBtn.GetComponentInChildren<TextMeshProUGUI>();
     //
-    //     if (MenuManager.RaceCount > 0)
+    //     if (GameDataManager.RaceCount > 0)
     //     {
     //         continueText.text = "Start Race";
     //     }
-    //     else if(MenuManager.RaceCount < 3)
+    //     else if(GameDataManager.RaceCount < 3)
     //     {
     //         continueText.text = "Next Race";
     //     }
-    //     else if(MenuManager.RaceCount == 3)
+    //     else if(GameDataManager.RaceCount == 3)
     //     {
     //         continueText.text = "Final Race";
     //     }
@@ -270,6 +270,7 @@ public class IntermissionMenu : MonoBehaviour
         DialogueManager.currentDialogue = new Dialogue("Cleric1", dialogue, Dialogue.DialogueType.Text);
         yield return new WaitForSeconds(2);
         DialogueManager.inDialogue = false;
+        BoosterShopkeeper.prevRaceCount = GameDataManager.RaceCount;
     }
     
     public void ContinueSelected()

@@ -165,7 +165,7 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if (isGrounded && BoosterShopkeeper.ActivateBoosterMenu == false)
+        if (isGrounded && BoosterShopkeeper.ActivateBoosterMenu == false && CoinShopKeeper.ActivateCoinMenu == false)
         {
             anim.SetTrigger(isJumpingHash);
             initialVel.y = Mathf.Sqrt(jumpHeight * -2f * gravity);

@@ -63,7 +63,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: db6209002f71d264aac10d99340deec1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c181e476a1d057741bc2d80366fd6506, type: 2}
+      objectReference: {fileID: 2100000, guid: fe8a848b379b9af4688776dcab83590e, type: 2}
     - target: {fileID: 919132149155446097, guid: db6209002f71d264aac10d99340deec1, type: 3}
       propertyPath: m_Name
       value: NeonArrow

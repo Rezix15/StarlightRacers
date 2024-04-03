@@ -24,6 +24,7 @@ TagManager:
   - BossLaser
   - Boss
   - RobotPath
+  - Gate
   layers:
   - Default
   - TransparentFX

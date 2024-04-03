@@ -23,8 +23,8 @@ public class PauseMenuManager : MonoBehaviour
     private void Awake()
     {
         Controller = new PlayerController();
-        Controller.PauseMenu.Unpause.performed += _ => UnpauseGame();
-        Controller.PauseMenu.Unpause.canceled += _ => UnpauseGame();
+        // Controller.PauseMenu.Unpause.performed += _ => UnpauseGame();
+        // Controller.PauseMenu.Unpause.canceled += _ => UnpauseGame();
     }
 
     private void OnEnable()
@@ -43,6 +43,7 @@ public class PauseMenuManager : MonoBehaviour
         pauseMenuObj.SetActive(CanvasManager.gamePaused);
         ToggleThroughMenu();
     }
+    
 
     private void ToggleThroughMenu()
     {
@@ -57,10 +58,14 @@ public class PauseMenuManager : MonoBehaviour
     public void UnpauseGame()
     {
         CanvasManager.gamePaused = false;
+        Time.timeScale = 1;
     }
 
     public void RestartLevel(int id)
     {
+        Time.timeScale = 1;
+        CanvasManager.gamePaused = false;
+        
         switch (id)
         {
             case 0:
@@ -68,16 +73,29 @@ public class PauseMenuManager : MonoBehaviour
                 SceneManager.LoadScene("StarLightRacers_BetaTest");
                 break;
             }
-
+        
             case 1:
             {
                 SceneManager.LoadScene("CandyLand_BetaTest");
                 break;
             }
 
+            case 2:
+            {
+                SceneManager.LoadScene("BossScene");
+                break;
+            }
+
+            case 3:
+            {
+                SceneManager.LoadScene("BossScene(CandyLand)");
+                break;
+            }
+        
             default:
             {
                 SceneManager.LoadScene("CandyLand_BetaTest");
+                
                 break;
             }
         }
@@ -86,6 +104,9 @@ public class PauseMenuManager : MonoBehaviour
 
     public void ExitLevel(int id)
     {
+        Time.timeScale = 1f;
+        CanvasManager.gamePaused = false;
+        
         switch (id)
         {
             case 0:
@@ -93,13 +114,13 @@ public class PauseMenuManager : MonoBehaviour
                 SceneManager.LoadScene("IntermissionScene");
                 break;
             }
-
+        
             case 1:
             {
                 SceneManager.LoadScene("IntermissionScene(CandyLand)");
                 break;
             }
-
+        
             default:
             {
                 SceneManager.LoadScene("IntermissionScene(CandyLand)");

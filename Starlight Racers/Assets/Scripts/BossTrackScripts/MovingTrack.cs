@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,8 @@ public class MovingTrack : MonoBehaviour
     {
         Back,
         Forward,
-        Initial
+        Initial,
+        Shift
     }
 
     [SerializeField]
@@ -24,6 +26,8 @@ public class MovingTrack : MonoBehaviour
     public GameObject specialObj;
 
     private int specialIndex;
+
+    private bool isTouchingPlayer = false;
 
     //private GameObject powerUps;
     // Start is called before the first frame update
@@ -104,6 +108,15 @@ public class MovingTrack : MonoBehaviour
                 transform.position += Vector3.back * (trackSpeed * Time.deltaTime);
                 break;
             }
+            
+            case TrackDirection.Shift:
+            {
+                if (!isTouchingPlayer)
+                {
+                    transform.position += Vector3.back * (trackSpeed * Time.deltaTime);
+                }
+                break;
+            }
 
             case TrackDirection.Forward:
             {
@@ -118,7 +131,15 @@ public class MovingTrack : MonoBehaviour
             }
         }
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerRacer"))
+        {
+            isTouchingPlayer = true;
+        }
+    }
+
     IEnumerator DestroyObj()
     {
         yield return new WaitForSeconds(0.5f);

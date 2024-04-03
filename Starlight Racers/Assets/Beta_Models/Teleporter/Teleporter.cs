@@ -58,7 +58,7 @@ public class Teleporter : MonoBehaviour
             {
                 var rotation = Quaternion.Euler(90, 0, 0);
 
-                if (MenuManager.RaceCount > 3)
+                if (GameDataManager.RaceCount > 3)
                 {
                     effect = Instantiate(teleporterEffect2, spawnPos, rotation);
                 }
@@ -87,13 +87,13 @@ public class Teleporter : MonoBehaviour
 
             if (inTeleport)
             {
-                if (MenuManager.RaceCount < 3)
+                if (GameDataManager.RaceCount < 3)
                 {
                     DialogueManager.inDialogue = true;
                     DialogueManager.id = 0;
                     DialogueManager.currentDialogue = new Dialogue("Teleporter", teleporterDialogue, Dialogue.DialogueType.Question);
                 }
-                else if(MenuManager.RaceCount == 3)
+                else if(GameDataManager.RaceCount == 3)
                 {
                     teleporterDialogue = "Are you ready to begin the final race?";
                     DialogueManager.inDialogue = true;
