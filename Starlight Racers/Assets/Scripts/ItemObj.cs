@@ -17,17 +17,21 @@ public class ItemObj
     public string description;
     public Type ItemType; //Type of item
     public int cost; //How much coins the item will cost
+    public int val;
+    public int typeID;
 
-    public ItemObj(string itemName, Sprite icon, string description, Type itemType, int cost)
+    public ItemObj(string itemName, Sprite icon, string description, Type itemType, int cost, int val, int typeID)
     {
         ItemName = itemName;
         this.icon = icon;
         this.description = description;
         ItemType = itemType;
         this.cost = cost;
+        this.val = val;
+        this.typeID = typeID;
     }
 
-    public void ItemEffect(int val, int typeID)
+    public void ItemEffect()
     {
         switch (ItemType)
         {

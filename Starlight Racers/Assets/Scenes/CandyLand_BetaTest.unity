@@ -2073,6 +2073,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackSeed: 0
+  bossPortal: {fileID: 0}
   startTrackObj: {fileID: 1393370057757823438, guid: ea12e98f5d225e64589a7025167f60eb, type: 3}
   finishTrackObj: {fileID: 6568056068367628586, guid: 66e7391c9a4738148abdfa35dd8ac0af, type: 3}
   straightForwardTrackObj: {fileID: 8143200395637452275, guid: b6854216bdac75048bcebc51d16d5474, type: 3}
@@ -2089,22 +2090,22 @@ MonoBehaviour:
   diagonalStraightObj: {fileID: 8143200395637452275, guid: 2f8dffcd08e20c74f98e96e8cdc4b844, type: 3}
   diagonalLeftObj: {fileID: 5790846087120965958, guid: 24d620224431159409fdaadded58bab9, type: 3}
   diagonalRightObj: {fileID: 1681034436355413371, guid: e41085ca26c557644999f0a9efb98f6f, type: 3}
-  undergroundStraightForwardTrackObj: {fileID: 0}
-  undergroundStraightLeftTrackObj: {fileID: 0}
-  undergroundStraightRightTrackObj: {fileID: 0}
-  undergroundUpCurvedLeftTrackObj: {fileID: 0}
-  undergroundUpCurvedRightTrackObj: {fileID: 0}
-  undergroundDownCurvedLeftTrackObj: {fileID: 0}
-  undergroundDownCurvedRightTrackObj: {fileID: 0}
-  undergroundDiagonalForwardObj: {fileID: 0}
+  undergroundStraightForwardTrackObj: {fileID: 8143200395637452275, guid: ddf047d748bd5a54d86e1b8477851750, type: 3}
+  undergroundStraightLeftTrackObj: {fileID: 4206869128042376907, guid: 287c1d7a28e896a42ba4e1d755cc8d46, type: 3}
+  undergroundStraightRightTrackObj: {fileID: 5664122191950308730, guid: 85787fb34ec480442bf1ed62160549dc, type: 3}
+  undergroundUpCurvedLeftTrackObj: {fileID: 4847280205126028791, guid: 2e564296c7ceb124fba267c30a5ff077, type: 3}
+  undergroundUpCurvedRightTrackObj: {fileID: 7687377626124402887, guid: 1f8e2c2b10685d445bee9b4fb7365543, type: 3}
+  undergroundDownCurvedLeftTrackObj: {fileID: 7783534383035911550, guid: b01c75c9c8b4bc149a347500b3b4eae0, type: 3}
+  undergroundDownCurvedRightTrackObj: {fileID: 6860406213164093489, guid: 8676f16bf6a287a4aa664b36a882a13e, type: 3}
+  undergroundDiagonalForwardObj: {fileID: 2952912900581788949, guid: 5211e7288c72c2b42926f3f563e0780e, type: 3}
   angleShifterObj: {fileID: 8689594078820487808, guid: f1d4942de4d58c645ab80de8d139bfc5, type: 3}
   enemySpawnerObj: {fileID: 6708633121154662552, guid: 6104cea6ddd71704f99bb154b18dd4c0, type: 3}
   boosterObj: {fileID: 8363658589030094893, guid: 3c6fe119a25a4d14da5e4ef02de25281, type: 3}
   portalObj: {fileID: 4587124611266113223, guid: 2587db753eb33034291e6c87e3a9c0ce, type: 3}
   trafficLightObj: {fileID: 7624565907419748646, guid: f74c1b683d22e6c4e93216fd7a61652f, type: 3}
-  robotPathObj: {fileID: 0}
+  robotPathObj: {fileID: 2263414897493587479, guid: bd572675878cd6844b096f9c4ddced87, type: 3}
   enemyRobot1: {fileID: 2620854681301262577, guid: 59d04046d37621f4489afdcbb1f1cd7d, type: 3}
-  enemyRobot2: {fileID: 4242937634811639548, guid: 925190649e9c3fb44912c970b2d3600d, type: 3}
+  enemyRobot2: {fileID: 489177515841909123, guid: 925190649e9c3fb44912c970b2d3600d, type: 3}
   junctionTrackCountLimit: 1
   generateRandomSeed: 1
 --- !u!4 &1225837805
@@ -8006,13 +8007,14 @@ MonoBehaviour:
     baseValue: 0
   shieldRate:
     baseValue: 0
+  bossSpawner: {fileID: 0}
   canMove: 0
   lasersPrefab: {fileID: 2018006241293806330, guid: ac72d71faa1be674ea08206c725c06c5, type: 3}
   laserGun1: {fileID: 970971111758718416}
   laserGun2: {fileID: 4540608687428479528}
   laserSpeed: 20
-  laserAmmoMax: 20
   currentRacerDistance: 0
+  pauseOptions: []
   currentShieldStat: 0
   finishTime: 0
   hasFinished: 0
@@ -9770,12 +9772,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 3664528602840278976}
   laserAmmoText: {fileID: 342324934622692609}
+  timer: 0
   shieldBarFill: {fileID: 729226512624812528}
+  abilityBarFill: {fileID: 0}
   shieldBarFillImg: {fileID: 1170586076487133154}
   shieldBar: {fileID: 5788608639105252233}
+  abilityBar: {fileID: 0}
   spacejet: {fileID: 5883661121814804029}
   raceCountText: {fileID: 4552058726227315286}
   currentShieldText: {fileID: 2369259279488189401}
+  currentAbilityText: {fileID: 0}
+  shieldTitle: {fileID: 0}
   boosterDisplays:
   - {fileID: 3168565491699539833}
   - {fileID: 5699175876892382474}
@@ -9787,6 +9794,9 @@ MonoBehaviour:
   shieldRateIcon: {fileID: 21300000, guid: 0cb66a689128e554ca11f92807f3586c, type: 3}
   laserDmgIcon: {fileID: 21300000, guid: 2f4979df074ae37429b1ee642c429d81, type: 3}
   defaultIcon: {fileID: 21300000, guid: cbde71afed66fa24eaa2b62a251fe712, type: 3}
+  mainUI: {fileID: 0}
+  gameOverUI: {fileID: 0}
+  successObj: {fileID: 0}
 --- !u!4 &8084981303042559171
 Transform:
   m_ObjectHideFlags: 0

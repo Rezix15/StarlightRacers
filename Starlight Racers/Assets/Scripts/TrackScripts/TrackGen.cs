@@ -17,6 +17,8 @@ public class TrackGen : MonoBehaviour
     private bool isUnderground;
 
     private int enemyPosCount;
+
+    public GameObject bossPortal;
     
     public enum TrackType
     {
@@ -259,6 +261,7 @@ public class TrackGen : MonoBehaviour
         junctionTrackCheck = false;
 
         trackCount++;
+        Debug.Log("TrackCount:" + trackCount + " isUnderground: " + isUnderground);
 
         if (spawnRobotPath)
         {
@@ -363,13 +366,13 @@ public class TrackGen : MonoBehaviour
                     case 0:
                     {
                         //Generate Up Neighbours
-                        if (!isUnderground)
+                        if (isUnderground)
                         {
-                            Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                            Instantiate(undergroundStraightForwardTrackObj, newPosition, Quaternion.identity, transform);
                         }
                         else
                         {
-                            Instantiate(undergroundStraightForwardTrackObj, newPosition, Quaternion.identity, transform);
+                            Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
                         }
                         
                         //Booster Track Generation
@@ -415,13 +418,13 @@ public class TrackGen : MonoBehaviour
                         
                         
                         //Generate Up Neighbours
-                        if (!isUnderground)
+                        if (isUnderground)
                         {
-                            Instantiate(upNeighbours[1], newPosition, Quaternion.identity, transform);
+                            Instantiate(undergroundUpCurvedLeftTrackObj, newPosition, Quaternion.identity, transform);
                         }
                         else
                         {
-                            Instantiate(undergroundUpCurvedLeftTrackObj, newPosition, Quaternion.identity, transform);
+                            Instantiate(upNeighbours[1], newPosition, Quaternion.identity, transform);
                         }
                         
                         GenerateNeighbours(TrackType.UpCurvedLeft, newPosition);
@@ -436,13 +439,13 @@ public class TrackGen : MonoBehaviour
                             (prevPosition.z + initialPosition.z) + upCurvedPosR.z
                         );
                         
-                        if (!isUnderground)
+                        if (isUnderground)
                         {
-                            Instantiate(upNeighbours[2], newPosition, Quaternion.identity, transform);
+                            Instantiate(undergroundUpCurvedRightTrackObj, newPosition, Quaternion.identity, transform);
                         }
                         else
                         {
-                            Instantiate(undergroundUpCurvedRightTrackObj, newPosition, Quaternion.identity, transform);
+                            Instantiate(upNeighbours[2], newPosition, Quaternion.identity, transform);
                         }
                         
                         GenerateNeighbours(TrackType.UpCurvedRight, newPosition);
@@ -467,13 +470,13 @@ public class TrackGen : MonoBehaviour
                         if((archIndex % specialChance == 1 || archIndex % specialChance == 2) && !spawnRobotPath)
                         {
                             //Generate Up Neighbours
-                            if (!isUnderground)
+                            if (isUnderground)
                             {
-                                Instantiate(upNeighbours[4], newDiagonalPos, Quaternion.identity, transform);
+                                Instantiate(undergroundDiagonalForwardObj, newDiagonalPos, Quaternion.identity, transform);
                             }
                             else
                             {
-                                Instantiate(undergroundDiagonalForwardObj, newDiagonalPos, Quaternion.identity, transform);
+                                Instantiate(upNeighbours[4], newDiagonalPos, Quaternion.identity, transform);
                             }
 
                             
@@ -497,19 +500,33 @@ public class TrackGen : MonoBehaviour
                         else if(shouldFinish)
                         {
                             //Finish Track
-                            Instantiate(upNeighbours[6], newPosition, Quaternion.identity, transform);
-                            finishPos = upNeighbours[6].transform.position;
+                            // Instantiate(upNeighbours[6], newPosition, Quaternion.identity, transform);
+                            // finishPos = upNeighbours[6].transform.position;
+                            var bossPortalPos = new Vector3(newPosition.x, newPosition.y + (scale / 2f), newPosition.z);
+                            // var bossAreaPos = new Vector3(newPosition.x, newPosition.y + (scale / 2f), newPosition.z + 15 * (scale * 25));
+                            // bossArea.transform.position = bossAreaPos;
+                            bossPortal.transform.position = bossPortalPos;
+                            finishPos = bossPortal.transform.position;
                             
                             //Generate checkpoints list to be used for race positioning
                             checkpoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
-                            checkpoints.Add(GameObject.FindGameObjectWithTag("Finish"));
+                            //checkpoints.Add(GameObject.FindGameObjectWithTag("Finish"));
                             //Debug.Log("TrackCount: " + trackCount);
 
                         }
                         else
                         {
                             Debug.Log("JunctionTrack Generation failed: ");
-                            Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                            
+                            if (isUnderground)
+                            {
+                                Instantiate(undergroundStraightForwardTrackObj, newPosition, Quaternion.identity, transform);
+                            }
+                            else
+                            {
+                                Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                            }
+                            
                             GenerateNeighbours(TrackType.StraightForward, newPosition);
                         }
                         
@@ -569,13 +586,13 @@ public class TrackGen : MonoBehaviour
                     {
                         //Generate the right Neighbour
                         
-                        if (!isUnderground)
+                        if (isUnderground)
                         {
-                            Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
+                            Instantiate(undergroundStraightRightTrackObj, newPosition, Quaternion.identity, transform);
                         }
                         else
                         {
-                            Instantiate(undergroundStraightRightTrackObj, newPosition, Quaternion.identity, transform);
+                            Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
                         }
 
                         
@@ -615,13 +632,13 @@ public class TrackGen : MonoBehaviour
                             prevPosition.z + downCurvedPosR.z
                         );
                         
-                        if (!isUnderground)
+                        if (isUnderground)
                         {
-                            Instantiate(rightNeighbours[1], newPosition, Quaternion.identity, transform);
+                            Instantiate(undergroundDownCurvedRightTrackObj, newPosition, Quaternion.identity, transform);
                         }
                         else
                         {
-                            Instantiate(undergroundDownCurvedRightTrackObj, newPosition, Quaternion.identity, transform);
+                            Instantiate(rightNeighbours[1], newPosition, Quaternion.identity, transform);
                         }
                         
                         GenerateNeighbours(TrackType.DownCurvedRight, newPosition);
@@ -679,13 +696,13 @@ public class TrackGen : MonoBehaviour
                     {
                         //Generate the left neighbours
                         
-                        if (!isUnderground)
+                        if (isUnderground)
                         {
-                            Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
+                            Instantiate(undergroundStraightLeftTrackObj, newPosition, Quaternion.identity, transform);
                         }
                         else
                         {
-                            Instantiate(undergroundStraightLeftTrackObj, newPosition, Quaternion.identity, transform);
+                            Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
                         }
                         
                         //Booster Track Generation
@@ -721,13 +738,13 @@ public class TrackGen : MonoBehaviour
                             prevPosition.z + downCurvedPosL.z
                         );
                         
-                        if (!isUnderground)
+                        if (isUnderground)
                         {
-                            Instantiate(leftNeighbours[1], newPosition, Quaternion.identity, transform);
+                            Instantiate(undergroundDownCurvedLeftTrackObj, newPosition, Quaternion.identity, transform);
                         }
                         else
                         {
-                            Instantiate(undergroundDownCurvedLeftTrackObj, newPosition, Quaternion.identity, transform);
+                            Instantiate(leftNeighbours[1], newPosition, Quaternion.identity, transform);
                         }
                         
                         GenerateNeighbours(TrackType.DownCurvedLeft, newPosition);
@@ -774,6 +791,15 @@ public class TrackGen : MonoBehaviour
                 
                 GenerateTrack(TrackType.Checkpoint, newPosition, Quaternion.Euler(0,-90,0));
                 
+                if (isUnderground)
+                {
+                    Instantiate(undergroundStraightLeftTrackObj, newPosition, Quaternion.identity, transform);
+                }
+                else
+                {
+                    Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
+                }
+                
                 //Booster Track Generation
                 if ((trackCount > 0 && trackCount % 3 == 0)  && boosterRandomness == 1 && !spawnRobotPath)
                 {
@@ -785,15 +811,6 @@ public class TrackGen : MonoBehaviour
                 {
                     Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,180,0), transform);
                     Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,180,0), transform);
-                }
-                
-                if (!isUnderground)
-                {
-                    Instantiate(leftNeighbours[0], newPosition, Quaternion.identity, transform);
-                }
-                else
-                {
-                    Instantiate(undergroundStraightLeftTrackObj, newPosition, Quaternion.identity, transform);
                 }
                 
                 GenerateNeighbours(TrackType.StraightLeft, newPosition);
@@ -834,6 +851,14 @@ public class TrackGen : MonoBehaviour
                 
                 GenerateTrack(TrackType.Checkpoint, newPosition, Quaternion.Euler(0,90,0));
                 
+                if (isUnderground)
+                {
+                    Instantiate(undergroundStraightRightTrackObj, newPosition, Quaternion.identity, transform);
+                }
+                else
+                {
+                    Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
+                }
                 //Booster Track Generation
                 if ((trackCount > 0 && trackCount % 3 == 0)  && boosterRandomness == 1 && !spawnRobotPath)
                 {
@@ -845,15 +870,6 @@ public class TrackGen : MonoBehaviour
                 {
                     Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,0,0), transform);
                     Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,0,0), transform);
-                }
-                
-                if (!isUnderground)
-                {
-                    Instantiate(rightNeighbours[0], newPosition, Quaternion.identity, transform);
-                }
-                else
-                {
-                    Instantiate(undergroundStraightRightTrackObj, newPosition, Quaternion.identity, transform);
                 }
                 
                 GenerateNeighbours(TrackType.StraightRight, newPosition);
@@ -868,6 +884,7 @@ public class TrackGen : MonoBehaviour
                 
                 initialPosition = new Vector3(-(scale * 16f), 0, (scale * 16.44f));
                 
+                var initialPosStraight = new Vector3(0, 0, scaleFactor);
                 //initialPosition = new Vector3(-(scale * 11.24f), 0, (scale * 0.38f));
                 
                 newPosition = new Vector3(
@@ -894,6 +911,15 @@ public class TrackGen : MonoBehaviour
                     newPosition.z + trafficPos.z
                 );
                 
+                if (isUnderground)
+                {
+                    Instantiate(undergroundStraightForwardTrackObj, newPosition, Quaternion.identity, transform);
+                }
+                else
+                {
+                    Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                }
+                
                 //Booster Track Generation
                 if ((trackCount > 0 && trackCount % 3 == 0 && boosterRandomness == 1) && !spawnRobotPath )
                 {
@@ -909,7 +935,6 @@ public class TrackGen : MonoBehaviour
                     spawnRobotPath = false;
                 }
                 
-                
                 //Traffic Light Generation
                 if (trackCount % 4 == 0) 
                 {
@@ -922,15 +947,6 @@ public class TrackGen : MonoBehaviour
                     var enemyPos = new Vector3(newPosition.x, newPosition.y + 40f, newPosition.z);
                     Instantiate(enemyRobot2, enemyPos, Quaternion.identity);
                     spawnRobotPath = true;
-                }
-                
-                if (!isUnderground)
-                {
-                    Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
-                }
-                else
-                {
-                    Instantiate(undergroundStraightForwardTrackObj, newPosition, Quaternion.identity, transform);
                 }
                 
                 GenerateNeighbours(TrackType.StraightForward, newPosition);
@@ -971,6 +987,16 @@ public class TrackGen : MonoBehaviour
                     newPosition.z + trafficPos.z
                 );
                 
+                
+                if (isUnderground)
+                {
+                    Instantiate(undergroundStraightForwardTrackObj , newPosition, Quaternion.identity, transform);
+                }
+                else
+                {
+                    Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
+                }
+                
                 //Booster Track Generation
                 if ((trackCount > 0 && trackCount % 3 == 0 && boosterRandomness == 1) && !spawnRobotPath )
                 {
@@ -998,15 +1024,6 @@ public class TrackGen : MonoBehaviour
                     var enemyPos = new Vector3(newPosition.x, newPosition.y + 40f, newPosition.z);
                     Instantiate(enemyRobot2, enemyPos, Quaternion.identity);
                     spawnRobotPath = true;
-                }
-                
-                if (!isUnderground)
-                {
-                    Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
-                }
-                else
-                {
-                    Instantiate(undergroundStraightForwardTrackObj, newPosition, Quaternion.identity, transform);
                 }
                 
                 GenerateNeighbours(TrackType.StraightForward, newPosition);

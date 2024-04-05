@@ -543,7 +543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerUpObj: {fileID: 4740187741603711687, guid: 34328017c8b47864f8bd46715fa9e928, type: 3}
   trackSpeed: 450
-  trackDirection: 3
+  trackDirection: 0
   specialObj: {fileID: 8936731690604225160, guid: ccb4be73991c7ac43b5972f2b325ab07, type: 3}
 --- !u!1 &4679691999425173460
 GameObject:

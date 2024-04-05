@@ -18,6 +18,9 @@ public class CoinShopKeeper : MonoBehaviour
     private bool isTalking;
 
     public GameObject item1;
+
+    private bool isTouching;
+    
     
     private void Awake()
     {
@@ -42,18 +45,18 @@ public class CoinShopKeeper : MonoBehaviour
         ActivateCoinMenu = false;
         Camera = Camera.main; //Obtain main camera from scene
         if (Camera != null) CinemachineBrain = Camera.gameObject.GetComponent<CinemachineBrain>(); //Deactivate cinemachine
-        dialogue1 = "Hello, player would you like to check what I have in store for you? You never know these can be very useful for you";
+        dialogue1 = "Yo, player ya want I've got? Make sure you got that $$$ on ya!";
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Set the visibility of the objects depending on specific factors
+        coinShopMenu.SetActive(ActivateCoinMenu);
+        
         CinemachineBrain.enabled = !ActivateCoinMenu;
         
-        //Set the visibility of the objects depending on specific factors
-        coinShopMenu.SetActive(ActivateCoinMenu); 
-        
-        if (DialogueManager.inDialogue && isTalking && BoosterShopkeeper.ActivateBoosterMenu == false)
+        if (DialogueManager.inDialogue && isTalking && CoinManager.inShop && isTouching && BoosterShopkeeper.ActivateBoosterMenu == false)
         {
             ActivateCoinMenu = true;
         }
@@ -61,16 +64,19 @@ public class CoinShopKeeper : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && CoinManager.inShop == false)
         {
+            isTouching = true;
             DialogueManager.inDialogue = true;
             DialogueManager.currentDialogue = new Dialogue("Cleric2", dialogue1, Dialogue.DialogueType.Text);
             EventSystem.current.SetSelectedGameObject(item1);
+            CoinManager.inShop = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        isTouching = false;
         DialogueManager.inDialogue = false;
         DialogueManager.currentDialogue = null;
     }

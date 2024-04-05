@@ -10,7 +10,7 @@ public class BossDesperation : MonoBehaviour
     void Start()
     {
         var player = GameObject.FindGameObjectWithTag("PlayerRacer");
-        playerLaserDamage = player.GetComponent<PlayerBoss>().GetCurrentLaserDamage();
+        playerLaserDamage = MenuManager.currentSpaceJet.laserDamage;
     }
 
     // Update is called once per frame

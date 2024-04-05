@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,8 +25,6 @@ public class MovingTrack : MonoBehaviour
     public GameObject specialObj;
 
     private int specialIndex;
-
-    private bool isTouchingPlayer = false;
 
     //private GameObject powerUps;
     // Start is called before the first frame update
@@ -111,10 +108,17 @@ public class MovingTrack : MonoBehaviour
             
             case TrackDirection.Shift:
             {
-                if (!isTouchingPlayer)
+                var offsetPos = new Vector3(transform.position.x, player.transform.position.y, transform.position.z);
+                if (Vector3.Distance(player.transform.position, offsetPos) < 0.3f)
                 {
-                    transform.position += Vector3.back * (trackSpeed * Time.deltaTime);
+                    
                 }
+                else
+                {
+                   
+                }
+                
+                
                 break;
             }
 
@@ -131,15 +135,7 @@ public class MovingTrack : MonoBehaviour
             }
         }
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("PlayerRacer"))
-        {
-            isTouchingPlayer = true;
-        }
-    }
-
+    
     IEnumerator DestroyObj()
     {
         yield return new WaitForSeconds(0.5f);

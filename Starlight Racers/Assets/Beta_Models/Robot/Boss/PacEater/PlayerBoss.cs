@@ -52,7 +52,8 @@ public class PlayerBoss : MonoBehaviour
     // private float responsiveFactor;
 
     public float timer;
-    [SerializeField] private int laserAmmoMax;
+    private float shieldTimer;
+    private float laserAmmo;
 
     private bool isBoosting = false;
 
@@ -285,6 +286,7 @@ public class PlayerBoss : MonoBehaviour
         currentShieldStat = shieldMax.trueValue; //set the HP value to the max value
         takeDamage = false;
         // abilityGauge = 100;
+        laserAmmo = GameDataManager.laserAmmoMax * 5;
         
         if(isPlayer2)
         {
@@ -368,51 +370,50 @@ public class PlayerBoss : MonoBehaviour
             }
         }
     }
-
-    // void OnGameStart()
-    // {
-    //     canMove = true;
-    //     
-    // }
-
-    // void UpdateGravity()
-    // {
-    //     isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-    //
-    //     var gravity = -3000f;
-    //
-    //     if (isGrounded && rb.velocity.y < 0)
-    //     {
-    //         var velocity = rb.velocity;
-    //         velocity = new Vector3(velocity.x, -2f, velocity.z);
-    //         rb.velocity = velocity;
-    //     }
-    //
-    //     rb.velocity += Vector3.up * (gravity * Time.deltaTime);
-    // }
+    
+    
     void Update()
     {
-        //UpdateGravity();
-
-        // if (isPlayer1)
-        // {
-        //     Debug.Log("P1: HorizontalInput" + horizontalInput);
-        // }
-        // else if(isPlayer2)
-        // {
-        //     Debug.Log("P2: HorizontalInput" + horizontalInput);
-        // }
         Movement();
-
         
-        if (Boss.currentHealth <= 0 && CookieBoss.currentHealth <= 0 )
+        if (Boss.currentHealth <= 0 && CookieBoss.currentHealth <= 0 && Boss.bossReady)
         {
             hasFinished = true;
         }
                 
+        if (abilityGauge < GameDataManager.abilityGaugeMax)
+        {
+            abilityGauge+= 0.5f;
+        }
         
-        
+        //If the current Laser Ammo is below the max, start a timer for every 10 seconds to refill ammo
+        if (laserAmmo < GameDataManager.laserAmmoMax)
+        {
+            timer += Time.deltaTime;
+            
+            AmmoRefill(timer);
 
+            if (timer >= GameDataManager.refillSeconds)
+            {
+                timer = 0;
+            }
+
+        }
+        
+        if (currentShieldStat < shieldMax.trueValue && !shieldBoostPressed)
+        {
+            shieldTimer += Time.deltaTime;
+            
+            ShieldRefill(shieldTimer);
+
+            if (shieldTimer >= GameDataManager.refillSeconds * 3)
+            {
+                shieldTimer = 0;
+            }
+        }
+        
+        AddShieldPowerUp();
+        
         //if the player has not finished the race, start timer
         if (hasFinished == false && canMove)
         {
@@ -442,24 +443,13 @@ public class PlayerBoss : MonoBehaviour
         }
     }
 
-    // void Gravity()
-    // {
-    //     var mass = rb.mass;
-    //     rb.AddForce(Physics.gravity * (mass * mass));
-    // }
-
     //Move between the left and right directions
     private void Movement()
     {
+        HandleInput();
         transform.position += new Vector3((speed.trueValue / 100) * Time.deltaTime * horizontalInput, 0, 0);
-        
-        AddShieldPowerUp();
     }
-
-    public float ReturnPlayerSpeed()
-    {
-        return speed.trueValue;
-    }
+    
 
     public float ReturnPlayerGauge()
     {
@@ -468,9 +458,6 @@ public class PlayerBoss : MonoBehaviour
 
     void HandleInput()
     {
-        if (!canMove)
-            return;
-
         if (isPlayer1)
         {
             Controller.Player1.Movement.performed += context => forwardInput = context.ReadValue<float>();
@@ -499,41 +486,6 @@ public class PlayerBoss : MonoBehaviour
             Controller.Player.Turn.canceled += context => horizontalInput = horizontalInput = 0f;
         }
         
-        
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        //Gravity();
-
-        if (!abilityActive)
-        {
-            abilityGauge+= 0.5f;
-        }
-        
-        
-        HandleInput();
-        
-        //var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
-        //rb.AddTorque(transform.up * (grip * horizontalInput ), ForceMode.Acceleration);
-            
-        //If the user turns either left or right, the gameobject should tilt 45 degrees to the corresponding direction
-        /*
-         *  # Implement Banking as described:
-        # https://www.cs.toronto.edu/~dt/siggraph97-course/cwr87/
-        var temp_up = global_transform.basis.y.lerp(Vector3.UP + (acceleration * banking), delta * 5.0)
-        look_at(global_transform.origin - vel.normalized(), temp_up)
-         */
-
-        //add in banking
-        //banking_angle = rb.angularVelocity.z;
-        //Vector3 tempUp = Vector3.Lerp(transform.up, Vector3.up + (acceleration * banking_angle), Time.deltaTime * 5.0f);
-        //transform.LookAt(transform.position - rb.velocity.normalized,tempUp);
-            
-        prevVelocity = rb.velocity; //update our previous velocity
-        
-        //ShieldBoost();
         
     }
     
@@ -634,7 +586,19 @@ public class PlayerBoss : MonoBehaviour
         var offset = new Vector3(0, 0, 10);
         GameObject laser1 = Instantiate(lasersPrefab, laserGun1.transform.position + offset, laserGun1.transform.rotation);
         laser1.gameObject.GetComponent<Rigidbody>().velocity += laserGun1.transform.forward * laserSpeed  + rb.velocity;
-    
+
+        if (Boss.bossReady)
+        {
+            if (GameDataManager.halfTime)
+            {
+                laserAmmo -= 0.5f;
+            }
+            else
+            {
+                laserAmmo--;
+            }
+        }
+        
     }
 
     private void FireLaserRight()
@@ -643,6 +607,18 @@ public class PlayerBoss : MonoBehaviour
         var offset = new Vector3(0, 0, 10);
         GameObject laser2 = Instantiate(lasersPrefab, laserGun2.transform.position + offset, laserGun2.transform.rotation);
         laser2.gameObject.GetComponent<Rigidbody>().velocity += laserGun2.transform.forward * laserSpeed  + rb.velocity;
+        
+        if (Boss.bossReady)
+        {
+            if (GameDataManager.halfTime)
+            {
+                laserAmmo -= 0.5f;
+            }
+            else
+            {
+                laserAmmo--;
+            }
+        }
         
     }
 
@@ -721,11 +697,41 @@ public class PlayerBoss : MonoBehaviour
             currentShieldStat -= 0.4f * (5 - Mathf.Clamp(shieldRate.trueValue / 100, 0f, 0.8f));
         }
     }
+    
+    private void AmmoRefill(float ammoTimer)
+    {
+        if(laserAmmo < GameDataManager.laserAmmoMax && ammoTimer >= GameDataManager.refillSeconds)
+        {
+            laserAmmo++;
+
+            if (laserAmmo > GameDataManager.laserAmmoMax)
+            {
+                laserAmmo = GameDataManager.laserAmmoMax;
+            }
+        }
+    }
+
+    
+    private void ShieldRefill(float ammoTimer)
+    {
+
+        if (currentShieldStat < shieldMax.trueValue && ammoTimer >= (GameDataManager.refillSeconds * 3) &&
+            GameDataManager.restoreShield)
+        {
+            currentShieldStat += (shieldMax.trueValue * 0.05f);
+        }
+    }
+
 
     //Return the current ammo count 
-    //Return the current ammo count
+    public float GetLaserAmmoCount()
+    {
+        return laserAmmo;
+    }
+    
     public float GetCurrentLaserDamage()
     {
+        Debug.Log("LaserDamage: " + laserDamage.trueValue);
         return laserDamage.trueValue;
     }
 
@@ -778,14 +784,22 @@ public class PlayerBoss : MonoBehaviour
             }
             else
             {
-                Debug.Log("Player has been eliminated from the race");
-                Destroy(gameObject);
+                if (GameDataManager.reviveCount <= 0)
+                {
+                    Debug.Log("Player has been eliminated from the race");
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    GameDataManager.reviveCount -= 1;
+                    currentShieldStat += (shieldMax.trueValue * 0.5f);
+                }
             }
             
         }
     }
 
-    private void CheckHealthValue()
+    private void CheckHealthValue() 
     {
         if (currentShieldStat == 0 && takeDamage)
         {
@@ -794,8 +808,16 @@ public class PlayerBoss : MonoBehaviour
         }
         else if (isVulnerable && takeDamage && currentShieldStat < 0)
         {
-            Destroy(gameObject);
-            Debug.Log("Player has been eliminated from the race");
+            if (GameDataManager.reviveCount <= 0)
+            {
+                Debug.Log("Player has been eliminated from the race");
+                Destroy(gameObject);
+            }
+            else
+            {
+                GameDataManager.reviveCount -= 1;
+                currentShieldStat += (shieldMax.trueValue * 0.5f);
+            }
         }
     }
     

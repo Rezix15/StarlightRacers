@@ -22,6 +22,7 @@ public class BoosterShopkeeper : MonoBehaviour
 
     private bool isTalking;
 
+    private bool isTouching;
     public GameObject upgrade1;
     public static int prevRaceCount;
 
@@ -61,17 +62,20 @@ public class BoosterShopkeeper : MonoBehaviour
         teleporter.SetActive(successfulAttempts > 0 || (prevRaceCount > 0 && prevRaceCount == GameDataManager.RaceCount));
 
         CinemachineBrain.enabled = !ActivateBoosterMenu;
-
-        if (DialogueManager.inDialogue && isTalking && successfulAttempts == 0 && CoinShopKeeper.ActivateCoinMenu == false)
+        
+        if (DialogueManager.inDialogue && isTalking && successfulAttempts == 0 && isTouching && CoinShopKeeper.ActivateCoinMenu == false)
         {
             ActivateBoosterMenu = true;
         }
+        
+        
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && successfulAttempts == 0 && prevRaceCount != GameDataManager.RaceCount)
         {
+            isTouching = true;
             DialogueManager.inDialogue = true;
             DialogueManager.currentDialogue = new Dialogue("Cleric1", dialogue1, Dialogue.DialogueType.Text);
             EventSystem.current.SetSelectedGameObject(upgrade1);
@@ -81,6 +85,7 @@ public class BoosterShopkeeper : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         DialogueManager.inDialogue = false;
+        isTouching = false;
         DialogueManager.currentDialogue = null;
     }
 

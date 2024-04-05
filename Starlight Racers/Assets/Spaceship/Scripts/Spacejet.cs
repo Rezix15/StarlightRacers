@@ -48,6 +48,7 @@ public class Spacejet : MonoBehaviour
     private bool isAccelerating;
     private Rigidbody rb;
 
+    public GameObject bossSpawner;
 
     public bool canMove = false;
     public GameObject lasersPrefab;
@@ -92,7 +93,7 @@ public class Spacejet : MonoBehaviour
     private Modifier componentModifier;
 
     //Ability gauge that is needed to use the special abiility
-    private int abilityGauge = 0;
+    private float abilityGauge = 0;
 
     #region CreationAbilityRegion
     
@@ -104,9 +105,13 @@ public class Spacejet : MonoBehaviour
     private bool wasShieldActive = false;
 
     private bool abilityActive = false;
+
+    public static bool readyToTriggerBoss;
     #endregion
     
     float boostTimer = 0;
+
+    private GameObject bossTrigger;
     
     private GhostAbility GhostAbility;
     
@@ -127,6 +132,9 @@ public class Spacejet : MonoBehaviour
         {
             Controller.Player1.Accelerate.performed += _ => isAccelerating = true;
             Controller.Player1.Accelerate.canceled += _ => isAccelerating = false;
+            
+            Controller.Player1.Turn.performed += context => horizontalInput = context.ReadValue<float>();
+            Controller.Player1.Turn.canceled += context => horizontalInput = horizontalInput = 0f;
 
             Controller.Player1.ShootLeft.performed += _ => FireLaserLeft();
             Controller.Player1.ShootLeft.canceled += _ => FireLaserLeft();
@@ -149,7 +157,7 @@ public class Spacejet : MonoBehaviour
         {
             Controller.Player2.Accelerate.performed += _ => isAccelerating = true;
             Controller.Player2.Accelerate.canceled += _ => isAccelerating = false;
-
+            
             Controller.Player2.ShootLeft.performed += _ => FireLaserLeft();
             Controller.Player2.ShootLeft.canceled += _ => FireLaserLeft();
         
@@ -213,6 +221,14 @@ public class Spacejet : MonoBehaviour
     {
         Controller.Disable();
     }
+
+    private void BossMovement()
+    {
+        if (readyToTriggerBoss)
+        {
+            transform.position += new Vector3((speed.trueValue / 100) * Time.deltaTime * horizontalInput, 0, 0);
+        }
+    }
     // Start is called before the first frame update
 
     //Initialize the stats of the spaceJet using the current vehicle that was chosen in the menu.
@@ -242,6 +258,7 @@ public class Spacejet : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+        BossTrigger.bossTriggered = false;
         isVulnerable = false;
         timer = 0; //set our timer to 0
         checkpointCount = 0;
@@ -249,7 +266,7 @@ public class Spacejet : MonoBehaviour
         hasFinished = false;
         RaceManager.GameStarted += OnGameStart;
         boosterPadSpeed = 25000;
-
+        bossTrigger = GameObject.FindGameObjectWithTag("BossTrigger");
         
         if(isPlayer2)
         {
@@ -319,40 +336,18 @@ public class Spacejet : MonoBehaviour
         currentShieldStat = shieldMax.trueValue; //set the HP value to the max value
         takeDamage = false;
     }
-
     
-
-    // void UpdateGravity()
-    // {
-    //     isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-    //
-    //     var gravity = -3000f;
-    //
-    //     if (isGrounded && rb.velocity.y < 0)
-    //     {
-    //         var velocity = rb.velocity;
-    //         velocity = new Vector3(velocity.x, -2f, velocity.z);
-    //         rb.velocity = velocity;
-    //     }
-    //
-    //     rb.velocity += Vector3.up * (gravity * Time.deltaTime);
-    // }
+    public float ReturnPlayerGauge()
+    {
+        return abilityGauge;
+    }
     void Update()
     {
-        //UpdateGravity();
-
-        // if (isPlayer1)
-        // {
-        //     Debug.Log("P1: HorizontalInput" + horizontalInput);
-        // }
-        // else if(isPlayer2)
-        // {
-        //     Debug.Log("P2: HorizontalInput" + horizontalInput);
-        // }
+        BossMovement();
         
-        if (abilityGauge < GameDataManager.abilityGaugeMax)
+        if (Boss.currentHealth <= 0 && CookieBoss.currentHealth <= 0 && Boss.bossReady)
         {
-            abilityGauge++;
+            hasFinished = true;
         }
         
         //If the current Laser Ammo is below the max, start a timer for every 10 seconds to refill ammo
@@ -436,13 +431,7 @@ public class Spacejet : MonoBehaviour
             wasShieldActive =false;
         }
     }
-
-    // void Gravity()
-    // {
-    //     var mass = rb.mass;
-    //     rb.AddForce(Physics.gravity * (mass * mass));
-    // }
-
+    
     void HandleInput()
     {
         if (!canMove)
@@ -482,9 +471,12 @@ public class Spacejet : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Gravity();
-
-        if (!CanvasManager.gamePaused)
+        if (abilityGauge < GameDataManager.abilityGaugeMax && canMove && isShieldActive == false)
+        {
+            abilityGauge+=1f;
+        }
+        
+        if (!CanvasManager.gamePaused && !readyToTriggerBoss)
         {
             HandleInput();
             //If the jet is currently accelerating then allow user movement and update each second.
@@ -532,7 +524,6 @@ public class Spacejet : MonoBehaviour
     //Function that sacrifices the shield gauge to increase speed. If user shield expires when boosting, destroy player
     private void ShieldBoost()
     {
-        // Debug.Log("shieldRate: " + shieldRate.trueValue);
         
         if (currentShieldStat > 0 && shieldBoostPressed)
         {
@@ -561,11 +552,6 @@ public class Spacejet : MonoBehaviour
             foreach (var componentBoost in MenuManager.componentBoosts)
             {
                 componentModifier = new Modifier(componentBoost.statModifierVal);
-                
-                // Debug.Log("Components Count: " + MenuManager.componentBoosts.Count);
-                // Debug.Log("Component Name: " + componentBoost.name);
-                // Debug.Log("Component TargetedStat: " + componentBoost.targetStat);
-                // Debug.Log("Components ModifierVal: " + componentBoost.statModifierVal);
                 
                 switch (componentBoost.targetStat)
                 {
@@ -689,6 +675,27 @@ public class Spacejet : MonoBehaviour
                 checkpointCount++;
             }
         }
+
+        if (other.CompareTag("BossPortal"))
+        {
+            var bossTriggerPos = GameObject.FindGameObjectWithTag("BossTrigger").transform.position;
+            var triggerPos = new Vector3(bossTriggerPos.x, bossTriggerPos.y + transform.position.y, bossTriggerPos.z);
+            transform.position = triggerPos;
+        }
+        
+        if (other.CompareTag("BossTrigger"))
+        {
+            if (BossTrigger.bossTriggered == false)
+            {
+                // var bossTriggerPos = GameObject.FindGameObjectWithTag("BossTrigger").transform.position;
+                //
+                // var triggerPos = new Vector3(bossTriggerPos.x, transform.position.y, bossTriggerPos.z);
+                // transform.position = triggerPos;
+                transform.rotation = Quaternion.identity;
+                readyToTriggerBoss = true;
+            }
+            
+        }
         
         if (other.gameObject.CompareTag("DownTrack"))
         {
@@ -699,6 +706,13 @@ public class Spacejet : MonoBehaviour
         {
             ShiftAngle(0);
         }
+        
+        if (other.gameObject.CompareTag("BossLaser") && takeDamage == false)
+        {
+            currentShieldStat -= ((60 * (1 - (shieldRate.trueValue / 100))) + (MenuManager.difficultyLevel * 10));
+            takeDamage = true;
+            StartCoroutine(Damaged());
+        }
 
         //If user makes contact with a laser, it should take a certain amount of damage
         if (other.gameObject.CompareTag("Laser") && takeDamage == false)
@@ -707,6 +721,7 @@ public class Spacejet : MonoBehaviour
             takeDamage = true;
             StartCoroutine(Damaged());
         }
+        
 
         if (other.CompareTag("Finish"))
         {
@@ -777,8 +792,8 @@ public class Spacejet : MonoBehaviour
         {
             abilityActive = true;
             creationAbility.UseAbility();
-            abilityActive = false;
             abilityGauge = 0;
+            abilityActive = false;
         }
         else if(abilityGauge < GameDataManager.abilityGaugeMax && creationAbility != null && !CanvasManager.gamePaused)
         {

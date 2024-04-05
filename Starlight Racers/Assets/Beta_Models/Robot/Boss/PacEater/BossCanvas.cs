@@ -9,6 +9,8 @@ public class BossCanvas : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI laserAmmoText;
+
+    private int laserAmmoAmount;
     
     public GameObject shieldBarFill;
     public Image shieldBarFillImg;
@@ -34,13 +36,12 @@ public class BossCanvas : MonoBehaviour
         GameOver = false;
         player = player.GetComponent<PlayerBoss>();
         timerText.text = "";
-        laserAmmoText.text = "MAX";
         playerShieldStatMax = player.shieldMax.trueValue;
         shieldBar.maxValue = playerShieldStatMax;
         abilityGaugeBar.maxValue = player.abilityActivator;
         mainUI.SetActive(true);
         gameOverUI.SetActive(false);
-        timer = 300; //Set boss to 5 minutes
+        timer = 300 + GameDataManager.timerVal; //Set boss to 5 minutes
         StartCoroutine(StartTimer());
         successObj.SetActive(false);
         
@@ -62,7 +63,9 @@ public class BossCanvas : MonoBehaviour
 
             shieldBar.value = playerShieldStat;
             abilityGaugeBar.value = player.ReturnPlayerGauge();
-            
+
+            laserAmmoAmount = (int)player.GetLaserAmmoCount();
+            laserAmmoText.text = laserAmmoAmount.ToString();
 
             var shieldAsInt = (int)playerShieldStat;
             var abilityAsInt = (int)player.ReturnPlayerGauge();
@@ -89,7 +92,7 @@ public class BossCanvas : MonoBehaviour
             StartCoroutine(SendUserBackToIntermission());
         }
 
-        if (player.hasFinished)
+        if (player.hasFinished && Boss.bossReady)
         {
             successObj.SetActive(true);
         }

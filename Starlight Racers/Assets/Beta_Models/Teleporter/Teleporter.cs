@@ -106,7 +106,7 @@ public class Teleporter : MonoBehaviour
                     DialogueManager.inDialogue = true;
                     DialogueManager.id = 1;
                     DialogueManager.currentDialogue = new Dialogue("Teleporter", teleporterDialogue, Dialogue.DialogueType.Question);
-                    BossCanvas.GameOver = false;
+                    GameDataManager.GameOver = false;
                 }
                 
             }

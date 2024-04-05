@@ -21,11 +21,15 @@ public class Boss : MonoBehaviour
     public GameObject bossPortalObj;
     public GameObject shieldEffect;
 
+    public static bool bossReady;
+
     //HP stat of the boss
     [SerializeField]
     private float maxHealth;
     
     public static float currentHealth;
+
+    public float currentHealthVal;
 
     //Shield Rate / defense stat of the boss
     [SerializeField]
@@ -48,24 +52,26 @@ public class Boss : MonoBehaviour
     private int desperationIndex;
 
     private bool hasShifted;
+
+    private PlayerBoss player;
     
     
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(ToggleStates());
+    }
+
+    private void OnEnable()
+    {
+        SetHealth();
         desperationIndex = 3;
         isShielded = false;
-        SetHealth();
         shieldRate.baseValue = 50;
         normalObj.SetActive(true);
         index = 1;
-        StartCoroutine(ToggleStates());
-        currentHealth = maxHealth;
-        var player = GameObject.FindGameObjectWithTag("PlayerRacer");
-        playerLaserDamage = player.GetComponent<PlayerBoss>().GetCurrentLaserDamage();
-        bossHpSlider.maxValue = maxHealth;
         var position = transform.position;
-
+        player = GameObject.FindGameObjectWithTag("PlayerRacer").GetComponent<PlayerBoss>();
     }
 
     // Update is called once per frame
@@ -73,8 +79,26 @@ public class Boss : MonoBehaviour
     {
         // var position = transform.position;
         // transform.position = new Vector3(position.x, position.y, position.z + (500 * Time.deltaTime));
+        currentHealthVal = currentHealth;
         bossHpSlider.value = currentHealth;
         SpawnCannon();
+    }
+
+    IEnumerator HealthAppear()
+    {
+        while (currentHealth <= maxHealth)
+        {
+            currentHealth += 500;
+            bossHpSlider.value = currentHealth;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        if (currentHealth >= maxHealth)
+        {
+            currentHealth = maxHealth;
+            bossReady = true;
+            playerLaserDamage = player.GetCurrentLaserDamage();
+        }
     }
     
     void SetHealth()
@@ -84,28 +108,33 @@ public class Boss : MonoBehaviour
             case 0:
             {
                 maxHealth = 4000;
-                currentHealth = maxHealth;
+                bossHpSlider.maxValue = maxHealth;
+                StartCoroutine(HealthAppear());
                 break;
             }
 
             case 1:
             {
+                Debug.Log("Normal: " + currentHealth);
                 maxHealth = 6000;
-                currentHealth = maxHealth;
+                bossHpSlider.maxValue = maxHealth;
+                StartCoroutine(HealthAppear());
                 break;
             }
 
             case 2:
             {
                 maxHealth = 9000;
-                currentHealth = maxHealth;
+                bossHpSlider.maxValue = maxHealth;
+                StartCoroutine(HealthAppear());
                 break;
             }
 
             default:
             {
                 maxHealth = 6000;
-                currentHealth = maxHealth;
+                bossHpSlider.maxValue = maxHealth;
+                StartCoroutine(HealthAppear());;
                 break;
             }
         }
@@ -116,7 +145,8 @@ public class Boss : MonoBehaviour
     {
         while (true)
         {
-            if (desperationObj.activeSelf == false)
+            
+            if (desperationIndex != 1)
             {
                 isSafe = true;
                 isAngry = false;
@@ -135,6 +165,8 @@ public class Boss : MonoBehaviour
                 isAttackStateOn = true;
                 yield return new WaitForSeconds(4f);
             }
+            
+            
         }
 
         //yield return new WaitForSeconds(0.1f);
@@ -145,114 +177,115 @@ public class Boss : MonoBehaviour
     {
         var desperationChance = Random.Range(0, desperationIndex);
         //If in the angry state and not already in the attack state
-        if (isAngry && !isAttackStateOn)
-        {
-            var randPortalState = Random.Range(0, 6);
-
-            //Probability to spawn 1 portal on either the left or right side (50%)
-            if (randPortalState % 5 == 0 || randPortalState % 5 == 1 || randPortalState % 5 == 2)
+        if (bossReady)
+        { 
+            if (isAngry && !isAttackStateOn)
             {
-                var position = transform.position;
-                var spawnState = Random.Range(0, 3);
-                var spawnPos = new Vector3(0,0,0);
-                switch (spawnState)
+                var randPortalState = Random.Range(0, 6);
+
+                //Probability to spawn 1 portal on either the left or right side (50%)
+                if (randPortalState % 5 == 0 || randPortalState % 5 == 1 || randPortalState % 5 == 2)
                 {
-                    case 0:
+                    var position = transform.position;
+                    var spawnState = Random.Range(0, 3);
+                    var spawnPos = new Vector3(0,0,0);
+                    switch (spawnState)
                     {
-                        spawnPos = new Vector3(position.x + 150, position.y, position.z);
-                        break;
+                        case 0:
+                        {
+                            spawnPos = new Vector3(position.x + 150, position.y, position.z);
+                            break;
+                        }
+
+                        case 1:
+                        {
+                            spawnPos = new Vector3(position.x - 150, position.y, position.z);
+                            break;
+                        }
+
+                        case 2:
+                        {
+                            spawnPos = new Vector3(position.x, position.y, position.z - 20);
+                            break;
+                        }
                     }
 
-                    case 1:
+                    if (desperationMode && desperationChance == desperationIndex - 1)
                     {
-                        spawnPos = new Vector3(position.x - 150, position.y, position.z);
-                        break;
+                        StartCoroutine(SpawnCannon2(spawnPos, 1));
                     }
-
-                    case 2:
+                    else
                     {
-                        spawnPos = new Vector3(position.x, position.y, position.z - 20);
-                        break;
+                        Instantiate(bossPortalObj, spawnPos, Quaternion.Euler(0,90,0));
                     }
+                
+                
                 }
-
-                if (desperationMode && desperationChance == desperationIndex - 1)
+            
+                //Probability to spawn both portals at once (33.33%)..
+                else if(randPortalState % 5 == 3 || randPortalState % 5 == 4)
                 {
-                    StartCoroutine(SpawnCannon2(spawnPos, 1));
+                    var position = transform.position;
+                    var spawnPos = new Vector3(position.x, position.y, position.z - 20);
+                    var spawnPos1 = new Vector3(position.x + 150, position.y, position.z);
+                    var spawnPos2 = new Vector3(position.x - 150, position.y, position.z);
+                    var spawnPos3 = new Vector3(position.x + 75, position.y, position.z + 75);
+                    var spawnPos4 = new Vector3(position.x - 75, position.y, position.z + 75);
+                
+                
+                    Instantiate(bossPortalObj, spawnPos1, Quaternion.Euler(0,90,0));
+                    Instantiate(bossPortalObj, spawnPos2, Quaternion.Euler(0,90,0));
+                
+                    if (desperationMode && desperationChance == desperationIndex - 1)
+                    {
+                        StartCoroutine(WaitShoot(2f, spawnPos3, spawnPos4));
+                    }
+                    else
+                    {
+                        StartCoroutine(WaitShoot(2f, spawnPos));
+                    }
                 }
                 else
                 {
-                    Instantiate(bossPortalObj, spawnPos, Quaternion.Euler(0,90,0));
+                    if (desperationMode && desperationChance == desperationIndex - 1)
+                    {
+                        var spawnPos = new Vector3(transform.position.x, transform.position.y, transform.position.z - 20);
+                        StartCoroutine(SpawnCannon2(spawnPos, 3f));
+                    }
+                
+                    isAtState = false;
                 }
-                
-                
-            }
             
-            //Probability to spawn both portals at once (33.33%)..
-            else if(randPortalState % 5 == 3 || randPortalState % 5 == 4)
+                //The rest of the probability (16.66%) to do nothing..
+                isAttackStateOn = true;
+                isAtState = true;
+            
+            }
+            else if(isSafe)
             {
-                var position = transform.position;
-                var spawnPos = new Vector3(position.x, position.y, position.z - 20);
-                var spawnPos1 = new Vector3(position.x + 150, position.y, position.z);
-                var spawnPos2 = new Vector3(position.x - 150, position.y, position.z);
-                var spawnPos3 = new Vector3(position.x + 75, position.y, position.z + 75);
-                var spawnPos4 = new Vector3(position.x - 75, position.y, position.z + 75);
-                
-                
-                Instantiate(bossPortalObj, spawnPos1, Quaternion.Euler(0,90,0));
-                Instantiate(bossPortalObj, spawnPos2, Quaternion.Euler(0,90,0));
-                
-                if (desperationMode && desperationChance == desperationIndex - 1)
+                var randPortalState = Random.Range(0, 4);
+            
+                if (isShielded == false && randPortalState % 3 == 0)
                 {
-                    StartCoroutine(WaitShoot(2f, spawnPos3, spawnPos4));
+                    StartCoroutine(Shield());
                 }
-                else
-                {
-                    StartCoroutine(WaitShoot(2f, spawnPos));
-                }
-            }
-            else
-            {
-                if (desperationMode && desperationChance == desperationIndex - 1)
-                {
-                    var spawnPos = new Vector3(transform.position.x, transform.position.y, transform.position.z - 20);
-                    StartCoroutine(SpawnCannon2(spawnPos, 3f));
-                }
-                
-                isAtState = false;
-            }
-            
-            //The rest of the probability (16.66%) to do nothing..
-            isAttackStateOn = true;
-            isAtState = true;
-            
-        }
-        else if(isSafe)
-        {
-            var randPortalState = Random.Range(0, 4);
-            
-            LookAtPlayer();
-            
-            if (isShielded == false && randPortalState % 3 == 0)
-            {
-                StartCoroutine(Shield());
-            }
 
-            if (isShielded && hasShield == false)
-            {
-                var spawnPos = transform.position;
-                var shieldObj = Instantiate(shieldEffect, spawnPos, Quaternion.Euler(90, 0, 0));
-                shieldObj.transform.SetParent(transform);
-                hasShield = true;
-                isAtState = false;
-                transform.rotation = Quaternion.identity;
-                StartCoroutine(DestroyShield(shieldObj));
+                if (isShielded && hasShield == false)
+                {
+                    var spawnPos = transform.position;
+                    var shieldObj = Instantiate(shieldEffect, spawnPos, Quaternion.Euler(90, 0, 0));
+                    shieldObj.transform.SetParent(transform);
+                    hasShield = true;
+                    isAtState = false;
+                    transform.rotation = Quaternion.identity;
+                    StartCoroutine(DestroyShield(shieldObj));
                 
+                }
             }
-        }
         
-        isAtState = false;
-        LookAtPlayer();
+            isAtState = false;
+            
+        }
         
     }
 
@@ -383,36 +416,39 @@ public class Boss : MonoBehaviour
         transform.rotation = Quaternion.Euler(angleVal, 0, 0);
     }
 
-    
-    
-    private void LookAtPlayer()
-    {
-        // var player = GameObject.FindGameObjectWithTag("PlayerRacer");
-        //     
-        // if (isAtState == false)
-        // {
-        //     transform.LookAt(transform.position - player.transform.position);
-        // }
-    }
-
     private void ToggleState(int state)
     {
+        
         switch (state)
         {
             case 0:
             {
-                normalObj.SetActive(false);
-                angryObj.SetActive(true);
-                isAngry = true;
-                isSafe = false;
+                if (desperationIndex != 1)
+                {
+                    normalObj.SetActive(false);
+                    angryObj.SetActive(true);
+                    isAngry = true;
+                    isSafe = false;
+                }
+                else
+                {
+                    ToggleState(2);
+                }
                 break;
             }
 
             case 1:
             {
-                normalObj.SetActive(true);
-                angryObj.SetActive(false);
-                isAttackStateOn = false;
+                if (desperationIndex != 1)
+                {
+                    normalObj.SetActive(true);
+                    angryObj.SetActive(false);
+                    isAttackStateOn = false;
+                }
+                else
+                {
+                    ToggleState(2);
+                }
                 break;
             }
 
@@ -457,59 +493,62 @@ public class Boss : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Laser"))
+        if (bossReady)
         {
-            if (isShielded)
+            if (other.transform.CompareTag("Laser"))
             {
-                var shieldBonus = shieldEffect.GetComponent<ShieldEffect>().shieldModifierBonus;
-                
-                
-                //currentHealth -= MenuManager.currentSpaceJet.laserDamage * (1 - (shieldBonus / 10));
-                
-                if (desperationIndex > 1)
+                if (isShielded)
                 {
-                    if (desperationMode)
+                    var shieldBonus = shieldEffect.GetComponent<ShieldEffect>().shieldModifierBonus;
+                
+                
+                    //currentHealth -= MenuManager.currentSpaceJet.laserDamage * (1 - (shieldBonus / 10));
+                
+                    if (desperationIndex > 1)
                     {
-                        // currentHealth -= playerLaserDamage * (1 - ((shieldBonus * 1.4f) / 10));
-                        currentHealth -= (playerLaserDamage * 0.7f * (shieldBonus - 1.4f));
-                    }
-                    else
-                    {
-                        // currentHealth -= playerLaserDamage * (1 - (shieldBonus / 10));
-                        currentHealth -= (playerLaserDamage * 0.7f * shieldBonus);
-                    }
+                        if (desperationMode)
+                        {
+                            // currentHealth -= playerLaserDamage * (1 - ((shieldBonus * 1.4f) / 10));
+                            currentHealth -= (playerLaserDamage * 0.7f * (shieldBonus - 1.4f));
+                        }
+                        else
+                        {
+                            // currentHealth -= playerLaserDamage * (1 - (shieldBonus / 10));
+                            currentHealth -= (playerLaserDamage * 0.7f * shieldBonus);
+                        }
                     
-                }
+                    }
                
-            }
-            else
-            {
-                //currentHealth -= MenuManager.currentSpaceJet.laserDamage;
-                if (desperationIndex > 1)
-                {
-                    currentHealth -= (playerLaserDamage * 0.7f);
                 }
+                else
+                {
+                    //currentHealth -= MenuManager.currentSpaceJet.laserDamage;
+                    if (desperationIndex > 1)
+                    {
+                        currentHealth -= (playerLaserDamage * 0.7f);
+                    }
                 
-            }
+                }
 
-            if ((currentHealth / maxHealth) <= 0.8 && (currentHealth / maxHealth) > 0.6f)
-            {
-                desperationMode = true;
-            }
+                if ((currentHealth / maxHealth) <= 0.8 && (currentHealth / maxHealth) > 0.6f)
+                {
+                    desperationMode = true;
+                }
             
-            if((currentHealth / maxHealth) <= 0.6 && (currentHealth / maxHealth) > 0.3f)
-            {
-                desperationIndex = 2;
-            }
-            else if((currentHealth / maxHealth) <= 0.3)
-            {
-                desperationIndex = 1;
-                ToggleState(2);
-            }
+                if((currentHealth / maxHealth) <= 0.6 && (currentHealth / maxHealth) > 0.3f)
+                {
+                    desperationIndex = 2;
+                }
+                else if((currentHealth / maxHealth) <= 0.3)
+                {
+                    desperationIndex = 1;
+                    ToggleState(2);
+                }
             
-            if (currentHealth <= 0)
-            {
-                Destroy(gameObject);
+                if (currentHealth <= 0)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
         
