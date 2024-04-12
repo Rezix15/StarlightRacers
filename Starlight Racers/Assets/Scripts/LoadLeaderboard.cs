@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Dan.Main;
+using UnityEngine.EventSystems;
 
 
 //Leaderboard server code heavily inspired by https://www.youtube.com/watch?v=-O7zeq7xMLw
@@ -39,6 +40,8 @@ public class LoadLeaderboard : MonoBehaviour
     private string playerName;
 
     private string publicLeaderboardKey;
+
+    private string difficulty;
     
     public enum TrackType
     {
@@ -50,10 +53,50 @@ public class LoadLeaderboard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (currentMap == TrackType.StarlightCity)
+        switch (currentMap)
         {
-            publicLeaderboardKey = "9cf23c0c92b506413137ee83c9f371e35e1f51a9c8e1ae1b937d167daf2232bd";
+            case TrackType.StarlightCity:
+            {
+                publicLeaderboardKey = "6f39a5bf4675da96e470c2be6f2300c394b876400794b2ef81887d2ab992205a";
+                break;
+            }
+
+            case TrackType.Candyland:
+            {
+                publicLeaderboardKey = "673ec08c60a0c798908cbaa379bdcf75691ccb21854226ae93b80e0e040e5cdc";
+                break;
+            }
+            
         }
+
+        switch (MenuManager.difficultyLevel)
+        {
+            case 0:
+            {
+                difficulty = "Easy";
+                break;
+            }
+
+            case 1:
+            {
+                difficulty = "Medium";
+                break;
+            }
+
+            case 2:
+            {
+                difficulty = "Hard";
+                break;
+            }
+
+            default:
+            {
+                difficulty = "Easy";
+                break;
+            }
+        }
+        
+        GetLeaderBoard();
         leaderboardUI.SetActive(false);
         usernameInput.SetActive(false);
         player = GameObject.FindGameObjectWithTag("PlayerRacer").GetComponent<PlayerBoss>();
@@ -125,6 +168,7 @@ public class LoadLeaderboard : MonoBehaviour
         scoreInfoText.text = "";
         yield return new WaitForSeconds(2f);
         usernameInput.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(usernameInput);
         yield return new WaitForSeconds(0.1f);
     }
 
@@ -169,34 +213,53 @@ public class LoadLeaderboard : MonoBehaviour
         }
     }
 
+    //Function to ca
     private void CalculateFinishTimeBonus()
     {
         int difficultyTime = 180 + (MenuManager.difficultyLevel * 60);
         finishTimeBonusScore = (int)((300 + (difficultyTime * 3)) - MenuManager.totalFinishTime);
-        finishTimeBonusScore = (int)(finishTimeBonusScore * ((MenuManager.difficultyLevel * 0.1f)  + 0.9f)) * 10;
+        finishTimeBonusScore = (int)(finishTimeBonusScore * ((MenuManager.difficultyLevel * 0.1f)  + 0.9f)) * 100;
     }
 
-    public void GetLeaderBoard()
+    private void GetLeaderBoard()
     {
-        var loopLength = 0;
         LeaderboardCreator.GetLeaderboard(publicLeaderboardKey, (msg) =>
         {
-            loopLength = msg.Length < hiScoreTexts.Length ? msg.Length : hiScoreTexts.Length;
+            var loopLength = 0;
+            int counter = 0;
+            
+            if (msg.Length < hiScoreTexts.Length)
+            {
+                loopLength = msg.Length;
+            }
+            else
+            {
+                loopLength = hiScoreTexts.Length;
+            }
+            
+            
             
             for (int i = 0; i < loopLength; i++)
             {
-                hiScoreTexts[i].text =
-                    " " + hiScoreTexts[i].gameObject.name + " " + msg[i].Username + " " + msg[i].Score + "PTS";
+                if (msg[i].Extra == difficulty)
+                {
+                    hiScoreTexts[counter].text =
+                        " " + hiScoreTexts[counter].gameObject.name + " " + msg[i].Username + " " + msg[i].Score + " PTS";
+
+                    counter++;
+                }
             }
         });
     }
 
-    public void SetLeaderboardValue(string username)
+    private void SetLeaderboardValue(string username)
     {
-        LeaderboardCreator.UploadNewEntry(publicLeaderboardKey, username, score, ((_) =>
+        LeaderboardCreator.ResetPlayer();
+        LeaderboardCreator.UploadNewEntry(publicLeaderboardKey, username, score, difficulty,  ((msg) =>
         {
             GetLeaderBoard();
         }));
+        
     }
 
     public void GetUsername()

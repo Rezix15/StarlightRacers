@@ -53,7 +53,6 @@ public class CoinShopKeeper : MonoBehaviour
     {
         //Set the visibility of the objects depending on specific factors
         coinShopMenu.SetActive(ActivateCoinMenu);
-        
         CinemachineBrain.enabled = !ActivateCoinMenu;
         
         if (DialogueManager.inDialogue && isTalking && CoinManager.inShop && isTouching && BoosterShopkeeper.ActivateBoosterMenu == false)
@@ -71,6 +70,7 @@ public class CoinShopKeeper : MonoBehaviour
             DialogueManager.currentDialogue = new Dialogue("Cleric2", dialogue1, Dialogue.DialogueType.Text);
             EventSystem.current.SetSelectedGameObject(item1);
             CoinManager.inShop = true;
+            
         }
     }
 

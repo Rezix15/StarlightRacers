@@ -136,7 +136,7 @@ public class Enemy : MonoBehaviour
         {
             if (isShielded)
             {
-                var shieldBonus = shieldEffect.GetComponent<ShieldEffect>().shieldModifierBonus;
+                var shieldBonus = shieldEffect.GetComponent<EnemyShieldEffect>().shieldModifierBonus;
                 currentHealth -= MenuManager.currentSpaceJet.laserDamage * (1 - (shieldBonus / 10));
             }
             else

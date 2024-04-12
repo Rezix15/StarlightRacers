@@ -135,8 +135,12 @@ public class CanvasManager : MonoBehaviour
     {
         if(!canStart)
             return;
+
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+        }
         
-        timer -= Time.deltaTime;
         UpdateUI();
     }
     
@@ -235,10 +239,10 @@ public class CanvasManager : MonoBehaviour
 
     void UpdateBoosterUI()
     {
-        DisplayBoosterAmount(MenuManager.componentBoosts.Count); //Function to display the amount of boosters equipped
-        
-        if (MenuManager.componentBoosts.Count > 0)
+        if (MenuManager.componentBoosts != null)
         {
+            DisplayBoosterAmount(MenuManager.componentBoosts.Count); //Function to display the amount of boosters equipped
+            
             for (int i = 0; i < MenuManager.componentBoosts.Count; i++)
             {
                 CheckBoosterTarget(i); //Check the booster target stat to display the correct icon

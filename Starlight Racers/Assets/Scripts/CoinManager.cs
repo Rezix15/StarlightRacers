@@ -42,6 +42,7 @@ public class CoinManager : MonoBehaviour
     private List<int> fullTypes;
 
     private List<bool>unavailableItems;
+    public int itemSeed = 0;
 
     public Sprite reviveImage;
     public Sprite timerImage;
@@ -77,9 +78,18 @@ public class CoinManager : MonoBehaviour
     
     public GameObject teleporter;
     
+    public bool generateRandomSeed = true;
+    
+
+    private void Awake()
+    {
+        GenerateItemSeed();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        coinCount = 5000;
         hasPurchased = false;
         lastItemSelected = new GameObject();
         coinText.text = coinCount.ToString();
@@ -153,6 +163,17 @@ public class CoinManager : MonoBehaviour
                 randIndexType = randEnd;
             }
         }
+    }
+    
+    
+    private void GenerateItemSeed()
+    {
+        if (generateRandomSeed)
+        {
+            itemSeed = (int)System.DateTime.Now.Ticks;
+        }
+        
+        Random.InitState(itemSeed);
     }
 
     //Function to create items for the shop to be displayed
@@ -281,9 +302,6 @@ public class CoinManager : MonoBehaviour
                 }
                 
                 invalidAdditiveIndexes.Add(randIndexVal);
-                
-                
-                
                 break;
             }
 
@@ -357,10 +375,6 @@ public class CoinManager : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(confirmButton);
 
             currentItemPos = id + currentIndex;
-        
-            Debug.Log("Current Item Selected Name: " + currentItem.ItemName);
-            Debug.Log("Current Item Selected Type: " + currentItem.ItemType);
-            Debug.Log("Current Item Selected Description: " + currentItem.description);
         }
         
     }
@@ -412,15 +426,10 @@ public class CoinManager : MonoBehaviour
     //Function to display the items
     private void DisplayItems()
     {
-        Debug.Log("ItemShopListCount: " + itemShopList.Count);
-        // Debug.Log("InvalidItemList(Time): " + string.Join(", ", invalidIndexes));
-        Debug.Log("InvalidItemList(Additive): " + string.Join(", ", invalidAdditiveIndexes));
-        // Debug.Log("InvalidItemList(Effect): " + string.Join(", ", invalidEffectIndexes));
-        
         for (int i = currentIndex; i < (currentIndex + 3); i++)
         {
             itemNames[i % 3].text = itemShopList[i].ItemName;
-            itemTypes[i % 3].text = "Item Type: " + itemShopList[i].ItemType.ToString();
+            itemTypes[i % 3].text = "Item Type: " + itemShopList[i].ItemType;
             itemDescriptions[i % 3].text = itemShopList[i].description;
             itemIcons[i % 3].sprite = itemShopList[i].icon;
             itemCostText[i % 3].text = itemShopList[i].cost.ToString();
@@ -430,16 +439,22 @@ public class CoinManager : MonoBehaviour
                 unavailableImages[i % 3].SetActive(true);
                 unavailableItems[i] = true;
             }
+            else
+            {
+                unavailableImages[i % 3].SetActive(false);
+            }
             
             if (itemShopList[i].ItemName == "Half-Time" && GameDataManager.halfTime)
             {
                 unavailableImages[i % 3].SetActive(true);
                 unavailableItems[i] = true;
             }
+            else
+            {
+                unavailableImages[i % 3].SetActive(false);
+            }
             
             itemCostText[i % 3].color = itemShopList[i].cost > coinCount ? Color.red : Color.black;
-            
-            
         }
     }
     

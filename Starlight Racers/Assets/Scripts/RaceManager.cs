@@ -122,8 +122,6 @@ public class RaceManager : MonoBehaviour
         Debug.Log("Current Vehicle: " + MenuManager.currentSpaceJet.name);
         gameStart = false;
         
-        Cursor.visible = false;
-        
         switch (MenuManager.currentSpaceJet.name)
         {
             case "Absorber":
@@ -171,52 +169,52 @@ public class RaceManager : MonoBehaviour
             }
         }
         
-        switch (MenuManager.enemySpaceJet.name)
-        {
-            case "Absorber":
-            {
-                player2AbsorberPrefab.SetActive(true);
-                player2SpaceJetBeta.SetActive(false);
-                player2GhostRiderPrefab.SetActive(false);
-                var randomColor = Random.Range(0, absorberColors.Length);
-                // absorberRenderer = absorberPrefab.GetComponent<Renderer>();
-                spaceJetGlow.SetColor(EmissionColor, absorberColors[randomColor]);
-                break;
-            }
-
-            case "Bolt Glider":
-            {
-                player2AbsorberPrefab.SetActive(false);
-                player2SpaceJetBeta.SetActive(true);
-                player2GhostRiderPrefab.SetActive(false);
-                var randomColor = Random.Range(0, boltColors.Length);
-                // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
-                spaceJetColor.color = boltColors[randomColor];
-                break;
-            }
-            
-            case "UFO":
-            {
-                player2AbsorberPrefab.SetActive(false);
-                player2SpaceJetBeta.SetActive(true);
-                player2GhostRiderPrefab.SetActive(false);
-                // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
-                var randomColor = Random.Range(0, ufoColors.Length);
-                spaceJetColor.color = ufoColors[randomColor];
-                break;
-            }
-            
-            case "Ghost Rider":
-            {
-                player2AbsorberPrefab.SetActive(false);
-                player2SpaceJetBeta.SetActive(false);
-                player2GhostRiderPrefab.SetActive(true);
-                // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
-                var randomColor = Random.Range(0, ghostColors.Length);
-                //spaceJetColor.color = ghostColors[randomColor];
-                break;
-            }
-        }
+        // switch (MenuManager.enemySpaceJet.name)
+        // {
+        //     case "Absorber":
+        //     {
+        //         player2AbsorberPrefab.SetActive(true);
+        //         player2SpaceJetBeta.SetActive(false);
+        //         player2GhostRiderPrefab.SetActive(false);
+        //         var randomColor = Random.Range(0, absorberColors.Length);
+        //         // absorberRenderer = absorberPrefab.GetComponent<Renderer>();
+        //         spaceJetGlow.SetColor(EmissionColor, absorberColors[randomColor]);
+        //         break;
+        //     }
+        //
+        //     case "Bolt Glider":
+        //     {
+        //         player2AbsorberPrefab.SetActive(false);
+        //         player2SpaceJetBeta.SetActive(true);
+        //         player2GhostRiderPrefab.SetActive(false);
+        //         var randomColor = Random.Range(0, boltColors.Length);
+        //         // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
+        //         spaceJetColor.color = boltColors[randomColor];
+        //         break;
+        //     }
+        //     
+        //     case "UFO":
+        //     {
+        //         player2AbsorberPrefab.SetActive(false);
+        //         player2SpaceJetBeta.SetActive(true);
+        //         player2GhostRiderPrefab.SetActive(false);
+        //         // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
+        //         var randomColor = Random.Range(0, ufoColors.Length);
+        //         spaceJetColor.color = ufoColors[randomColor];
+        //         break;
+        //     }
+        //     
+        //     case "Ghost Rider":
+        //     {
+        //         player2AbsorberPrefab.SetActive(false);
+        //         player2SpaceJetBeta.SetActive(false);
+        //         player2GhostRiderPrefab.SetActive(true);
+        //         // spacejetRenderer = spaceJetBeta.GetComponent<Renderer>();
+        //         var randomColor = Random.Range(0, ghostColors.Length);
+        //         //spaceJetColor.color = ghostColors[randomColor];
+        //         break;
+        //     }
+        // }
         // var randomColor = 0;
         // var usedNumbers = new List<int>();
         //

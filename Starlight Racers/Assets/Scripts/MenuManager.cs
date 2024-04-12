@@ -51,9 +51,6 @@ public class MenuManager : MonoBehaviour
 
     //public static int score;
     
-    
-    
-    
     # region SpaceJetMenu
     
     public GameObject speedStat;
@@ -269,18 +266,6 @@ public class MenuManager : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(startButton);
         }
     }
-    
-    
-
-    // private void WaitForKeyPress()
-    // {
-    //     if (isActionPressed && !hasBeenPressed)
-    //     {
-    //         ToggleMenu(1);
-    //         hasBeenPressed = true;
-    //         EventSystem.current.SetSelectedGameObject(menuOptions[0].gameObject);
-    //     }
-    // }
 
     private void ToggleThroughMenu()
     {
@@ -384,7 +369,7 @@ public class MenuManager : MonoBehaviour
         {
             case 1:
             {
-                descriptiveText1.text = "Race against opponents in a single-player Grand Prix.";
+                descriptiveText1.text = "A quick race across time to reach the boss!";
                 break;
             }
             

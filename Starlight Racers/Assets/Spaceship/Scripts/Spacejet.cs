@@ -6,28 +6,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class Spacejet : MonoBehaviour
 {
-    # region grounded
-    public Transform groundCheck;
-    public float groundDistance = 0.4f;
-    private bool isGrounded;
-    public LayerMask groundMask;
-    # endregion
     
     private Stat thrust;
     private float grip;
-    // private float spaceJetSpeed;
-    // private float spaceJetShieldRate;
-    // private float spaceJetShieldMax;
-    // private float spaceJetLaserDmg;
-
     public SpaceJetStats spaceJetStat;
-
     private int boosterPadSpeed;
-    
-    // = new Stat(0)
 
     [SerializeField] private Stat speed;
     
@@ -47,9 +34,6 @@ public class Spacejet : MonoBehaviour
     private float horizontalInput;
     private bool isAccelerating;
     private Rigidbody rb;
-
-    public GameObject bossSpawner;
-
     public bool canMove = false;
     public GameObject lasersPrefab;
     public GameObject laserGun1;
@@ -73,6 +57,8 @@ public class Spacejet : MonoBehaviour
     private GameObject currentCheckpoint;
     public float currentRacerDistance;
     public GameObject[] pauseOptions;
+
+    public SpaceJetObj[] spaceJetObjs;
     
     //This is the HP stat of the spaceJet
     [SerializeField]
@@ -216,19 +202,14 @@ public class Spacejet : MonoBehaviour
             }
         }
     }
+    
+    
 
     private void OnDisable()
     {
         Controller.Disable();
     }
-
-    private void BossMovement()
-    {
-        if (readyToTriggerBoss)
-        {
-            transform.position += new Vector3((speed.trueValue / 100) * Time.deltaTime * horizontalInput, 0, 0);
-        }
-    }
+    
     // Start is called before the first frame update
 
     //Initialize the stats of the spaceJet using the current vehicle that was chosen in the menu.
@@ -245,12 +226,47 @@ public class Spacejet : MonoBehaviour
         }
         else
         {
-            thrust = new Stat(MenuManager.currentSpaceJet.thrust);
-            grip = MenuManager.currentSpaceJet.grip;
-            speed = new Stat(MenuManager.currentSpaceJet.speed);
-            shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
-            shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
-            laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
+            if (MenuManager.currentSpaceJet != null)
+            {
+                thrust = new Stat(MenuManager.currentSpaceJet.thrust);
+                grip = MenuManager.currentSpaceJet.grip;
+                speed = new Stat(MenuManager.currentSpaceJet.speed);
+                shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
+                shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
+                laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
+            }
+            else
+            {
+                var randIndex = Random.Range(0, 3);
+
+                switch (randIndex)
+                {
+                    case 0:
+                    {
+                        MenuManager.currentSpaceJet = spaceJetObjs[0];
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        MenuManager.currentSpaceJet = spaceJetObjs[1];
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        MenuManager.currentSpaceJet = spaceJetObjs[2];
+                        break;
+                    }
+                }
+
+                thrust = new Stat(MenuManager.currentSpaceJet.thrust);
+                grip = MenuManager.currentSpaceJet.grip;
+                speed = new Stat(MenuManager.currentSpaceJet.speed);
+                shieldMax = new Stat(MenuManager.currentSpaceJet.shield);
+                shieldRate = new Stat(MenuManager.currentSpaceJet.shieldRate);
+                laserDamage = new Stat(MenuManager.currentSpaceJet.laserDamage);
+            }
         }
         
     }
@@ -343,8 +359,6 @@ public class Spacejet : MonoBehaviour
     }
     void Update()
     {
-        BossMovement();
-        
         if (Boss.currentHealth <= 0 && CookieBoss.currentHealth <= 0 && Boss.bossReady)
         {
             hasFinished = true;
@@ -413,7 +427,7 @@ public class Spacejet : MonoBehaviour
 
     private void AddShieldPowerUp()
     {
-        var shield = FindObjectOfType<ShieldEffect>();
+        var shield = FindObjectOfType<PlayerShieldEffect>();
 
         if (shield != null && isShieldActive == false && wasShieldActive == false)
         {
@@ -428,7 +442,7 @@ public class Spacejet : MonoBehaviour
             shieldRate.RemoveModifier(shieldPowerUp);
             isShieldActive = false;
             abilityActive = false;
-            wasShieldActive =false;
+            wasShieldActive = false;
         }
     }
     
@@ -471,12 +485,12 @@ public class Spacejet : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (abilityGauge < GameDataManager.abilityGaugeMax && canMove && isShieldActive == false)
+        if (abilityGauge < GameDataManager.abilityGaugeMax && canMove && abilityActive == false)
         {
             abilityGauge+=1f;
         }
         
-        if (!CanvasManager.gamePaused && !readyToTriggerBoss)
+        if (!CanvasManager.gamePaused)
         {
             HandleInput();
             //If the jet is currently accelerating then allow user movement and update each second.
@@ -491,7 +505,7 @@ public class Spacejet : MonoBehaviour
                 rb.AddForce(Vector3.Lerp(Vector3.zero,(-transform.forward * speed.trueValue), Time.deltaTime * thrust.trueValue));
             }
         
-            //var acceleration = (rb.velocity - prevVelocity) / Time.fixedDeltaTime;
+            //Adding torque
             rb.AddTorque(transform.up * (grip * horizontalInput ), ForceMode.Acceleration);
             
             //If the user turns either left or right, the gameobject should tilt 45 degrees to the corresponding direction
@@ -773,8 +787,7 @@ public class Spacejet : MonoBehaviour
             currentShieldStat += (shieldMax.trueValue * 0.05f);
         }
     }
-
-    //Return the current ammo count 
+    
     //Return the current ammo count 
     public float GetLaserAmmoCount()
     {
@@ -790,10 +803,9 @@ public class Spacejet : MonoBehaviour
     {
         if (abilityGauge >= GameDataManager.abilityGaugeMax && creationAbility != null && abilityActive == false && !CanvasManager.gamePaused)
         {
-            abilityActive = true;
-            creationAbility.UseAbility();
             abilityGauge = 0;
-            abilityActive = false;
+            creationAbility.UseAbility();
+            //abilityActive = true;
         }
         else if(abilityGauge < GameDataManager.abilityGaugeMax && creationAbility != null && !CanvasManager.gamePaused)
         {

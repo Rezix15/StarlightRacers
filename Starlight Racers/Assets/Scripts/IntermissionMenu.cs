@@ -13,10 +13,10 @@ public class IntermissionMenu : MonoBehaviour
 {
     public int cardSeed = 0;
     public GameObject upgradeComp; //Going to be the first component Selected
-    public static ComponentObj currentComponent;
 
     public ComponentObj[] components;
 
+    public static ComponentObj currentComponent;
     public ComponentObj[] componentsCards;
     
     public TextMeshProUGUI[] componentNames;
@@ -44,6 +44,7 @@ public class IntermissionMenu : MonoBehaviour
     private int currentRerolls; 
     
     private string dialogue1;
+    private string dialogueExit;
     
     public bool generateRandomSeed = true;
 
@@ -67,6 +68,7 @@ public class IntermissionMenu : MonoBehaviour
         RollComponents();
         //DisplayContinueText();
         dialogue1 = "Thanks for your purchase. I hope I can be of benefit to you and good luck on your race";
+        dialogueExit = "Mhmmm... nothing? You might regret it later";
         //Debug.Log("CurrentSelectedObj: " + EventSystem.current.currentSelectedGameObject.name);
     }
     
@@ -89,32 +91,9 @@ public class IntermissionMenu : MonoBehaviour
         skillDescs[index].text = "Boost vehicle " + componentsCards[index].targetStat.ToString().ToLower() + " by " + (componentsCards[index].statModifierVal * 100) +"%";
     }
 
-    // void DisplayContinueText()
-    // {
-    //     continueText = continueBtn.GetComponentInChildren<TextMeshProUGUI>();
-    //
-    //     if (GameDataManager.RaceCount > 0)
-    //     {
-    //         continueText.text = "Start Race";
-    //     }
-    //     else if(GameDataManager.RaceCount < 3)
-    //     {
-    //         continueText.text = "Next Race";
-    //     }
-    //     else if(GameDataManager.RaceCount == 3)
-    //     {
-    //         continueText.text = "Final Race";
-    //     }
-    //     else
-    //     {
-    //         continueText.text = "??? Race";
-    //     }
-    // }
-
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("CurrentSelectedObj: " + EventSystem.current.currentSelectedGameObject.name);
         rerollBtn.SetActive(currentRerolls < rerollMax); //Sets the reroll button to be active or inactive depending on how many rerolls have been done
     }
 
@@ -164,9 +143,6 @@ public class IntermissionMenu : MonoBehaviour
         int thresholdVal = Random.Range(1, 5);
 
         float modifierVal = 0;
-
-        ComponentObj componentCard = new ComponentObj(null, ComponentObj.Rarity.Common, ComponentObj.StatSkillType.All, null, 0);
-
         var rarity = ComponentObj.Rarity.Common;
 
         //Component Rarity
@@ -200,6 +176,8 @@ public class IntermissionMenu : MonoBehaviour
             rarity = ComponentObj.Rarity.Common;
         }
         
+        ComponentObj componentCard = new ComponentObj(null, ComponentObj.Rarity.Common, ComponentObj.StatSkillType.All, null, 0);
+
         switch (randomStatIndex)
         {
             case 0:
@@ -237,12 +215,6 @@ public class IntermissionMenu : MonoBehaviour
                 componentCard = new ComponentObj("Laser Cannons", rarity, ComponentObj.StatSkillType.LaserDamage, laserDmgIcon, modifierVal);
                 break;
             }
-
-            default:
-            {
-                
-                break;
-            }
         }
 
         return componentCard;
@@ -262,6 +234,7 @@ public class IntermissionMenu : MonoBehaviour
     public void Exit()
     {
         BoosterShopkeeper.ActivateBoosterMenu = false;
+        StartCoroutine(EndingMessage(dialogueExit));
     }
 
 

@@ -5,29 +5,38 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/UnusedMultiplayerScenes/LobbyScene.unity
+    guid: e3c8b737383bf7e4180eb38c36e1eb45
+  - enabled: 0
+    path: Assets/Scenes/UnusedMultiplayerScenes/VehicleSelectMultiplayer.unity
+    guid: f308066179a467a42876db608a727d87
+  - enabled: 0
+    path: Assets/Scenes/UnusedMultiplayerScenes/IntermissionSceneMultiplayer.unity
+    guid: bcd98f18c65ea5741a9b09f6c532fdba
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: 54f1f9e55f805c744a4995f508f38c2e
   - enabled: 1
-    path: Assets/Scenes/StarLightRacers_BetaTest.unity
-    guid: bc2ea38967bf54248a821939b7f96797
-  - enabled: 1
-    path: Assets/Scenes/CandyLand_BetaTest.unity
-    guid: 476bcea90fe08bd40bb67ba0747c2779
-  - enabled: 1
     path: Assets/Scenes/IntermissionScene.unity
     guid: 0bd50aa5af53255479793b7e953ea624
+  - enabled: 1
+    path: Assets/Scenes/StarLightRacers_BetaTest.unity
+    guid: bc2ea38967bf54248a821939b7f96797
   - enabled: 1
     path: Assets/Scenes/IntermissionScene(CandyLand).unity
     guid: 106b3c0a762a5f446b90dcdc10c4f5e0
   - enabled: 1
-    path: Assets/Scenes/StarLightRacers_BetaTest(Multiplayer).unity
-    guid: 5928d7843d9e1054aa0469c3a9514e35
+    path: Assets/Scenes/CandyLand_BetaTest.unity
+    guid: 476bcea90fe08bd40bb67ba0747c2779
   - enabled: 1
     path: Assets/Scenes/BossScene.unity
     guid: 55ffe486b6f63eb4fb6f1c71fede4439
   - enabled: 1
     path: Assets/Scenes/BossScene(CandyLand).unity
     guid: e977b6dc96016f14b9830bf045f9df71
+  - enabled: 0
+    path: Assets/Scenes/UnusedMultiplayerScenes/StarLightRacers_BetaTest(Multiplayer).unity
+    guid: e48d2c94b9d599e4db03d8ee03f6bd7a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 19aa60a43c9261c4694c5f6882af20e2, type: 2}

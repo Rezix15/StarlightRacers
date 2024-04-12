@@ -60,15 +60,12 @@ public class BoosterShopkeeper : MonoBehaviour
         boosterCardMenu.SetActive(ActivateBoosterMenu); 
         
         teleporter.SetActive(successfulAttempts > 0 || (prevRaceCount > 0 && prevRaceCount == GameDataManager.RaceCount));
-
         CinemachineBrain.enabled = !ActivateBoosterMenu;
         
         if (DialogueManager.inDialogue && isTalking && successfulAttempts == 0 && isTouching && CoinShopKeeper.ActivateCoinMenu == false)
         {
             ActivateBoosterMenu = true;
         }
-        
-        
     }
 
     private void OnTriggerEnter(Collider other)

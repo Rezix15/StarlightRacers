@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public Transform cam;
 
     private PlayerController Controller;
-
+    
     private bool _isPaused;
     //int isWalkingHash = Animator.StringToHash("isWalking");
     //int isRunningHash = Animator.StringToHash("isRunning");
@@ -84,7 +84,6 @@ public class Player : MonoBehaviour
         //Get input axes (Horizontal)
         Controller.IntermissionScene.Turn.performed += context => horizontalInput = context.ReadValue<float>();
         Controller.IntermissionScene.Turn.canceled += context => horizontalInput = horizontalInput = 0f;
-        
     }
 
     // Start is called before the first frame update
@@ -102,7 +101,6 @@ public class Player : MonoBehaviour
     {
         Movement();
     }
-
 
     void Movement()
     {

@@ -32,23 +32,14 @@ public class FinishChecker : MonoBehaviour
         var countdownObj = GameObject.FindGameObjectsWithTag("Countdown");
         var finishTimerObj = GameObject.FindGameObjectsWithTag("FinishTimer");
 
-        if (countdownObj.Length > 1)
-        {
-            countdownText = countdownObj[0].GetComponent<TextMeshProUGUI>();
-            countdownTextP2 = countdownObj[1].GetComponent<TextMeshProUGUI>();
-            
-            finishTimer = finishTimerObj[0].GetComponent<TextMeshProUGUI>();
-            finishTimerP2 = finishTimerObj[1].GetComponent<TextMeshProUGUI>();
-        }
-        else
-        {
-            countdownText = countdownObj[0].GetComponent<TextMeshProUGUI>();
-            finishTimer = finishTimerObj[0].GetComponent<TextMeshProUGUI>();
-        }
+        
+        countdownText = countdownObj[0].GetComponent<TextMeshProUGUI>();
+        finishTimer = finishTimerObj[0].GetComponent<TextMeshProUGUI>();
+        
         
         hasFinished = false;
 
-        playerCount = GameObject.FindGameObjectsWithTag("PlayerRacer").Length;
+        //playerCount = GameObject.FindGameObjectsWithTag("PlayerRacer").Length;
 
     }
 

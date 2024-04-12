@@ -27,6 +27,11 @@ TagManager:
   - Gate
   - BossTrigger
   - BossPortal
+  - PlayerShield
+  - CinemachineTarget
+  - CinemachineAmy
+  - CinemachineAj
+  - MainCameraAj
   layers:
   - Default
   - TransparentFX

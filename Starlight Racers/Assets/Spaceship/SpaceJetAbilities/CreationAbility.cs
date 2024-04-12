@@ -28,7 +28,6 @@ public class CreationAbility : SpecialAbility
     
     public CreationAbility(string abilityName, float cooldownTimer, AbilityTypes abilityType, GameObject shieldEffect, GameObject bomb) : base(abilityName, cooldownTimer, abilityType)
     {
-        
         Initialize(abilityName, cooldownTimer, abilityType, shieldEffect, bomb);
     }
     
@@ -40,28 +39,32 @@ public class CreationAbility : SpecialAbility
         var playerPos = player.transform.position;
 
         var spawnPos = new Vector3(playerPos.x, playerPos.y + 2, playerPos.z);
-        var bombSpawnPos = new Vector3(playerPos.x, playerPos.y, playerPos.z - (20 + (bomb.transform.localScale.x / 30 )) );
+        //var bombSpawnPos = new Vector3(playerPos.x, playerPos.y, playerPos.z - (20 + (bomb.transform.localScale.x / 30 )) );
         
-        switch (randIndex)
-        {
-            //Generate shield
-            case 0:
-            {
-                var shieldObj = Instantiate(shieldEffect, spawnPos, Quaternion.Euler(90, 0, 0));
-                shieldObj.transform.SetParent(player.transform);
-                StartCoroutine(StartTimer(shieldObj, 1));
-                break;
-            }
-
-            //Generate bomb
-            case 1:
-            {
-                var bombObj = Instantiate(bomb, bombSpawnPos, Quaternion.Euler(90, 0, 0));
-                //StartCoroutine(BombDrops());
-                StartCoroutine(StartTimer(bombObj, 3));
-                break;
-            }
-        }
+        var shieldObj = Instantiate(shieldEffect, spawnPos, Quaternion.Euler(90, 0, 0));
+        shieldObj.transform.SetParent(player.transform);
+        StartCoroutine(StartTimer(shieldObj, 1));
+        
+        // switch (randIndex)
+        // {
+        //     //Generate shield
+        //     case 0:
+        //     {
+        //         var shieldObj = Instantiate(shieldEffect, spawnPos, Quaternion.Euler(90, 0, 0));
+        //         shieldObj.transform.SetParent(player.transform);
+        //         StartCoroutine(StartTimer(shieldObj, 1));
+        //         break;
+        //     }
+        //
+        //     //Generate bomb
+        //      case 1:
+        //      {
+        //          var bombObj = Instantiate(bomb, bombSpawnPos, Quaternion.Euler(90, 0, 0));
+        //          //StartCoroutine(BombDrops());
+        //          StartCoroutine(StartTimer(bombObj, 3));
+        //          break;
+        //      }
+        // }
     }
 
     public override void UseAbility()

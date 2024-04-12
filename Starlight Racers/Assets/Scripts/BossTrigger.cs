@@ -41,6 +41,6 @@ public class BossTrigger : MonoBehaviour
         bossCanvas.SetActive(true);
         yield return new WaitForSeconds(5f);
         bossTriggered = true;
-        GameDataManager.laserAmmoMax += 100;
+        GameDataManager.laserAmmoMax += 9000;
     }
 }

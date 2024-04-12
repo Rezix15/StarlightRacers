@@ -42,14 +42,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    // private void OnEnable()
-    // {
-    //     if (currentDialogue!= null && currentDialogue.GetDialogueType() == Dialogue.DialogueType.Question)
-    //     {
-    //         EventSystem.current.SetSelectedGameObject(options[1]);
-    //     }
-    // }
-
     private void SetDialogue()
     {
         characterNameText.text = currentDialogue.GetCharacterName();
@@ -82,8 +74,6 @@ public class DialogueManager : MonoBehaviour
                 }
                 break;
             }
-            
-            
         }
     }
     
