@@ -158,7 +158,7 @@ public class LoadLeaderboard : MonoBehaviour
         while (score < BossBonusScore + playerHealthBonus + finishTimeBonusScore)
         {
             scoreInfoText.text = "TotalFinishTime Bonus: +" + finishTimeBonusScore; 
-            score+=100;
+            score+=1000;
             
             yield return new WaitForSeconds(0.05f);
         }
@@ -168,6 +168,7 @@ public class LoadLeaderboard : MonoBehaviour
         scoreInfoText.text = "";
         yield return new WaitForSeconds(2f);
         usernameInput.SetActive(true);
+        Cursor.visible = true;
         EventSystem.current.SetSelectedGameObject(usernameInput);
         yield return new WaitForSeconds(0.1f);
     }

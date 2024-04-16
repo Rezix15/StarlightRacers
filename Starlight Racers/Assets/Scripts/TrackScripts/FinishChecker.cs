@@ -87,7 +87,7 @@ public class FinishChecker : MonoBehaviour
             // {
                 GameDataManager.RaceCount++;
                 MenuManager.totalFinishTime += playerFinishTime;
-                CoinManager.coinCount += 500;
+                CoinManager.coinCount += 1000;
 
                 if (playerCount < 2 || (playerCount >= 2 && finishedPlayers >=2))
                 {

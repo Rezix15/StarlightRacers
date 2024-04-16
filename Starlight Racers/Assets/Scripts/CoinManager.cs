@@ -89,7 +89,6 @@ public class CoinManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        coinCount = 5000;
         hasPurchased = false;
         lastItemSelected = new GameObject();
         coinText.text = coinCount.ToString();

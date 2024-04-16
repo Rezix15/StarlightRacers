@@ -87,13 +87,13 @@ public class Teleporter : MonoBehaviour
 
             if (inTeleport)
             {
-                if (GameDataManager.RaceCount < 3)
+                if (GameDataManager.RaceCount < 1)
                 {
                     DialogueManager.inDialogue = true;
                     DialogueManager.id = 0;
                     DialogueManager.currentDialogue = new Dialogue("Teleporter", teleporterDialogue, Dialogue.DialogueType.Question);
                 }
-                else if(GameDataManager.RaceCount == 3)
+                else if(GameDataManager.RaceCount == 1)
                 {
                     teleporterDialogue = "Are you ready to begin the final race?";
                     DialogueManager.inDialogue = true;

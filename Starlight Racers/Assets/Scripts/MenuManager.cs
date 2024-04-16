@@ -332,7 +332,7 @@ public class MenuManager : MonoBehaviour
         }
 
         //Set the time limit based on the difficulty. Starting from 180 seconds or 3 minutes up to 5 minutes (300 seconds)
-        timelimitVal = (difficultyMenuIndex * 60) + 180;
+        timelimitVal = (difficultyMenuIndex * 60) + 300;
 
         for (int i = 0; i < difMenuOptions.Length; i++)
         {

@@ -361,36 +361,29 @@ public class TrackGen : MonoBehaviour
                         {
                             Instantiate(upNeighbours[0], newPosition, Quaternion.identity, transform);
                         }
-                        
                         //Booster Track Generation
                         if ((trackCount > 0 && trackCount % 3 == 0 && boosterRandomness == 1) && !spawnRobotPath)
                         {
                             GenerateTrack(TrackType.BoosterTrack, boosterPosition, Quaternion.identity);
                         }
-                        
                         if (enemyPosCount >= 6)
                         {
                             Instantiate(robotPathObj, newPosition, Quaternion.Euler(0, 90, 0), transform);
                             enemyPosCount = 0;
                             spawnRobotPath = false;
                         }
-
-                        
                         //Traffic Light Generation
                         if (trackCount % 4 == 0) 
                         {
                             Instantiate(trafficLightObj, trafficLightPosLeft, Quaternion.Euler(0,270,0), transform);
                             Instantiate(trafficLightObj, trafficLightPosRight, Quaternion.Euler(0,270,0), transform);
                         }
-                        
                         if ((trackCount > 0 && trackCount % 7 == 0) )
                         {
                             var enemyPos = new Vector3(newPosition.x, newPosition.y + 40f, newPosition.z);
                             Instantiate(enemyRobot2, enemyPos, Quaternion.identity);
                             spawnRobotPath = true;
                         }
-
-                       
                         GenerateNeighbours(TrackType.StraightForward, newPosition);
                         break;
                     }

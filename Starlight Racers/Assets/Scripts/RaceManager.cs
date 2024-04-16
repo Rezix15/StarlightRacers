@@ -15,7 +15,9 @@ public class RaceManager : MonoBehaviour
 
     public TextMeshProUGUI countdownTextP1;
     public TextMeshProUGUI countdownTextP2;
-    
+
+    [SerializeField] private AudioSource raceCountdown;
+    [SerializeField] private AudioSource raceTheme;
     
     private Spacejet SpaceJetPlayer;
     private SpacejetAI[] SpaceJetAis;
@@ -249,6 +251,7 @@ public class RaceManager : MonoBehaviour
             yield return new WaitForSeconds(2);
             countdownTextP1.text = "3";
             countdownTextP2.text = "3";
+            raceCountdown.Play();
             yield return new WaitForSeconds(0.5f);
             countdownTextP1.text = "";
             countdownTextP2.text = "";
@@ -276,6 +279,7 @@ public class RaceManager : MonoBehaviour
         {
             yield return new WaitForSeconds(2);
             countdownTextP1.text = "3";
+            raceCountdown.Play();
             yield return new WaitForSeconds(0.5f);
             countdownTextP1.text = "";
             yield return new WaitForSeconds(0.5f);
@@ -291,6 +295,9 @@ public class RaceManager : MonoBehaviour
             yield return new WaitForSeconds(0.4f);
             GameStarted?.Invoke();
             countdownTextP1.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.5f);
+            raceTheme.loop = true;
+            raceTheme.Play();
         }
     }
 
