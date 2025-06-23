@@ -13,3 +13,5 @@ A racing? game developed to study the inner workings of randomness and procedura
 (Controller) A to accelerate / (Keyboard) W: Hold the accelerate button and use the L stick to move
 
 Link to Game on itch to try: https://rezixdev.itch.io/gamedev
+
+Link to vid: https://youtu.be/NR6sjTyCcK8
